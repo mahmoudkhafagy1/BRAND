@@ -7,9 +7,9 @@
 <meta name="description" content="BRAND - Premium men's fashion store."/>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],serif:['Playfair Display','Georgia','serif']}}}};
+tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','Cairo','system-ui','sans-serif'],serif:['Playfair Display','Georgia','serif']}}}};
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet"/>
 <style>
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -32,8 +32,7 @@ tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','syst
 .cimg{overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.7)}
 .cimg img{transition:transform .45s ease;width:100%;height:100%;object-fit:contain;object-position:center;display:block;padding:4px}
 .pcard:hover .cimg img{transform:scale(1.05)}
-.sale-badge{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#ff416c,#ff4b2b);color:#fff;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:99px;z-index:5;box-shadow:0 2px 8px rgba(255,65,108,.5)}
-[dir=rtl] .sale-badge{left:auto;right:10px}
+.sale-badge{position:absolute;top:10px;left:10px;right:auto;background:linear-gradient(135deg,#ff416c,#ff4b2b);color:#fff;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:99px;z-index:5;box-shadow:0 2px 8px rgba(255,65,108,.5)}
 .tog{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0}
 .tog input{opacity:0;width:0;height:0}
 .tslider{position:absolute;cursor:pointer;inset:0;background:#334155;border-radius:24px;transition:.3s}
@@ -67,8 +66,7 @@ html:not(.dark) table th{background:#e2e8f0!important;color:#475569!important}
 /* Atbl hover */
 .atbl tr:hover td{background:rgba(0,212,255,.04)}
 .disc-chip{background:rgba(255,65,108,.15);color:#ff416c;border:1px solid rgba(255,65,108,.3);font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:99px;display:inline-flex;align-items:center;line-height:1}
-.out-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:99px;z-index:5;box-shadow:0 2px 8px rgba(239,68,68,.5);display:inline-flex;align-items:center;gap:3px;letter-spacing:.5px}
-[dir=rtl] .out-badge{right:auto;left:10px}
+.out-badge{position:absolute;top:10px;right:10px;left:auto;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:99px;z-index:5;box-shadow:0 2px 8px rgba(239,68,68,.5);display:inline-flex;align-items:center;gap:3px;letter-spacing:.5px}
 .size-pill{padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.15);font-size:.68rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;user-select:none;color:#94a3b8;background:rgba(255,255,255,.04);line-height:1.2}
 .size-pill:hover:not(.disabled){border-color:rgba(0,212,255,.5);color:#fff;background:rgba(0,212,255,.1)}
 .size-pill.selected{background:linear-gradient(135deg,#00d4ff,#0080ff);border-color:transparent;color:#fff;box-shadow:0 2px 10px rgba(0,212,255,.4)}
@@ -78,10 +76,14 @@ html:not(.dark) .size-pill:hover:not(.disabled){border-color:#0080ff;color:#0f17
 html:not(.dark) .size-pill.selected{color:#fff}
 .stock-badge-in{background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3);font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:99px;display:inline-flex;align-items:center;gap:3px}
 .stock-badge-out{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3);font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:99px;display:inline-flex;align-items:center;gap:3px}
+.form-size-chip{padding:6px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,.15);font-size:.8rem;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;user-select:none;color:#94a3b8;background:rgba(255,255,255,.05);display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.form-size-chip:hover{border-color:rgba(0,212,255,.5);color:#fff;background:rgba(0,212,255,.1);transform:translateY(-1px)}
+.form-size-chip.selected{background:linear-gradient(135deg,#00d4ff,#0080ff);border-color:transparent;color:#fff;box-shadow:0 3px 12px rgba(0,212,255,.4)}
+html:not(.dark) .form-size-chip{border-color:rgba(0,0,0,.15);color:#475569;background:rgba(0,0,0,.04)}
+html:not(.dark) .form-size-chip:hover{border-color:#0080ff;color:#0f172a;background:rgba(0,128,255,.1)}
+html:not(.dark) .form-size-chip.selected{color:#fff}
 .lon{background:#00d4ff;color:#fff}
 .loff{color:#94a3b8}
-[dir=rtl] #cartDrawer{left:0!important;right:auto!important}
-[dir=rtl] #sideDrawer{right:0!important;left:auto!important}
 </style>
 </head>
 
@@ -350,24 +352,33 @@ html:not(.dark) .size-pill.selected{color:#fff}
             </select>
           </div>
         </div>
-        <!-- Available Sizes Section -->
-        <div class="space-y-2 rounded-xl border border-white/10 bg-slate-900/40 p-4">
-          <div class="flex items-center justify-between">
+        <!-- Dynamic Category-based Sizes Section -->
+        <div class="space-y-3 rounded-xl border border-white/10 bg-slate-900/40 p-4">
+          <div class="flex items-center justify-between flex-wrap gap-2">
             <label class="block text-sm font-bold text-slate-200 flex items-center gap-2">
               <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
               <span data-i18n="f_sizes_section">Available Sizes</span>
             </label>
-            <span class="text-xs text-slate-400" data-i18n="f_sizes_hint">Separated by commas</span>
+            <div class="flex items-center gap-2">
+              <button type="button" id="selectAllSizesBtn" class="text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition-colors" data-i18n="select_all_sizes">Select All</button>
+              <span class="text-slate-600 text-xs">|</span>
+              <button type="button" id="clearAllSizesBtn" class="text-xs font-semibold text-slate-400 hover:text-slate-300 transition-colors" data-i18n="clear_all_sizes">Clear</button>
+            </div>
           </div>
-          <input id="fSizes" type="text" placeholder="S, M, L, XL, XXL"
-            class="w-full h-11 bg-slate-800/80 border border-white/10 rounded-xl px-4 text-sm focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/25 transition-all placeholder-slate-500"/>
-          <!-- Quick Presets -->
-          <div class="flex flex-wrap items-center gap-1.5 pt-1">
-            <span class="text-xs text-slate-400 font-semibold" data-i18n="f_size_presets">Presets:</span>
-            <button type="button" class="preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors" data-preset="S, M, L, XL, XXL">Apparel (S-XXL)</button>
-            <button type="button" class="preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors" data-preset="30, 32, 34, 36, 38">Pants (30-38)</button>
-            <button type="button" class="preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors" data-preset="40, 41, 42, 43, 44, 45">Shoes (40-45)</button>
-            <button type="button" class="preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors" data-preset="Free Size">Free Size</button>
+          <p class="text-xs text-slate-400" data-i18n="select_sizes_prompt">Click buttons to select available sizes for this item:</p>
+          
+          <!-- Category Dynamic Size Buttons Container -->
+          <div id="categorySizesWrap" class="flex flex-wrap items-center gap-2 pt-1 min-h-[40px]">
+            <!-- Rendered dynamically based on selected Category -->
+          </div>
+          
+          <!-- Custom Size Input Row -->
+          <div class="flex items-center gap-2 pt-2 border-t border-white/5">
+            <input id="customSizeIn" type="text" placeholder="Add custom size (e.g. 5XL or 48)..."
+              class="flex-1 h-9 bg-slate-800/80 border border-white/10 rounded-xl px-3 text-xs focus:outline-none focus:border-cyan-400/50 transition-all placeholder-slate-500"/>
+            <button type="button" id="addCustomSizeBtn" class="h-9 px-4 rounded-xl text-xs font-bold bg-cyan-500/15 border border-cyan-400/40 text-cyan-400 hover:bg-cyan-400/25 transition-all" data-i18n="add_size_btn">
+              + Add
+            </button>
           </div>
         </div>
         <!-- Stock & Availability Section -->
@@ -490,10 +501,7 @@ const SK={products:'brand_products',cart:'brand_cart',theme:'brand_theme',lang:'
 const DEFAULTS=[
   {id:'p1',title:'Urban Slim Tee',category:'T-Shirts',price:450,discount:0,offerLabel:'',image:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80',sizes:['S','M','L','XL','XXL'],inStock:true,stock:15},
   {id:'p2',title:'Cargo Street Pants',category:'Pants',price:1200,discount:20,offerLabel:'Summer Sale',image:'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=600&q=80',sizes:['30','32','34','36','38'],inStock:true,stock:8},
-  {id:'p3',title:'Air Runner Kicks',category:'Shoes',price:2800,discount:0,offerLabel:'',image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80',sizes:['40','41','42','43','44','45'],inStock:false,stock:0}
-];
-
-/* TRANSLATIONS */
+  {id:'p3',title:'Air Runner Kicks',category:'Shoes',price:2800,discount:0,offerLabel:'',image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80',sizes:['40','41','42','43','44','45'],inStock:false,sto/* TRANSLATIONS */
 const LANG={
   en:{nav_home:'Home',toggle_theme:'Dark Mode',toggle_lang:'Language',
     hero_badge:'New Collection 2026',hero_t1:'Elevate',hero_t2:'Your',hero_t3:'Style',
@@ -508,7 +516,8 @@ const LANG={
     admin_back:'Back to Store',admin_logout:'Logout',admin_add:'Add Product',admin_edit:'Edit Product',
     f_save:'Save Product',f_cancel:'Cancel',f_title:'Product Title',f_price:'Price (EGP)',
     f_cat:'Category',f_url:'Image URL',f_file:'Or Upload Image',f_choose:'Choose file...',
-    f_sizes_section:'Available Sizes',f_sizes_hint:'Separated by commas',f_size_presets:'Presets:',
+    f_sizes_section:'Available Sizes',select_sizes_prompt:'Click buttons to select available sizes for this item:',
+    select_all_sizes:'Select All',clear_all_sizes:'Clear',add_size_btn:'+ Add',
     f_stock_section:'Stock & Availability',f_stock_qty:'Stock Quantity in Warehouse',
     stock_note:'If stock reaches 0 or is toggled off, an "Out of Stock" button will replace the Add to Cart button on the storefront.',
     f_offer_section:'Offer & Discount',f_discount:'Discount %',f_offer_label:'Offer Label',
@@ -531,7 +540,8 @@ const LANG={
     admin_back:'العودة للمتجر',admin_logout:'خروج',admin_add:'إضافة منتج',admin_edit:'تعديل منتج',
     f_save:'حفظ',f_cancel:'إلغاء',f_title:'اسم المنتج',f_price:'السعر (ج.م)',
     f_cat:'الفئة',f_url:'رابط الصورة',f_file:'أو رفع صورة',f_choose:'اختر ملفاً...',
-    f_sizes_section:'المقاسات المتوفرة',f_sizes_hint:'مفصولة بفواصل',f_size_presets:'مقاسات سريعة:',
+    f_sizes_section:'المقاسات المتوفرة',select_sizes_prompt:'اضغط على الأزرار لاختيار المقاسات المتوفرة لهذا المنتج:',
+    select_all_sizes:'تحديد الكل',clear_all_sizes:'إلغاء التحديد',add_size_btn:'+ إضافة',
     f_stock_section:'حالة المخزن والكمية',f_stock_qty:'الكمية المتوفرة بالمخزن',
     stock_note:'إذا كانت الكمية 0 أو غير متوفر بالمخزن، سيظهر زر "نفدت الكمية" في المتجر.',
     f_offer_section:'عروض وخصومات',f_discount:'نسبة الخصم %',f_offer_label:'اسم العرض',
@@ -546,8 +556,16 @@ const LANG={
 /* FORMAT */
 function fmt(n){return Number(n).toLocaleString('ar-EG')+' '+CURR;}
 
+/* CATEGORY SIZES PRESETS */
+const CATEGORY_SIZES={
+  'T-Shirts':['XS','S','M','L','XL','2XL','3XL','4XL'],
+  'Pants':['28','30','32','34','36','38','40','42'],
+  'Shoes':['39','40','41','42','43','44','45','46'],
+  'Other':['Free Size','S','M','L','XL']
+};
+
 /* STATE */
-let products=[],cart=[],theme='dark',lang='en',activeCat='All',searchQ='',editId=null,selectedSizes={};
+let products=[],cart=[],theme='dark',lang='en',activeCat='All',searchQ='',editId=null,selectedSizes={},currentFormSizes=['S','M','L','XL','2XL'];
 
 /* STORAGE */
 function loadAll(){
@@ -588,9 +606,9 @@ function toggleTheme(){theme=theme==='dark'?'light':'dark';saveT();applyTheme();
 
 /* LANGUAGE */
 function applyLang(){
-  const T=LANG[lang],dir=lang==='ar'?'rtl':'ltr';
+  const T=LANG[lang];
   document.documentElement.setAttribute('lang',lang);
-  document.documentElement.setAttribute('dir',dir);
+  document.documentElement.setAttribute('dir','ltr');
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.getAttribute('data-i18n');
     if(T[k]!==undefined)el.textContent=T[k];
@@ -600,9 +618,6 @@ function applyLang(){
   const en=document.getElementById('btnEN'),ar=document.getElementById('btnAR');
   en.className='px-3 h-full transition-colors '+(lang==='en'?'lon':'loff');
   ar.className='px-3 h-full transition-colors '+(lang==='ar'?'lon':'loff');
-  const sd=document.getElementById('sideDrawer'),cd=document.getElementById('cartDrawer');
-  if(dir==='rtl'){sd.style.left='auto';sd.style.right='0';cd.style.right='auto';cd.style.left='0';}
-  else{sd.style.right='auto';sd.style.left='0';cd.style.left='auto';cd.style.right='0';}
   const stText=document.getElementById('stockStatusText');
   const stChk=document.getElementById('fInStock');
   if(stText&&stChk)stText.textContent=stChk.checked?T.in_stock:T.out_of_stock;
@@ -620,8 +635,7 @@ function showView(v){
 const SD=document.getElementById('sideDrawer'),CD=document.getElementById('cartDrawer');
 function openDrawer(el){el.style.transform='translateX(0)';document.getElementById('ov').classList.remove('hidden');}
 function closeDrawer(el){
-  const dir=document.documentElement.getAttribute('dir')||'ltr',isCart=el.id==='cartDrawer';
-  el.style.transform=dir==='rtl'?(isCart?'translateX(-100%)':'translateX(100%)'):(isCart?'translateX(100%)':'translateX(-100%)');
+  el.style.transform=el.id==='cartDrawer'?'translateX(100%)':'translateX(-100%)';
   document.getElementById('ov').classList.add('hidden');
 }
 function closeAll(){closeDrawer(SD);closeDrawer(CD);}
@@ -631,6 +645,34 @@ const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'
 function badgeCls(cat){
   const m={'T-Shirts':'bg-sky-500/20 text-sky-300 border-sky-500/30','Pants':'bg-violet-500/20 text-violet-300 border-violet-500/30','Shoes':'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'};
   return m[cat]||'bg-slate-500/20 text-slate-300 border-slate-500/30';
+}
+
+/* DYNAMIC FORM SIZES */
+function renderCategorySizes(category,preselectedSizes){
+  const wrap=document.getElementById('categorySizesWrap');
+  if(!wrap)return;
+  const baseSizes=CATEGORY_SIZES[category]||CATEGORY_SIZES['T-Shirts'];
+  if(preselectedSizes!==undefined){
+    currentFormSizes=[...preselectedSizes];
+  } else if(!editId){
+    currentFormSizes=baseSizes.slice(1,6);
+  }
+  const allSizes=[...new Set([...baseSizes,...currentFormSizes])];
+  wrap.innerHTML=allSizes.map(sz=>{
+    const isSel=currentFormSizes.includes(sz);
+    return `<button type="button" class="form-size-chip ${isSel?'selected':''}" data-sz="${esc(sz)}">${esc(sz)}</button>`;
+  }).join('');
+  wrap.querySelectorAll('.form-size-chip').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const sz=btn.dataset.sz;
+      if(currentFormSizes.includes(sz)){
+        currentFormSizes=currentFormSizes.filter(s=>s!==sz);
+      } else {
+        currentFormSizes.push(sz);
+      }
+      renderCategorySizes(document.getElementById('fCat').value||'T-Shirts',currentFormSizes);
+    });
+  });
 }
 
 /* RENDER GRID */
@@ -821,8 +863,20 @@ function updateStats(){
 
 function doLogin(){
   const pw=document.getElementById('pwIn').value,err=document.getElementById('loginErr');
-  if(pw===ADMIN_PW){loginSS();err.classList.add('hidden');document.getElementById('pwIn').value='';showView('dash');renderAdminTable();updateStats();}
+  if(pw===ADMIN_PW){loginSS();err.classList.add('hidden');document.getElementById('pwIn').value='';showView('dash');renderAdminTable();updateStats();renderCategorySizes(document.getElementById('fCat').value||'T-Shirts');}
   else{err.classList.remove('hidden');document.getElementById('pwIn').select();}
+}
+
+function toggleStock(id){
+  const p=products.find(x=>x.id===id);
+  if(!p)return;
+  const willBeInStock=!p.inStock||p.stock<=0;
+  p.inStock=willBeInStock;
+  p.stock=willBeInStock?(p.stock>0?p.stock:10):0;
+  saveP();
+  renderAdminTable();
+  renderGrid();
+  updateStats();
 }
 
 function renderAdminTable(){
@@ -841,8 +895,17 @@ function renderAdminTable(){
       :`<span class="text-slate-600 text-xs">&#8212;</span>`;
     const isOut=!p.inStock||p.stock<=0;
     const stockHtml=isOut
-      ?`<span class="stock-badge-out"><svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>${T.out_of_stock}</span>`
-      :`<span class="stock-badge-in"><svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${T.in_stock} (${p.stock})</span>`;
+      ?`<span class="stock-badge-out"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>${T.out_of_stock}</span>`
+      :`<span class="stock-badge-in"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${T.in_stock} (${p.stock})</span>`;
+    
+    const stockBtnClass=isOut
+      ?'stockToggleBtn h-8 px-2.5 rounded-lg text-xs font-bold border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-colors flex items-center gap-1 cursor-pointer'
+      :'stockToggleBtn h-8 px-2.5 rounded-lg text-xs font-bold border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 transition-colors flex items-center gap-1 cursor-pointer';
+    const stockBtnIcon=isOut
+      ?`<svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`
+      :`<svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
+    const stockBtnText=isOut?T.out_of_stock:T.in_stock;
+
     return `<tr class="transition-colors">
       <td class="px-4 py-3"><img src="${esc(p.image)}" alt="${esc(p.title)}" class="w-11 h-11 object-contain rounded-xl bg-slate-800 p-0.5 border border-white/5" onerror="this.src='https://placehold.co/60x60/0f172a/00d4ff?text=B'"/></td>
       <td class="px-4 py-3 font-medium max-w-[130px]"><p class="truncate text-xs sm:text-sm">${esc(p.title)}</p></td>
@@ -852,13 +915,15 @@ function renderAdminTable(){
       <td class="px-4 py-3">${stockHtml}</td>
       <td class="px-4 py-3">${discHtml}</td>
       <td class="px-4 py-3">
-        <div class="flex items-center justify-center gap-1.5">
+        <div class="flex items-center justify-center gap-1.5 flex-nowrap">
+          <button data-id="${p.id}" class="${stockBtnClass}" title="Toggle Stock Availability">${stockBtnIcon}<span>${stockBtnText}</span></button>
           <button data-id="${p.id}" class="editBtn h-8 px-3 rounded-lg text-xs font-semibold border border-cyan-400/40 text-cyan-400 hover:bg-cyan-400/10 transition-colors">Edit</button>
           <button data-id="${p.id}" class="delBtn h-8 px-3 rounded-lg text-xs font-semibold border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-colors">Del</button>
         </div>
       </td>
     </tr>`;
   }).join('');
+  tbody.querySelectorAll('.stockToggleBtn').forEach(b=>b.addEventListener('click',()=>toggleStock(b.dataset.id)));
   tbody.querySelectorAll('.editBtn').forEach(b=>b.addEventListener('click',()=>startEdit(b.dataset.id)));
   tbody.querySelectorAll('.delBtn').forEach(b=>b.addEventListener('click',()=>delProduct(b.dataset.id)));
   updateStats();
@@ -872,10 +937,12 @@ function resetForm(){
   document.getElementById('fDiscountOn').checked=false;
   document.getElementById('discountFields').style.display='none';
   document.getElementById('fDiscount').value='';document.getElementById('fOfferLabel').value='';
-  document.getElementById('fSizes').value='';
+  document.getElementById('customSizeIn').value='';
   document.getElementById('fInStock').checked=true;
   document.getElementById('fStockQty').value='10';
   document.getElementById('stockStatusText').textContent=LANG[lang].in_stock;
+  currentFormSizes=['S','M','L','XL','2XL'];
+  renderCategorySizes(document.getElementById('fCat').value||'T-Shirts',currentFormSizes);
 }
 
 function startEdit(id){
@@ -886,7 +953,9 @@ function startEdit(id){
   document.getElementById('fUrl').value=p.image.startsWith('data:')?'':p.image;
   document.getElementById('prevImg').src=p.image;document.getElementById('prevWrap').classList.remove('hidden');
   document.getElementById('fmHead').textContent=LANG[lang].admin_edit;
-  document.getElementById('fSizes').value=(p.sizes&&p.sizes.length)?p.sizes.join(', '):'';
+  document.getElementById('customSizeIn').value='';
+  currentFormSizes=(p.sizes&&p.sizes.length)?[...p.sizes]:[];
+  renderCategorySizes(p.category||'T-Shirts',currentFormSizes);
   const isAvailable=p.inStock!==false&&(p.stock===undefined||p.stock>0);
   document.getElementById('fInStock').checked=isAvailable;
   document.getElementById('fStockQty').value=p.stock!==undefined?p.stock:(isAvailable?10:0);
@@ -920,8 +989,7 @@ document.getElementById('prodForm').addEventListener('submit',function(e){
   const discOn=document.getElementById('fDiscountOn').checked;
   const discount=discOn?Math.min(99,Math.max(1,parseInt(document.getElementById('fDiscount').value)||0)):0;
   const offerLabel=discOn?document.getElementById('fOfferLabel').value.trim():'';
-  const rawSizes=document.getElementById('fSizes').value;
-  const sizes=rawSizes.split(',').map(s=>s.trim()).filter(Boolean);
+  const sizes=[...currentFormSizes];
   const inStockCheck=document.getElementById('fInStock').checked;
   const stockVal=inStockCheck?Math.max(0,parseInt(document.getElementById('fStockQty').value)||0):0;
   const inStock=inStockCheck&&stockVal>0;
@@ -944,6 +1012,37 @@ document.getElementById('prodForm').addEventListener('submit',function(e){
   saveP();resetForm();renderAdminTable();renderGrid();renderCart();
 });
 
+/* CATEGORY CHANGE LISTENER */
+document.getElementById('fCat').addEventListener('change',function(){
+  renderCategorySizes(this.value);
+});
+
+/* SELECT ALL / CLEAR SIZES */
+document.getElementById('selectAllSizesBtn').addEventListener('click',()=>{
+  const cat=document.getElementById('fCat').value||'T-Shirts';
+  currentFormSizes=[...(CATEGORY_SIZES[cat]||CATEGORY_SIZES['Other'])];
+  renderCategorySizes(cat,currentFormSizes);
+});
+
+document.getElementById('clearAllSizesBtn').addEventListener('click',()=>{
+  const cat=document.getElementById('fCat').value||'T-Shirts';
+  currentFormSizes=[];
+  renderCategorySizes(cat,currentFormSizes);
+});
+
+/* ADD CUSTOM SIZE */
+function addCustomSize(){
+  const inEl=document.getElementById('customSizeIn');
+  const val=inEl.value.trim();
+  if(val && !currentFormSizes.includes(val)){
+    currentFormSizes.push(val);
+    renderCategorySizes(document.getElementById('fCat').value||'T-Shirts',currentFormSizes);
+    inEl.value='';
+  }
+}
+document.getElementById('addCustomSizeBtn').addEventListener('click',addCustomSize);
+document.getElementById('customSizeIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addCustomSize();}});
+
 /* DISCOUNT TOGGLE */
 document.getElementById('fDiscountOn').addEventListener('change',function(){
   document.getElementById('discountFields').style.display=this.checked?'grid':'none';
@@ -961,13 +1060,6 @@ document.getElementById('fInStock').addEventListener('change',function(){
   }
 });
 
-/* SIZE PRESET BUTTONS */
-document.querySelectorAll('.preset-btn').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.getElementById('fSizes').value=b.dataset.preset;
-  });
-});
-
 /* FILE UPLOAD */
 document.getElementById('fFile').addEventListener('change',function(){
   const f=this.files[0];if(!f)return;
@@ -982,7 +1074,7 @@ document.getElementById('fFile').addEventListener('change',function(){
   let clicks=0,timer=null;
   document.getElementById('logoBtn').addEventListener('click',()=>{
     clicks++;clearTimeout(timer);timer=setTimeout(()=>{clicks=0;},600);
-    if(clicks>=3){clicks=0;clearTimeout(timer);closeAll();isAdmin()?(showView('dash'),renderAdminTable(),updateStats()):showView('login');}
+    if(clicks>=3){clicks=0;clearTimeout(timer);closeAll();isAdmin()?(showView('dash'),renderAdminTable(),updateStats(),renderCategorySizes(document.getElementById('fCat').value||'T-Shirts')):(showView('login'));}
   });
 })();
 
@@ -1011,7 +1103,7 @@ document.getElementById('goStoreBtn').addEventListener('click',()=>showView('sto
 document.getElementById('fCancel').addEventListener('click',resetForm);
 
 /* INIT */
-(function init(){loadAll();applyTheme();applyLang();showView('store');renderGrid();renderCart();updateBadge(false);})();
+(function init(){loadAll();applyTheme();applyLang();showView('store');renderGrid();renderCart();updateBadge(false);renderCategorySizes('T-Shirts');})();
 </script>
 </body>
 </html>
