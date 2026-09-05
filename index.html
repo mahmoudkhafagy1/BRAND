@@ -67,6 +67,17 @@ html:not(.dark) table th{background:#e2e8f0!important;color:#475569!important}
 /* Atbl hover */
 .atbl tr:hover td{background:rgba(0,212,255,.04)}
 .disc-chip{background:rgba(255,65,108,.15);color:#ff416c;border:1px solid rgba(255,65,108,.3);font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:99px;display:inline-flex;align-items:center;line-height:1}
+.out-badge{position:absolute;top:10px;right:10px;background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:99px;z-index:5;box-shadow:0 2px 8px rgba(239,68,68,.5);display:inline-flex;align-items:center;gap:3px;letter-spacing:.5px}
+[dir=rtl] .out-badge{right:auto;left:10px}
+.size-pill{padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.15);font-size:.68rem;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;user-select:none;color:#94a3b8;background:rgba(255,255,255,.04);line-height:1.2}
+.size-pill:hover:not(.disabled){border-color:rgba(0,212,255,.5);color:#fff;background:rgba(0,212,255,.1)}
+.size-pill.selected{background:linear-gradient(135deg,#00d4ff,#0080ff);border-color:transparent;color:#fff;box-shadow:0 2px 10px rgba(0,212,255,.4)}
+.size-pill.disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+html:not(.dark) .size-pill{border-color:rgba(0,0,0,.15);color:#475569;background:rgba(0,0,0,.04)}
+html:not(.dark) .size-pill:hover:not(.disabled){border-color:#0080ff;color:#0f172a;background:rgba(0,128,255,.1)}
+html:not(.dark) .size-pill.selected{color:#fff}
+.stock-badge-in{background:rgba(16,185,129,.15);color:#10b981;border:1px solid rgba(16,185,129,.3);font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:99px;display:inline-flex;align-items:center;gap:3px}
+.stock-badge-out{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3);font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:99px;display:inline-flex;align-items:center;gap:3px}
 .lon{background:#00d4ff;color:#fff}
 .loff{color:#94a3b8}
 [dir=rtl] #cartDrawer{left:0!important;right:auto!important}
@@ -296,10 +307,11 @@ html:not(.dark) table th{background:#e2e8f0!important;color:#475569!important}
 
   <div class="max-w-6xl mx-auto px-4 sm:px-5 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
     <!-- Stats -->
+    <!-- Stats -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
       <div class="glass rounded-2xl p-4 text-center"><p class="text-2xl font-black neon-text" id="statTotal">0</p><p class="text-xs text-slate-400 mt-1" data-i18n="stat_products">Products</p></div>
       <div class="glass rounded-2xl p-4 text-center"><p class="text-2xl font-black text-red-400" id="statSale">0</p><p class="text-xs text-slate-400 mt-1" data-i18n="stat_sale">On Sale</p></div>
-      <div class="glass rounded-2xl p-4 text-center"><p class="text-2xl font-black text-emerald-400" id="statCart">0</p><p class="text-xs text-slate-400 mt-1" data-i18n="stat_cart">In Cart</p></div>
+      <div class="glass rounded-2xl p-4 text-center"><p class="text-2xl font-black text-amber-400" id="statOutOfStock">0</p><p class="text-xs text-slate-400 mt-1" data-i18n="stat_out_of_stock">Out of Stock</p></div>
       <div class="glass rounded-2xl p-4 text-center"><p class="text-xl font-black text-violet-400" id="statValue">0 ج.م</p><p class="text-xs text-slate-400 mt-1" data-i18n="stat_value">Cart Value</p></div>
     </div>
 
@@ -336,6 +348,49 @@ html:not(.dark) table th{background:#e2e8f0!important;color:#475569!important}
               <option value="Pants">Pants</option>
               <option value="Shoes">Shoes</option>
             </select>
+          </div>
+        </div>
+        <!-- Available Sizes Section -->
+        <div class="space-y-2 rounded-xl border border-white/10 bg-slate-900/40 p-4">
+          <div class="flex items-center justify-between">
+            <label class="block text-sm font-bold text-slate-200 flex items-center gap-2">
+              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+              <span data-i18n="f_sizes_section">Available Sizes</span>
+            </label>
+            <span class="text-xs text-slate-400" data-i18n="f_sizes_hint">Separated by commas</span>
+          </div>
+          <input id="fSizes" type="text" placeholder="S, M, L, XL, XXL"
+            class="w-full h-11 bg-slate-800/80 border border-white/10 rounded-xl px-4 text-sm focus:outline-none focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/25 transition-all placeholder-slate-500"/>
+          <!-- Quick Presets -->
+          <div class="flex flex-wrap items-center gap-1.5 pt-1">
+            <span class="text-xs text-slate-400 font-semibold" data-i18n="f_size_presets">Presets:</span>
+            <button type="button" class="preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors" data-preset="S, M, L, XL, XXL">Apparel (S-XXL)</button>
+            <button type="button" class="preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors" data-preset="30, 32, 34, 36, 38">Pants (30-38)</button>
+            <button type="button" class="preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors" data-preset="40, 41, 42, 43, 44, 45">Shoes (40-45)</button>
+            <button type="button" class="preset-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:border-cyan-400/40 hover:text-cyan-300 transition-colors" data-preset="Free Size">Free Size</button>
+          </div>
+        </div>
+        <!-- Stock & Availability Section -->
+        <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+              <label class="text-sm font-bold text-emerald-400" data-i18n="f_stock_section">Stock &amp; Availability</label>
+            </div>
+            <div class="flex items-center gap-2">
+              <span id="stockStatusText" class="text-xs font-semibold text-emerald-400" data-i18n="in_stock">In Stock</span>
+              <label class="tog"><input type="checkbox" id="fInStock" checked/><span class="tslider"></span></label>
+            </div>
+          </div>
+          <div id="stockQtyRow" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-400" data-i18n="f_stock_qty">Stock Quantity in Warehouse</label>
+              <input id="fStockQty" type="number" min="0" placeholder="10" value="10"
+                class="w-full h-10 bg-slate-900/60 border border-emerald-500/30 rounded-xl px-4 text-sm focus:outline-none focus:border-emerald-400/60 transition-all placeholder-slate-600"/>
+            </div>
+            <div class="flex items-center pt-1 sm:pt-4">
+              <p class="text-[11px] text-slate-400 leading-tight" data-i18n="stock_note">If stock reaches 0 or is toggled off, an "Out of Stock" button will replace the Add to Cart button on the storefront.</p>
+            </div>
           </div>
         </div>
         <!-- Discount Box -->
@@ -404,13 +459,15 @@ html:not(.dark) table th{background:#e2e8f0!important;color:#475569!important}
         <span id="prodCount" class="text-sm text-slate-400"></span>
       </div>
       <div class="overflow-x-auto">
-        <table class="w-full text-sm atbl" style="min-width:560px">
+        <table class="w-full text-sm atbl" style="min-width:680px">
           <thead>
             <tr class="bg-slate-800/60 text-slate-400 text-xs uppercase tracking-wider">
               <th class="px-4 py-3 text-left" data-i18n="tbl_img">Img</th>
               <th class="px-4 py-3 text-left" data-i18n="tbl_name">Title</th>
               <th class="px-4 py-3 text-left" data-i18n="tbl_cat">Cat.</th>
               <th class="px-4 py-3 text-left" data-i18n="tbl_price">Price</th>
+              <th class="px-4 py-3 text-left" data-i18n="tbl_sizes">Sizes</th>
+              <th class="px-4 py-3 text-left" data-i18n="tbl_stock">Stock</th>
               <th class="px-4 py-3 text-left" data-i18n="tbl_disc">Offer</th>
               <th class="px-4 py-3 text-center" data-i18n="tbl_act">Actions</th>
             </tr>
@@ -431,9 +488,9 @@ const SK={products:'brand_products',cart:'brand_cart',theme:'brand_theme',lang:'
 
 /* DEFAULTS */
 const DEFAULTS=[
-  {id:'p1',title:'Urban Slim Tee',category:'T-Shirts',price:450,discount:0,offerLabel:'',image:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80'},
-  {id:'p2',title:'Cargo Street Pants',category:'Pants',price:1200,discount:20,offerLabel:'Summer Sale',image:'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=600&q=80'},
-  {id:'p3',title:'Air Runner Kicks',category:'Shoes',price:2800,discount:0,offerLabel:'',image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80'}
+  {id:'p1',title:'Urban Slim Tee',category:'T-Shirts',price:450,discount:0,offerLabel:'',image:'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80',sizes:['S','M','L','XL','XXL'],inStock:true,stock:15},
+  {id:'p2',title:'Cargo Street Pants',category:'Pants',price:1200,discount:20,offerLabel:'Summer Sale',image:'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=600&q=80',sizes:['30','32','34','36','38'],inStock:true,stock:8},
+  {id:'p3',title:'Air Runner Kicks',category:'Shoes',price:2800,discount:0,offerLabel:'',image:'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80',sizes:['40','41','42','43','44','45'],inStock:false,stock:0}
 ];
 
 /* TRANSLATIONS */
@@ -446,15 +503,19 @@ const LANG={
     cart_title:'Cart',cart_total:'Total',cart_savings:'You save',cart_checkout:'Order via WhatsApp',
     cart_clear:'Clear Cart',cart_empty:'Your cart is empty.',
     add:'+ Add to Cart',added:'Added!',no_results:'No products found.',
+    out_of_stock:'Out of Stock',in_stock:'In Stock',select_size:'Size:',size:'Size',
     admin_sub:'Admin Portal',admin_err:'Incorrect password.',admin_login:'Login',
     admin_back:'Back to Store',admin_logout:'Logout',admin_add:'Add Product',admin_edit:'Edit Product',
     f_save:'Save Product',f_cancel:'Cancel',f_title:'Product Title',f_price:'Price (EGP)',
     f_cat:'Category',f_url:'Image URL',f_file:'Or Upload Image',f_choose:'Choose file...',
+    f_sizes_section:'Available Sizes',f_sizes_hint:'Separated by commas',f_size_presets:'Presets:',
+    f_stock_section:'Stock & Availability',f_stock_qty:'Stock Quantity in Warehouse',
+    stock_note:'If stock reaches 0 or is toggled off, an "Out of Stock" button will replace the Add to Cart button on the storefront.',
     f_offer_section:'Offer & Discount',f_discount:'Discount %',f_offer_label:'Offer Label',
     tbl_head:'All Products',tbl_img:'Img',tbl_name:'Title',tbl_cat:'Cat.',
-    tbl_price:'Price',tbl_disc:'Offer',tbl_act:'Actions',
-    stat_products:'Products',stat_sale:'On Sale',stat_cart:'In Cart',stat_value:'Cart Value',
-    wa_h:'*New Order - BRAND Store*',wa_sep:'='.repeat(30),wa_img:'Image',
+    tbl_price:'Price',tbl_sizes:'Sizes',tbl_stock:'Stock',tbl_disc:'Offer',tbl_act:'Actions',
+    stat_products:'Products',stat_sale:'On Sale',stat_out_of_stock:'Out of Stock',stat_value:'Cart Value',
+    wa_h:'*New Order - BRAND Store*',wa_sep:'='.repeat(30),wa_img:'Image',wa_size:'Size',
     wa_orig:'Original',wa_disc:'Discount',wa_price:'Price',wa_qty:'Qty',wa_sub:'Subtotal',
     wa_total:'*Total*',wa_savings:'*You saved*'},
   ar:{nav_home:'الرئيسية',toggle_theme:'الوضع الداكن',toggle_lang:'اللغة',
@@ -465,15 +526,19 @@ const LANG={
     cart_title:'السلة',cart_total:'الإجمالي',cart_savings:'وفرت',cart_checkout:'اطلب عبر واتساب',
     cart_clear:'إفراغ السلة',cart_empty:'سلتك فارغة.',
     add:'+ أضف للسلة',added:'أضيف!',no_results:'لا توجد منتجات.',
+    out_of_stock:'نفدت الكمية',in_stock:'متوفر بالمخزن',select_size:'المقاس:',size:'المقاس',
     admin_sub:'بوابة الإدارة',admin_err:'كلمة المرور خاطئة.',admin_login:'دخول',
     admin_back:'العودة للمتجر',admin_logout:'خروج',admin_add:'إضافة منتج',admin_edit:'تعديل منتج',
     f_save:'حفظ',f_cancel:'إلغاء',f_title:'اسم المنتج',f_price:'السعر (ج.م)',
     f_cat:'الفئة',f_url:'رابط الصورة',f_file:'أو رفع صورة',f_choose:'اختر ملفاً...',
+    f_sizes_section:'المقاسات المتوفرة',f_sizes_hint:'مفصولة بفواصل',f_size_presets:'مقاسات سريعة:',
+    f_stock_section:'حالة المخزن والكمية',f_stock_qty:'الكمية المتوفرة بالمخزن',
+    stock_note:'إذا كانت الكمية 0 أو غير متوفر بالمخزن، سيظهر زر "نفدت الكمية" في المتجر.',
     f_offer_section:'عروض وخصومات',f_discount:'نسبة الخصم %',f_offer_label:'اسم العرض',
     tbl_head:'المنتجات',tbl_img:'صورة',tbl_name:'الاسم',tbl_cat:'الفئة',
-    tbl_price:'السعر',tbl_disc:'عرض',tbl_act:'إجراءات',
-    stat_products:'المنتجات',stat_sale:'معروضة',stat_cart:'في السلة',stat_value:'قيمة السلة',
-    wa_h:'*طلب جديد - متجر BRAND*',wa_sep:'='.repeat(30),wa_img:'الصورة',
+    tbl_price:'السعر',tbl_sizes:'المقاسات',tbl_stock:'المخزن',tbl_disc:'عرض',tbl_act:'إجراءات',
+    stat_products:'المنتجات',stat_sale:'معروضة',stat_out_of_stock:'نفدت الكمية',stat_value:'قيمة السلة',
+    wa_h:'*طلب جديد - متجر BRAND*',wa_sep:'='.repeat(30),wa_img:'الصورة',wa_size:'المقاس',
     wa_orig:'الأصلي',wa_disc:'الخصم',wa_price:'السعر',wa_qty:'الكمية',wa_sub:'المجموع',
     wa_total:'*الإجمالي*',wa_savings:'*وفرت*'}
 };
@@ -482,13 +547,20 @@ const LANG={
 function fmt(n){return Number(n).toLocaleString('ar-EG')+' '+CURR;}
 
 /* STATE */
-let products=[],cart=[],theme='dark',lang='en',activeCat='All',searchQ='',editId=null;
+let products=[],cart=[],theme='dark',lang='en',activeCat='All',searchQ='',editId=null,selectedSizes={};
 
 /* STORAGE */
 function loadAll(){
   const sp=localStorage.getItem(SK.products);
   products=sp?JSON.parse(sp):JSON.parse(JSON.stringify(DEFAULTS));
-  products=products.map(p=>({discount:0,offerLabel:'',...p}));
+  products=products.map(p=>({
+    discount:0,
+    offerLabel:'',
+    sizes:Array.isArray(p.sizes)?p.sizes:(p.category==='Shoes'?['40','41','42','43','44','45']:(p.category==='Pants'?['30','32','34','36','38']:['S','M','L','XL','XXL'])),
+    inStock:p.inStock!==undefined?Boolean(p.inStock):(p.stock===undefined||p.stock>0),
+    stock:p.stock!==undefined?parseInt(p.stock):(p.inStock===false?0:10),
+    ...p
+  }));
   if(!sp)localStorage.setItem(SK.products,JSON.stringify(products));
   const sc=localStorage.getItem(SK.cart);
   cart=sc?JSON.parse(sc):[];
@@ -531,8 +603,11 @@ function applyLang(){
   const sd=document.getElementById('sideDrawer'),cd=document.getElementById('cartDrawer');
   if(dir==='rtl'){sd.style.left='auto';sd.style.right='0';cd.style.right='auto';cd.style.left='0';}
   else{sd.style.right='auto';sd.style.left='0';cd.style.left='auto';cd.style.right='0';}
+  const stText=document.getElementById('stockStatusText');
+  const stChk=document.getElementById('fInStock');
+  if(stText&&stChk)stText.textContent=stChk.checked?T.in_stock:T.out_of_stock;
 }
-function setLang(l){lang=l;saveL();applyLang();renderGrid();renderCart();}
+function setLang(l){lang=l;saveL();applyLang();renderGrid();renderCart();renderAdminTable();}
 
 /* VIEW SWITCHER */
 function showView(v){
@@ -573,55 +648,102 @@ function renderGrid(){
   if(!list.length){none.classList.remove('hidden');return;}
   none.classList.add('hidden');
   list.forEach(p=>{
-    const inCart=cart.some(c=>c.id===p.id),sp=salePrice(p),hasSale=sp!==null;
+    const isOut=!p.inStock||p.stock<=0;
+    const hasSizes=p.sizes&&p.sizes.length>0;
+    const selSize=selectedSizes[p.id]||(hasSizes?p.sizes[0]:'');
+    const cartKey=p.id+(selSize?'_'+selSize:'');
+    const inCart=cart.some(c=>(c.cartKey===cartKey)||(c.id===p.id&&(!selSize||c.size===selSize)));
+    const sp=salePrice(p),hasSale=sp!==null;
+    
     /* price */
     const priceHtml=hasSale
       ?`<div class="flex flex-col gap-0.5"><span class="line-through text-slate-500 text-[10px]">${fmt(p.price)}</span><span class="font-black text-sm sm:text-base" style="color:#ff416c">${fmt(sp)}</span></div>`
       :`<span class="font-black text-sm sm:text-base neon-text">${fmt(p.price)}</span>`;
+    
     /* sale badge */
     const saleBadge=hasSale?`<div class="sale-badge">${esc(p.offerLabel||'-'+p.discount+'%')}</div>`:'';
+    
+    /* out of stock badge */
+    const outBadge=isOut?`<div class="out-badge"><svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>${T.out_of_stock}</span></div>`:'';
+    
     /* disc chip */
     const discChip=hasSale?`<span class="disc-chip">-${p.discount}%</span>`:'';
-    /* add btn */
-    const addBtnClass=inCart
-      ?'w-full h-9 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all border border-emerald-500/40 text-emerald-400 bg-emerald-500/10 cursor-default'
-      :'addBtn w-full h-9 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all text-white hover:-translate-y-0.5 active:translate-y-0';
-    const addBtnStyle=inCart?'':' style="background:linear-gradient(135deg,#00d4ff,#0080ff 60%,#7b2fff);box-shadow:0 3px 12px rgba(0,212,255,.3)"';
-    const addBtnDataId=inCart?'':` data-id="${esc(p.id)}"`;
-    const addBtnContent=inCart
-      ?`<svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${T.added}`
-      :T.add;
+    
+    /* sizes HTML */
+    let sizesHtml='';
+    if(hasSizes){
+      sizesHtml=`<div class="flex flex-wrap items-center gap-1 my-1"><span class="text-[10px] text-slate-400 font-semibold me-0.5">${T.select_size}</span>`+
+        p.sizes.map(sz=>{
+          const isSelected=sz===selSize;
+          const cls=isOut?'size-pill disabled':(isSelected?'size-pill selected':'size-pill');
+          return `<button type="button" class="${cls}" data-pid="${esc(p.id)}" data-sz="${esc(sz)}"${isOut?' disabled':''}>${esc(sz)}</button>`;
+        }).join('')+`</div>`;
+    }
+    
+    /* button */
+    let btnHtml='';
+    if(isOut){
+      btnHtml=`<button disabled class="w-full h-9 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 border border-red-500/35 bg-red-500/10 text-red-400 cursor-not-allowed opacity-90 select-none shadow-[0_0_12px_rgba(239,68,68,0.12)]"><svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>${T.out_of_stock}</span></button>`;
+    } else {
+      const addBtnClass=inCart
+        ?'w-full h-9 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all border border-emerald-500/40 text-emerald-400 bg-emerald-500/10 cursor-default'
+        :'addBtn w-full h-9 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all text-white hover:-translate-y-0.5 active:translate-y-0';
+      const addBtnStyle=inCart?'':' style="background:linear-gradient(135deg,#00d4ff,#0080ff 60%,#7b2fff);box-shadow:0 3px 12px rgba(0,212,255,.3)"';
+      const addBtnData=inCart?'':` data-id="${esc(p.id)}" data-size="${esc(selSize)}"`;
+      const addBtnContent=inCart
+        ?`<svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${T.added}`
+        :T.add;
+      btnHtml=`<button class="${addBtnClass}"${addBtnStyle}${addBtnData}>${addBtnContent}</button>`;
+    }
+    
     const card=document.createElement('article');
-    card.className='pcard glass crd bg-slate-900 rounded-xl sm:rounded-2xl overflow-hidden flex flex-col fi';
+    card.className='pcard glass crd bg-slate-900 rounded-xl sm:rounded-2xl overflow-hidden flex flex-col fi '+(isOut?'opacity-90':'');
     card.innerHTML=
-      `<div class="cimg bg-slate-800/60" style="height:clamp(140px,30vw,220px)">${saleBadge}<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" onerror="this.src='https://placehold.co/500x400/0f172a/00d4ff?text=BRAND'"/></div>`+
-      `<div class="p-3 sm:p-4 flex flex-col gap-2.5 flex-1">`+
+      `<div class="cimg bg-slate-800/60 ${isOut?'grayscale-[25%]':''}" style="height:clamp(140px,30vw,220px)">${saleBadge}${outBadge}<img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" onerror="this.src='https://placehold.co/500x400/0f172a/00d4ff?text=BRAND'"/></div>`+
+      `<div class="p-3 sm:p-4 flex flex-col gap-2 flex-1">`+
         `<div class="flex items-start justify-between gap-2"><h3 class="font-semibold text-xs sm:text-sm leading-snug flex-1 min-w-0 line-clamp-2">${esc(p.title)}</h3><span class="flex-shrink-0 px-1.5 py-0.5 rounded-full border text-[8px] sm:text-[10px] font-bold whitespace-nowrap ${badgeCls(p.category)}">${esc(p.category)}</span></div>`+
         `<div class="flex items-center gap-2">${priceHtml}${discChip}</div>`+
-        `<button class="${addBtnClass}"${addBtnStyle}${addBtnDataId}>${addBtnContent}</button>`+
+        sizesHtml+
+        `<div class="mt-auto pt-1">${btnHtml}</div>`+
       `</div>`;
     grid.appendChild(card);
   });
-  grid.querySelectorAll('.addBtn').forEach(b=>b.addEventListener('click',()=>addToCart(b.dataset.id)));
+  
+  // Size selection click
+  grid.querySelectorAll('.size-pill:not(.disabled)').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const pid=btn.dataset.pid,sz=btn.dataset.sz;
+      selectedSizes[pid]=sz;
+      renderGrid();
+    });
+  });
+  
+  // Add to cart click
+  grid.querySelectorAll('.addBtn').forEach(b=>b.addEventListener('click',()=>addToCart(b.dataset.id,b.dataset.size)));
 }
 
 /* CART */
 const cartSum=()=>cart.reduce((s,i)=>s+i.finalPrice*i.qty,0);
 const cartSavings=()=>cart.reduce((s,i)=>s+(i.originalPrice-i.finalPrice)*i.qty,0);
 
-function addToCart(id){
-  const p=products.find(x=>x.id===id);if(!p)return;
-  const ex=cart.find(c=>c.id===id);
+function addToCart(id,size){
+  const p=products.find(x=>x.id===id);
+  if(!p||!p.inStock||p.stock<=0)return;
+  const itemSize=size||(p.sizes&&p.sizes.length?p.sizes[0]:'');
+  const cartKey=p.id+(itemSize?'_'+itemSize:'');
+  const ex=cart.find(c=>c.cartKey===cartKey||(c.id===p.id&&c.size===itemSize));
   if(ex)ex.qty++;
-  else cart.push({id:p.id,title:p.title,image:p.image,originalPrice:p.price,finalPrice:effectivePrice(p),discount:p.discount||0,qty:1});
+  else cart.push({id:p.id,cartKey,title:p.title,size:itemSize,image:p.image,originalPrice:p.price,finalPrice:effectivePrice(p),discount:p.discount||0,qty:1});
   saveC();renderGrid();renderCart();updateBadge(true);
 }
-function changeQty(id,d){
-  const item=cart.find(c=>c.id===id);if(!item)return;
+
+function changeQty(cartKey,d){
+  const item=cart.find(c=>c.cartKey===cartKey||c.id===cartKey);if(!item)return;
   item.qty+=d;
-  if(item.qty<=0)cart=cart.filter(c=>c.id!==id);
+  if(item.qty<=0)cart=cart.filter(c=>c!==item);
   saveC();renderGrid();renderCart();updateBadge(false);
 }
+
 function clearCart(){cart=[];saveC();renderGrid();renderCart();updateBadge(false);}
 
 function updateBadge(pulse){
@@ -642,21 +764,23 @@ function renderCart(){
     const ph=hd
       ?`<div class="flex items-center gap-1.5"><span class="text-[10px] line-through text-slate-500">${fmt(item.originalPrice)}</span><span class="text-xs font-bold" style="color:#ff416c">${fmt(item.finalPrice)}</span><span class="disc-chip">-${item.discount}%</span></div>`
       :`<span class="text-xs font-bold text-cyan-400">${fmt(item.finalPrice)}</span>`;
+    const sizeChip=item.size?`<span class="inline-flex items-center px-2 py-0.5 rounded-md bg-cyan-400/10 text-cyan-300 border border-cyan-400/25 text-[10px] font-bold">${T.size}: ${esc(item.size)}</span>`:'';
+    const cKey=item.cartKey||item.id;
     return `<div class="flex gap-3 glass rounded-xl p-3 fi">
       <img src="${esc(item.image)}" alt="${esc(item.title)}" class="w-16 h-16 object-contain rounded-xl flex-shrink-0 bg-slate-850 p-1 border border-white/5" onerror="this.src='https://placehold.co/80x80/0f172a/00d4ff?text=B'"/>
       <div class="flex flex-col flex-1 min-w-0 gap-1.5">
         <p class="text-xs sm:text-sm font-semibold truncate leading-snug">${esc(item.title)}</p>
-        ${ph}
+        <div class="flex items-center gap-2 flex-wrap">${ph}${sizeChip}</div>
         <div class="flex items-center gap-2 mt-auto">
-          <button class="qbtn" data-a="dec" data-id="${item.id}">&#8722;</button>
+          <button class="qbtn" data-a="dec" data-key="${cKey}">&#8722;</button>
           <span class="text-sm font-bold w-6 text-center tabular-nums">${item.qty}</span>
-          <button class="qbtn" data-a="inc" data-id="${item.id}">+</button>
+          <button class="qbtn" data-a="inc" data-key="${cKey}">+</button>
           <span class="ms-auto text-xs font-semibold text-slate-400 tabular-nums">${fmt(item.finalPrice*item.qty)}</span>
         </div>
       </div>
     </div>`;
   }).join('');
-  wrap.querySelectorAll('.qbtn').forEach(b=>b.addEventListener('click',()=>changeQty(b.dataset.id,b.dataset.a==='inc'?1:-1)));
+  wrap.querySelectorAll('.qbtn').forEach(b=>b.addEventListener('click',()=>changeQty(b.dataset.key,b.dataset.a==='inc'?1:-1)));
   totEl.textContent=fmt(cartSum());
   const sv=cartSavings();
   if(sv>0){savRow.style.display='flex';savAmt.textContent=fmt(sv);}
@@ -670,7 +794,8 @@ function whatsappCheckout(){
   let msg=T.wa_h+'\n'+T.wa_sep+'\n\n';
   cart.forEach((item,i)=>{
     const imgLine=item.image&&!item.image.startsWith('data:')?T.wa_img+': '+item.image+'\n':'';
-    msg+=(i+1)+'. *'+item.title+'*\n'+imgLine;
+    const sizeLine=item.size?T.wa_size+': '+item.size+'\n':'';
+    msg+=(i+1)+'. *'+item.title+'*\n'+sizeLine+imgLine;
     if(item.discount>0)msg+=T.wa_orig+': '+fmt(item.originalPrice)+'\n'+T.wa_disc+': -'+item.discount+'%\n'+T.wa_price+': '+fmt(item.finalPrice)+'\n';
     else msg+=T.wa_price+': '+fmt(item.finalPrice)+'\n';
     msg+=T.wa_qty+': '+item.qty+'  '+T.wa_sub+': '+fmt(item.finalPrice*item.qty)+'\n\n';
@@ -690,7 +815,7 @@ const logoutSS=()=>sessionStorage.removeItem('brand_admin');
 function updateStats(){
   document.getElementById('statTotal').textContent=products.length;
   document.getElementById('statSale').textContent=products.filter(p=>p.discount>0).length;
-  document.getElementById('statCart').textContent=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('statOutOfStock').textContent=products.filter(p=>!p.inStock||p.stock<=0).length;
   document.getElementById('statValue').textContent=fmt(cartSum());
 }
 
@@ -701,7 +826,7 @@ function doLogin(){
 }
 
 function renderAdminTable(){
-  const tbody=document.getElementById('tblBody'),cnt=document.getElementById('prodCount');
+  const tbody=document.getElementById('tblBody'),cnt=document.getElementById('prodCount'),T=LANG[lang];
   cnt.textContent=products.length+' product'+(products.length!==1?'s':'');
   tbody.innerHTML=products.map(p=>{
     const sp=salePrice(p);
@@ -711,11 +836,20 @@ function renderAdminTable(){
     const discHtml=p.discount>0
       ?`<span class="disc-chip">-${p.discount}%</span><span class="text-[10px] text-slate-500 ms-1">${esc(p.offerLabel||'')}</span>`
       :`<span class="text-slate-600 text-xs">&#8212;</span>`;
+    const sizesHtml=(p.sizes&&p.sizes.length)
+      ?`<div class="flex flex-wrap gap-1 max-w-[140px]">${p.sizes.map(s=>`<span class="inline-block px-1.5 py-0.5 rounded bg-slate-800 text-[10px] font-semibold border border-white/10 text-slate-300">${esc(s)}</span>`).join('')}</div>`
+      :`<span class="text-slate-600 text-xs">&#8212;</span>`;
+    const isOut=!p.inStock||p.stock<=0;
+    const stockHtml=isOut
+      ?`<span class="stock-badge-out"><svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>${T.out_of_stock}</span>`
+      :`<span class="stock-badge-in"><svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>${T.in_stock} (${p.stock})</span>`;
     return `<tr class="transition-colors">
       <td class="px-4 py-3"><img src="${esc(p.image)}" alt="${esc(p.title)}" class="w-11 h-11 object-contain rounded-xl bg-slate-800 p-0.5 border border-white/5" onerror="this.src='https://placehold.co/60x60/0f172a/00d4ff?text=B'"/></td>
-      <td class="px-4 py-3 font-medium max-w-[150px]"><p class="truncate text-xs sm:text-sm">${esc(p.title)}</p></td>
+      <td class="px-4 py-3 font-medium max-w-[130px]"><p class="truncate text-xs sm:text-sm">${esc(p.title)}</p></td>
       <td class="px-4 py-3"><span class="px-2 py-0.5 rounded-full border text-[9px] font-bold ${badgeCls(p.category)}">${esc(p.category)}</span></td>
       <td class="px-4 py-3">${priceHtml}</td>
+      <td class="px-4 py-3">${sizesHtml}</td>
+      <td class="px-4 py-3">${stockHtml}</td>
       <td class="px-4 py-3">${discHtml}</td>
       <td class="px-4 py-3">
         <div class="flex items-center justify-center gap-1.5">
@@ -738,6 +872,10 @@ function resetForm(){
   document.getElementById('fDiscountOn').checked=false;
   document.getElementById('discountFields').style.display='none';
   document.getElementById('fDiscount').value='';document.getElementById('fOfferLabel').value='';
+  document.getElementById('fSizes').value='';
+  document.getElementById('fInStock').checked=true;
+  document.getElementById('fStockQty').value='10';
+  document.getElementById('stockStatusText').textContent=LANG[lang].in_stock;
 }
 
 function startEdit(id){
@@ -748,6 +886,11 @@ function startEdit(id){
   document.getElementById('fUrl').value=p.image.startsWith('data:')?'':p.image;
   document.getElementById('prevImg').src=p.image;document.getElementById('prevWrap').classList.remove('hidden');
   document.getElementById('fmHead').textContent=LANG[lang].admin_edit;
+  document.getElementById('fSizes').value=(p.sizes&&p.sizes.length)?p.sizes.join(', '):'';
+  const isAvailable=p.inStock!==false&&(p.stock===undefined||p.stock>0);
+  document.getElementById('fInStock').checked=isAvailable;
+  document.getElementById('fStockQty').value=p.stock!==undefined?p.stock:(isAvailable?10:0);
+  document.getElementById('stockStatusText').textContent=isAvailable?LANG[lang].in_stock:LANG[lang].out_of_stock;
   if(p.discount>0){
     document.getElementById('fDiscountOn').checked=true;
     document.getElementById('discountFields').style.display='grid';
@@ -777,15 +920,26 @@ document.getElementById('prodForm').addEventListener('submit',function(e){
   const discOn=document.getElementById('fDiscountOn').checked;
   const discount=discOn?Math.min(99,Math.max(1,parseInt(document.getElementById('fDiscount').value)||0)):0;
   const offerLabel=discOn?document.getElementById('fOfferLabel').value.trim():'';
+  const rawSizes=document.getElementById('fSizes').value;
+  const sizes=rawSizes.split(',').map(s=>s.trim()).filter(Boolean);
+  const inStockCheck=document.getElementById('fInStock').checked;
+  const stockVal=inStockCheck?Math.max(0,parseInt(document.getElementById('fStockQty').value)||0):0;
+  const inStock=inStockCheck&&stockVal>0;
+  
   if(editId){
     const idx=products.findIndex(p=>p.id===editId);
     if(idx>-1){
-      products[idx]={id:editId,title,price,category:cat,image:img,discount,offerLabel};
-      const ci=cart.findIndex(c=>c.id===editId);
-      if(ci>-1){const fp=discount>0?Math.round(price*(1-discount/100)):price;Object.assign(cart[ci],{title,originalPrice:price,finalPrice:fp,discount,image:img});saveC();}
+      products[idx]={id:editId,title,price,category:cat,image:img,discount,offerLabel,sizes,inStock,stock:stockVal};
+      cart.forEach(ci=>{
+        if(ci.id===editId){
+          const fp=discount>0?Math.round(price*(1-discount/100)):price;
+          Object.assign(ci,{title,originalPrice:price,finalPrice:fp,discount,image:img});
+        }
+      });
+      saveC();
     }
   } else {
-    products.push({id:'p'+Date.now(),title,price,category:cat,image:img,discount,offerLabel});
+    products.push({id:'p'+Date.now(),title,price,category:cat,image:img,discount,offerLabel,sizes,inStock,stock:stockVal});
   }
   saveP();resetForm();renderAdminTable();renderGrid();renderCart();
 });
@@ -794,6 +948,24 @@ document.getElementById('prodForm').addEventListener('submit',function(e){
 document.getElementById('fDiscountOn').addEventListener('change',function(){
   document.getElementById('discountFields').style.display=this.checked?'grid':'none';
   if(!this.checked){document.getElementById('fDiscount').value='';document.getElementById('fOfferLabel').value='';}
+});
+
+/* STOCK TOGGLE */
+document.getElementById('fInStock').addEventListener('change',function(){
+  const T=LANG[lang];
+  document.getElementById('stockStatusText').textContent=this.checked?T.in_stock:T.out_of_stock;
+  if(!this.checked){
+    document.getElementById('fStockQty').value='0';
+  } else if(parseInt(document.getElementById('fStockQty').value)<=0){
+    document.getElementById('fStockQty').value='10';
+  }
+});
+
+/* SIZE PRESET BUTTONS */
+document.querySelectorAll('.preset-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.getElementById('fSizes').value=b.dataset.preset;
+  });
 });
 
 /* FILE UPLOAD */
