@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>BRAND | براند - أزياء رجالية فاخرة 2026</title>
-  <meta name="description" content="BRAND - متجر أزياء رجالية فاخرة بأحدث الموديلات والألوان. شحن سريع وطلب مباشر عبر واتساب." />
+  <meta name="description" content="BRAND - متجر أزياء رجالية فاخرة بأحدث الموديلات والألوان. شحن وتوصيل لجميع المحافظات وطلب مباشر عبر واتساب." />
   <link rel="icon" type="image/png" href="brand_logo.png" />
   
   <!-- Google Fonts -->
@@ -48,25 +48,25 @@
 
     /* Glassmorphism */
     .glass-card {
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .dark .glass-nav {
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(10, 15, 30, 0.9);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     html:not(.dark) .glass-nav {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
     html:not(.dark) .glass-card {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       border: 1px solid rgba(0, 0, 0, 0.06);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
@@ -90,23 +90,64 @@
       transform: translateY(0);
     }
 
+    /* Social Icons Glow */
+    .social-btn {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .social-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+    }
+    .social-tiktok:hover {
+      background: #000000;
+      box-shadow: 0 0 20px rgba(255, 0, 79, 0.5), 0 0 20px rgba(0, 242, 234, 0.5);
+      border-color: #00f2ea;
+    }
+    .social-fb:hover {
+      background: #1877f2;
+      box-shadow: 0 0 20px rgba(24, 119, 242, 0.6);
+      border-color: #1877f2;
+    }
+    .social-wa:hover {
+      background: #25d366;
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.6);
+      border-color: #25d366;
+    }
+
     /* Product Card */
     .product-card {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .product-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 16px 40px rgba(0, 212, 255, 0.15);
+      box-shadow: 0 20px 45px rgba(0, 212, 255, 0.16);
     }
 
-    /* Slideshow transitions */
+    /* Large adaptive image display */
+    .card-img-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5; /* Big, modern fashion showcase aspect ratio */
+      min-height: 340px;
+      overflow: hidden;
+      background: #0b1120;
+    }
+    @media (min-width: 640px) {
+      .card-img-wrapper {
+        min-height: 380px;
+      }
+    }
+
     .card-img-slide {
-      transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+      transition: opacity 0.45s ease-in-out, transform 0.45s ease-in-out;
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center top;
+    }
+    .product-card:hover .card-img-slide {
+      transform: scale(1.03);
     }
 
     /* Active Size Pills */
@@ -131,62 +172,102 @@
       overflow: hidden !important;
       touch-action: none;
     }
+
+    /* Pulse Glow Animation for Center Logo */
+    @keyframes logoPulse {
+      0%, 100% { filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.4)); }
+      50% { filter: drop-shadow(0 0 28px rgba(0, 212, 255, 0.85)); }
+    }
+    .logo-glow {
+      animation: logoPulse 3s ease-in-out infinite;
+    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300 antialiased selection:bg-cyan-500 selection:text-black">
 
-  <!-- OVERLAY (For Drawers & Modals) -->
-  <div id="mainOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 hidden transition-opacity duration-300"></div>
+  <!-- OVERLAY -->
+  <div id="mainOverlay" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-40 hidden transition-opacity duration-300"></div>
 
   <!-- ========================================================================= -->
-  <!-- NAVIGATION BAR -->
+  <!-- TOP SOCIALS BAR -->
+  <!-- ========================================================================= -->
+  <div class="bg-slate-900/90 border-b border-white/5 py-1.5 px-4 text-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <!-- Welcome / Delivery badge -->
+      <div class="flex items-center gap-2 text-slate-400 font-medium">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span data-i18n="top_bar_msg">شحن وتوصيل لجميع أنحاء الجمهورية | اطلب الآن عبر واتساب</span>
+      </div>
+
+      <!-- Quick Social Icons in Topbar -->
+      <div class="flex items-center gap-3">
+        <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="text-slate-400 hover:text-white transition-colors flex items-center gap-1 font-en" title="TikTok">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+          <span class="hidden sm:inline">TikTok</span>
+        </a>
+        <span class="text-white/10">|</span>
+        <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="text-slate-400 hover:text-[#1877f2] transition-colors flex items-center gap-1 font-en" title="Facebook Group">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span class="hidden sm:inline">Facebook</span>
+        </a>
+        <span class="text-white/10">|</span>
+        <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1 font-en" title="WhatsApp">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+          <span class="hidden sm:inline">WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- NAVIGATION BAR (WITH CENTERED PROMINENT LOGO) -->
   <!-- ========================================================================= -->
   <header id="mainHeader" class="sticky top-0 z-30 glass-nav transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
       
-      <!-- Left / Start: Menu Button & Store Brand -->
-      <div class="flex items-center gap-3">
+      <!-- Right / Start: Menu Toggle Button & Search (Desktop) -->
+      <div class="flex items-center gap-3 flex-1">
         <button id="menuToggleBtn" type="button" aria-label="Toggle Menu" class="p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
 
-        <!-- Logo & Brand Name -->
-        <button id="brandLogoBtn" type="button" class="flex items-center gap-2.5 group focus:outline-none" title="اضغط 3 مرات للدخول للوحة الإدارة">
-          <img src="brand_logo.png" alt="BRAND" class="w-10 h-10 object-contain rounded-full ring-2 ring-cyan-500/40 group-hover:ring-cyan-400 group-hover:scale-105 transition-all" onerror="this.src='https://placehold.co/80x80/0f172a/00d4ff?text=BRAND'" />
-          <div class="text-right">
-            <span class="text-xl font-black tracking-wider uppercase neon-gradient-text font-en">BRAND</span>
-            <span class="block text-[10px] text-cyan-400/80 font-medium -mt-1 tracking-widest uppercase">MEN'S 2026</span>
+        <div class="hidden lg:flex w-64">
+          <div class="relative w-full">
+            <input type="text" id="desktopSearchInput" placeholder="بحث عن موديل..." class="w-full h-10 pr-9 pl-3 rounded-xl bg-slate-900/80 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all" />
+            <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: PROMINENT LOGO (Centered & Clear) -->
+      <div class="flex items-center justify-center">
+        <!-- Secret 3-click on Logo for owner login without any public button -->
+        <button id="brandLogoBtn" type="button" class="flex flex-col items-center justify-center group focus:outline-none select-none" title="BRAND Store 2026">
+          <div class="relative flex items-center justify-center">
+            <img src="brand_logo.png" alt="BRAND - Men's Fashion" class="h-12 sm:h-16 w-auto object-contain logo-glow transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/180x60/0f172a/00d4ff?text=BRAND+2026'" />
           </div>
         </button>
       </div>
 
-      <!-- Center: Search Input (Desktop) -->
-      <div class="hidden md:flex flex-1 max-w-md mx-4">
-        <div class="relative w-full">
-          <input type="text" id="desktopSearchInput" placeholder="ابحث عن موديل، لون، فئة..." class="w-full h-11 pr-11 pl-4 rounded-xl bg-slate-900/80 border border-white/10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all" />
-          <svg class="w-5 h-5 text-slate-400 absolute right-3.5 top-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Right / End: Actions (Theme, Lang, Admin, Cart) -->
-      <div class="flex items-center gap-2">
-        <!-- Language Switch -->
-        <button id="langToggleBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-white/10 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-1.5">
+      <!-- Left / End: Lang, Theme & Cart -->
+      <div class="flex items-center justify-end gap-2 flex-1">
+        <!-- Language -->
+        <button id="langToggleBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-white/10 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
           <span id="langLabel">EN</span>
         </button>
 
         <!-- Theme Switch -->
-        <button id="themeToggleBtn" type="button" aria-label="Toggle Theme" class="p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
+        <button id="themeToggleBtn" type="button" aria-label="Toggle Theme" class="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
           <svg id="themeIconSun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
           <svg id="themeIconMoon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
         </button>
 
         <!-- Cart Button -->
-        <button id="cartToggleBtn" type="button" class="relative p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 hover:bg-cyan-500/20 transition-all flex items-center justify-center">
+        <button id="cartToggleBtn" type="button" class="relative p-2.5 rounded-xl bg-cyan-500/15 border border-cyan-400/40 text-cyan-400 hover:bg-cyan-500/25 transition-all flex items-center justify-center">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
           </svg>
@@ -196,10 +277,10 @@
 
     </div>
 
-    <!-- Mobile Search Bar (Below Header on Small Screens) -->
-    <div class="md:hidden px-4 pb-3">
+    <!-- Mobile Search Bar (Below Header) -->
+    <div class="lg:hidden px-4 pb-2.5">
       <div class="relative w-full">
-        <input type="text" id="mobileSearchInput" placeholder="ابحث عن موديل، لون، فئة..." class="w-full h-10 pr-10 pl-4 rounded-xl bg-slate-900/90 border border-white/10 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400" />
+        <input type="text" id="mobileSearchInput" placeholder="بحث عن موديل، لون، فئة..." class="w-full h-10 pr-9 pl-4 rounded-xl bg-slate-900/90 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400" />
         <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
@@ -212,40 +293,45 @@
   <!-- ========================================================================= -->
   <main id="storeView" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
     
-    <!-- Hero Banner -->
-    <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-10 border border-white/10">
-      <div class="absolute -top-24 -left-24 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- Hero Showcase (Centered Logo & Direct Socials) -->
+    <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-12 border border-white/10 text-center space-y-6">
+      <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-32 right-1/4 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
       
-      <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-right">
-        <div class="space-y-4 max-w-xl">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold">
-            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-            <span data-i18n="hero_badge">كولكشن صيف وخريف 2026</span>
-          </div>
-          <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-            <span data-i18n="hero_title_1">ارتقِ بأناقتك مع</span>
-            <span class="neon-gradient-text block font-en">BRAND COLLECTION</span>
-          </h1>
-          <p class="text-sm sm:text-base text-slate-300 font-medium leading-relaxed" data-i18n="hero_desc">
-            أحدث صيحات الملابس الرجالية بأعلى خامات وأفضل أسعار. اضغط على أي موديل لتصفح جميع ألوانه والتفاصيل!
-          </p>
-          <div class="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-3">
-            <a href="#productsSection" class="neon-btn px-6 py-3 rounded-xl text-white text-sm font-bold inline-flex items-center gap-2">
-              <span data-i18n="hero_cta">تصفح المنتجات الآن</span>
-              <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-            </a>
-            <button id="adminDirectBtn" type="button" class="px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-sm font-semibold border border-white/10 transition-colors">
-              <span data-i18n="admin_btn">لوحة التحكم</span>
-            </button>
-          </div>
+      <!-- Big Centered Logo in Hero -->
+      <div class="relative z-10 flex flex-col items-center justify-center space-y-4 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span data-i18n="hero_badge">كولكشن صيف وخريف 2026 الفاخر</span>
         </div>
 
-        <!-- Hero Logo Image / Mockup -->
-        <div class="relative group">
-          <div class="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl p-2 bg-gradient-to-tr from-cyan-500/20 via-slate-800 to-purple-500/20 border border-white/15 shadow-2xl flex items-center justify-center">
-            <img src="brand_logo.png" alt="BRAND" class="w-full h-full object-contain rounded-xl drop-shadow-[0_10px_20px_rgba(0,212,255,0.3)] transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://placehold.co/400x400/0f172a/00d4ff?text=BRAND+2026'" />
-          </div>
+        <div class="p-3">
+          <img src="brand_logo.png" alt="BRAND" class="h-28 sm:h-36 w-auto object-contain mx-auto drop-shadow-[0_10px_35px_rgba(0,212,255,0.45)]" onerror="this.src='https://placehold.co/400x160/0f172a/00d4ff?text=BRAND+COLLECTION'" />
+        </div>
+
+        <p class="text-sm sm:text-base text-slate-300 font-medium leading-relaxed max-w-xl mx-auto" data-i18n="hero_desc">
+          أحدث صيحات الملابس الرجالية بأعلى خامات وأفضل أسعار. اضغط على أي موديل لتصفح جميع ألوانه بالكامل!
+        </p>
+
+        <!-- Social Media Buttons Row -->
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <!-- TikTok Button -->
+          <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="social-btn social-tiktok px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-white/15 text-xs font-bold flex items-center gap-2 shadow-lg">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+            <span>تابعنا على تيك توك</span>
+          </a>
+
+          <!-- Facebook Button -->
+          <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="social-btn social-fb px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-white/15 text-xs font-bold flex items-center gap-2 shadow-lg">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>جروب فيسبوك</span>
+          </a>
+
+          <!-- WhatsApp Button -->
+          <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="social-btn social-wa px-4 py-2.5 rounded-xl bg-slate-900 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-2 shadow-lg">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+            <span>واتساب: 01029478377</span>
+          </a>
         </div>
       </div>
     </section>
@@ -256,9 +342,9 @@
         <div>
           <h2 class="text-2xl font-black tracking-wide flex items-center gap-2">
             <span class="w-2.5 h-6 rounded-full bg-cyan-400 inline-block"></span>
-            <span data-i18n="section_title">الموديلات المتاحة</span>
+            <span data-i18n="section_title">أحدث الموديلات المتوفرة</span>
           </h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1" data-i18n="section_subtitle">اختر الفئة وشاهد تبادل الألوان تلقائياً في كل كارت</p>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1" data-i18n="section_subtitle">اختر الفئة وشاهد تبادل الألوان والصور تلقائياً في كل كارت</p>
         </div>
 
         <!-- Category Pills -->
@@ -267,19 +353,19 @@
           <button type="button" data-cat="T-Shirts" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">تيشيرتات</button>
           <button type="button" data-cat="Pants" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">بناطيل</button>
           <button type="button" data-cat="Shoes" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">أحذية</button>
-          <button type="button" data-cat="Sale" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-red-400 border border-red-500/20 hover:bg-red-500/10 transition-all whitespace-nowrap">🔥 عروض خاصة</button>
+          <button type="button" data-cat="Sale" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-red-400 border border-red-500/20 hover:bg-red-500/10 transition-all whitespace-nowrap">🔥 عروض وتخفيضات</button>
         </div>
       </div>
 
-      <!-- Products Grid -->
-      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        <!-- Rendered by JS -->
+      <!-- Products Grid (Big, spacious image containers) -->
+      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Injected by JS -->
       </div>
 
       <!-- Empty State -->
       <div id="emptyState" class="hidden text-center py-16 px-4 glass-card rounded-2xl border border-white/10">
         <svg class="w-16 h-16 mx-auto text-slate-500 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-        <h3 class="text-base font-bold text-slate-200" data-i18n="no_products">لا توجد منتجات مطابقة</h3>
+        <h3 class="text-base font-bold text-slate-200" data-i18n="no_products">لا توجد موديلات مطابقة</h3>
         <p class="text-xs text-slate-400 mt-1" data-i18n="no_products_desc">جرّب تغيير خيارات البحث أو الفئة المحددة</p>
       </div>
     </section>
@@ -287,38 +373,59 @@
   </main>
 
   <!-- ========================================================================= -->
-  <!-- SIDE MENU DRAWER -->
+  <!-- SIDE MENU DRAWER (NO VISIBLE ADMIN BUTTON) -->
   <!-- ========================================================================= -->
   <aside id="sideMenuDrawer" class="fixed top-0 right-0 z-50 w-80 max-w-[85vw] h-full bg-slate-900 text-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l border-white/10 rtl:right-0 rtl:left-auto ltr:left-0 ltr:right-auto ltr:-translate-x-full">
     <div class="p-5 border-b border-white/10 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <img src="brand_logo.png" alt="BRAND" class="w-8 h-8 rounded-full object-contain" />
-        <span class="font-black text-lg font-en neon-gradient-text">BRAND</span>
+        <span class="font-black text-lg font-en neon-gradient-text">BRAND STORE</span>
       </div>
       <button id="closeSideMenuBtn" type="button" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
     </div>
 
-    <div class="p-5 flex-1 overflow-y-auto space-y-4">
+    <div class="p-5 flex-1 overflow-y-auto space-y-6">
       <div class="space-y-1">
         <button type="button" id="sideHomeBtn" class="w-full text-right px-4 py-3 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold flex items-center gap-3">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
           <span data-i18n="nav_home">الرئيسية</span>
         </button>
-        <button type="button" id="sideAdminBtn" class="w-full text-right px-4 py-3 rounded-xl hover:bg-white/5 text-slate-300 font-bold flex items-center gap-3 transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-          <span data-i18n="admin_panel">لوحة التحكم (Admin)</span>
-        </button>
       </div>
 
-      <hr class="border-white/10" />
+      <!-- Social Media Accounts in Side Drawer -->
+      <div class="space-y-3">
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="social_links_title">حسابات متجر BRAND</h4>
+        
+        <div class="space-y-2">
+          <!-- TikTok -->
+          <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-slate-950 hover:bg-black text-white font-bold border border-white/10 flex items-center gap-3 transition-colors">
+            <svg class="w-5 h-5 fill-current text-[#00f2ea]" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+            <div class="text-right">
+              <div class="text-xs">تيك توك (TikTok)</div>
+              <div class="text-[10px] text-slate-400 font-en">@brand.store22</div>
+            </div>
+          </a>
 
-      <div class="space-y-2">
-        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="contact_us">تواصل معنا مباشرة</h4>
-        <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-emerald-500/15 text-emerald-400 font-bold border border-emerald-500/30 flex items-center justify-center gap-2 hover:bg-emerald-500/25 transition-colors">
-          <span>واتساب: 01029478377</span>
-        </a>
+          <!-- Facebook -->
+          <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-slate-950 hover:bg-[#1877f2]/20 text-white font-bold border border-white/10 flex items-center gap-3 transition-colors">
+            <svg class="w-5 h-5 fill-current text-[#1877f2]" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <div class="text-right">
+              <div class="text-xs">جروب فيسبوك</div>
+              <div class="text-[10px] text-slate-400 font-en">Facebook Group</div>
+            </div>
+          </a>
+
+          <!-- WhatsApp -->
+          <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-emerald-500/15 text-emerald-400 font-bold border border-emerald-500/30 flex items-center gap-3 hover:bg-emerald-500/25 transition-colors">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+            <div class="text-right">
+              <div class="text-xs">خدمة العملاء والطلب</div>
+              <div class="text-[10px] text-emerald-300 font-en">01029478377</div>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -348,7 +455,7 @@
     </div>
 
     <!-- Footer Summary & WhatsApp Order -->
-    <div class="p-5 bg-slate-950/80 border-t border-white/10 space-y-4">
+    <div class="p-5 bg-slate-950/90 border-t border-white/10 space-y-4">
       <div class="space-y-1.5 text-sm">
         <div id="cartSavingsRow" class="hidden justify-between text-emerald-400 font-semibold text-xs">
           <span data-i18n="cart_savings">إجمالي التوفير:</span>
@@ -373,11 +480,11 @@
   </aside>
 
   <!-- ========================================================================= -->
-  <!-- FULL SCREEN LIGHTBOX GALLERY -->
+  <!-- FULL SCREEN LIGHTBOX GALLERY (EXPANSIVE & ADAPTIVE) -->
   <!-- ========================================================================= -->
-  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex flex-col transition-all duration-300">
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col transition-all duration-300">
     <!-- Lightbox Header -->
-    <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-slate-950/60">
+    <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-slate-950/70">
       <div class="flex items-center gap-3">
         <h3 id="lbTitle" class="text-base sm:text-lg font-bold text-white">عنوان الموديل</h3>
         <span id="lbCounter" class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold font-en">1 / 1</span>
@@ -387,20 +494,20 @@
       </button>
     </div>
 
-    <!-- Lightbox Main Stage -->
-    <div class="flex-1 relative flex items-center justify-center p-4 overflow-hidden">
+    <!-- Lightbox Main Stage (Large, High Definition, Adaptive) -->
+    <div class="flex-1 relative flex items-center justify-center p-2 sm:p-6 overflow-hidden">
       <!-- Previous Arrow -->
-      <button id="lbPrevBtn" type="button" aria-label="Previous" class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center border border-white/20 transition-all shadow-xl">
+      <button id="lbPrevBtn" type="button" aria-label="Previous" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center border border-white/20 transition-all shadow-2xl">
         <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
       </button>
 
-      <!-- Main Image -->
-      <div class="max-w-2xl max-h-full flex items-center justify-center">
-        <img id="lbMainImg" src="" alt="" class="max-h-[60vh] sm:max-h-[68vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl transition-all duration-300 select-none" />
+      <!-- Main Big Image -->
+      <div class="w-full h-full max-w-4xl flex items-center justify-center">
+        <img id="lbMainImg" src="" alt="" class="max-h-[72vh] sm:max-h-[75vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl transition-all duration-300 select-none border border-white/10" />
       </div>
 
       <!-- Next Arrow -->
-      <button id="lbNextBtn" type="button" aria-label="Next" class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center border border-white/20 transition-all shadow-xl">
+      <button id="lbNextBtn" type="button" aria-label="Next" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center border border-white/20 transition-all shadow-2xl">
         <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
       </button>
     </div>
@@ -430,14 +537,14 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- ADMIN LOGIN VIEW -->
+  <!-- ADMIN LOGIN VIEW (ACCESSED ONLY BY SECRET 3-CLICKS ON LOGO) -->
   <!-- ========================================================================= -->
   <section id="loginView" class="hidden flex-1 max-w-md w-full mx-auto px-4 py-16 flex flex-col justify-center">
     <div class="glass-card rounded-3xl p-8 border border-white/10 text-center space-y-6">
-      <img src="brand_logo.png" alt="BRAND" class="w-16 h-16 mx-auto rounded-full ring-4 ring-cyan-500/30" />
+      <img src="brand_logo.png" alt="BRAND" class="w-20 h-20 mx-auto rounded-full ring-4 ring-cyan-500/30 object-contain" />
       <div>
-        <h2 class="text-2xl font-black neon-gradient-text" data-i18n="admin_login_title">تسجيل دخول الإدارة</h2>
-        <p class="text-xs text-slate-400 mt-1" data-i18n="admin_login_desc">أدخل كلمة المرور لإدارة المنتجات والصور</p>
+        <h2 class="text-2xl font-black neon-gradient-text" data-i18n="admin_login_title">تسجيل دخول إدارة المتجر</h2>
+        <p class="text-xs text-slate-400 mt-1" data-i18n="admin_login_desc">أدخل كلمة المرور لإدارة الموديلات والصور</p>
       </div>
 
       <div class="space-y-4 text-right">
@@ -464,10 +571,10 @@
     <!-- Admin Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-card p-5 rounded-2xl border border-white/10">
       <div class="flex items-center gap-3">
-        <img src="brand_logo.png" alt="BRAND" class="w-10 h-10 rounded-full" />
+        <img src="brand_logo.png" alt="BRAND" class="w-12 h-12 rounded-full object-contain" />
         <div>
-          <h2 class="text-xl font-black neon-gradient-text" data-i18n="admin_dash_title">لوحة تحكم المنتجات</h2>
-          <p class="text-xs text-slate-400" data-i18n="admin_dash_sub">إضافة وتعديل الموديلات والصور المتعددة والمخزون</p>
+          <h2 class="text-xl font-black neon-gradient-text" data-i18n="admin_dash_title">لوحة تحكم الموديلات</h2>
+          <p class="text-xs text-slate-400" data-i18n="admin_dash_sub">إضافة وتعديل المنتجات والصور المتعددة وتحديد الأسعار</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -484,19 +591,19 @@
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
       <div class="glass-card p-4 rounded-xl border border-white/10">
         <span class="text-xs text-slate-400" data-i18n="stat_total">إجمالي المنتجات</span>
-        <h4 id="statTotalCount" class="text-2xl font-black text-cyan-400 mt-1">0</h4>
+        <h4 id="statTotalCount" class="text-2xl font-black text-cyan-400 mt-1 font-en">0</h4>
       </div>
       <div class="glass-card p-4 rounded-xl border border-white/10">
         <span class="text-xs text-slate-400" data-i18n="stat_sale">موديلات الخصم</span>
-        <h4 id="statSaleCount" class="text-2xl font-black text-red-400 mt-1">0</h4>
+        <h4 id="statSaleCount" class="text-2xl font-black text-red-400 mt-1 font-en">0</h4>
       </div>
       <div class="glass-card p-4 rounded-xl border border-white/10">
         <span class="text-xs text-slate-400" data-i18n="stat_out">نفدت الكمية</span>
-        <h4 id="statOutCount" class="text-2xl font-black text-amber-400 mt-1">0</h4>
+        <h4 id="statOutCount" class="text-2xl font-black text-amber-400 mt-1 font-en">0</h4>
       </div>
       <div class="glass-card p-4 rounded-xl border border-white/10">
         <span class="text-xs text-slate-400" data-i18n="stat_images">إجمالي الصور المرفوعة</span>
-        <h4 id="statImagesCount" class="text-2xl font-black text-purple-400 mt-1">0</h4>
+        <h4 id="statImagesCount" class="text-2xl font-black text-purple-400 mt-1 font-en">0</h4>
       </div>
     </div>
 
@@ -514,7 +621,7 @@
           <!-- Title -->
           <div class="md:col-span-2">
             <label class="block text-xs font-bold text-slate-300 mb-1" data-i18n="f_title">اسم الموديل / المنتج:</label>
-            <input type="text" id="formTitle" required placeholder="مثال: سويت شيرت اوفر سايز بيسك" class="w-full h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-sm text-white focus:outline-none focus:border-cyan-400" />
+            <input type="text" id="formTitle" required placeholder="مثال: تيشرت اوفر سايز بيسك قطن 100%" class="w-full h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-sm text-white focus:outline-none focus:border-cyan-400" />
           </div>
 
           <!-- Category -->
@@ -554,7 +661,7 @@
           <div class="flex items-center justify-between">
             <label class="text-xs font-bold text-cyan-300 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              <span data-i18n="f_images_title">صور وألوان الموديل (تتبادل تلقائياً):</span>
+              <span data-i18n="f_images_title">صور وألوان الموديل (تتبادل تلقائياً وبحجم كبير):</span>
             </label>
             <span id="formImagesCount" class="text-xs text-slate-400 font-en">0 images</span>
           </div>
@@ -635,18 +742,38 @@
   </section>
 
   <!-- ========================================================================= -->
-  <!-- FOOTER -->
+  <!-- FOOTER (WITH SOCIAL LINKS & CENTERED LOGO) -->
   <!-- ========================================================================= -->
-  <footer class="mt-auto border-t border-white/10 bg-slate-950 py-8 px-4 text-center text-xs text-slate-400 space-y-3">
-    <div class="flex items-center justify-center gap-2">
-      <img src="brand_logo.png" alt="BRAND" class="w-7 h-7 rounded-full object-contain" />
-      <span class="font-black text-sm text-white font-en">BRAND 2026</span>
+  <footer class="mt-auto border-t border-white/10 bg-slate-950 py-10 px-4 text-center space-y-6">
+    <!-- Centered Footer Logo -->
+    <div class="flex flex-col items-center justify-center gap-3">
+      <img src="brand_logo.png" alt="BRAND" class="h-14 sm:h-16 w-auto object-contain drop-shadow-[0_4px_20px_rgba(0,212,255,0.35)]" />
+      <span class="font-black text-base text-white font-en tracking-wider">BRAND MEN'S COLLECTION 2026</span>
     </div>
-    <p class="max-w-md mx-auto text-slate-500" data-i18n="footer_text">
+
+    <!-- Social Media Links in Footer -->
+    <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-black border border-white/15 text-white flex items-center justify-center transition-all hover:scale-110 hover:border-[#00f2ea] shadow-lg" title="TikTok">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+      </a>
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-[#1877f2] border border-white/15 text-white flex items-center justify-center transition-all hover:scale-110 shadow-lg" title="Facebook Group">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-emerald-500 border border-emerald-500/30 text-emerald-400 hover:text-slate-950 flex items-center justify-center transition-all hover:scale-110 shadow-lg" title="WhatsApp">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+      </a>
+    </div>
+
+    <p class="max-w-md mx-auto text-xs text-slate-400" data-i18n="footer_text">
       متجر أزياء رجالية عصري - تجربة تسوق سهلة وسريعة مع طلب مباشر عبر الواتساب.
     </p>
     <p class="text-[11px] text-slate-600 font-en">
-      Designed with &hearts; for BRAND - Ready for Vercel Deployment.
+      BRAND STORE &copy; 2026. All rights reserved.
     </p>
   </footer>
 
@@ -663,10 +790,10 @@
     const ADMIN_PASSWORD = 'admin123';
     const CURRENCY_AR = 'ج.م';
     const CURRENCY_EN = 'EGP';
-    const STORAGE_KEY_PRODS = 'brand_products_v5';
-    const STORAGE_KEY_CART = 'brand_cart_v5';
-    const STORAGE_KEY_THEME = 'brand_theme_v5';
-    const STORAGE_KEY_LANG = 'brand_lang_v5';
+    const STORAGE_KEY_PRODS = 'brand_products_v6';
+    const STORAGE_KEY_CART = 'brand_cart_v6';
+    const STORAGE_KEY_THEME = 'brand_theme_v6';
+    const STORAGE_KEY_LANG = 'brand_lang_v6';
 
     /* Category Standard Sizes */
     const PRESET_SIZES = {
@@ -687,10 +814,10 @@
         stock: 15,
         sizes: ['M', 'L', 'XL', '2XL'],
         images: [
-          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=700&q=80',
-          'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=700&q=80',
-          'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=700&q=80',
-          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=700&q=80'
+          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=85',
+          'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=900&q=85',
+          'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=900&q=85',
+          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=900&q=85'
         ]
       },
       {
@@ -702,9 +829,9 @@
         stock: 8,
         sizes: ['30', '32', '34', '36', '38'],
         images: [
-          'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=700&q=80',
-          'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=700&q=80',
-          'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=700&q=80'
+          'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=900&q=85',
+          'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=900&q=85',
+          'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=900&q=85'
         ]
       },
       {
@@ -716,10 +843,10 @@
         stock: 5,
         sizes: ['41', '42', '43', '44', '45'],
         images: [
-          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&q=80',
-          'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=700&q=80',
-          'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=700&q=80',
-          'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=700&q=80'
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&q=85',
+          'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=900&q=85',
+          'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=900&q=85',
+          'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=900&q=85'
         ]
       }
     ];
@@ -727,32 +854,29 @@
     /* Translations */
     const I18N = {
       ar: {
-        hero_badge: 'كولكشن صيف وخريف 2026',
-        hero_title_1: 'ارتقِ بأناقتك مع',
-        hero_desc: 'أحدث صيحات الملابس الرجالية بأعلى خامات وأفضل أسعار. اضغط على أي موديل لتصفح جميع ألوانه والتفاصيل!',
-        hero_cta: 'تصفح المنتجات الآن',
-        admin_btn: 'لوحة التحكم',
-        section_title: 'الموديلات المتاحة',
-        section_subtitle: 'اختر الفئة وشاهد تبادل الألوان تلقائياً في كل كارت',
-        no_products: 'لا توجد منتجات مطابقة',
+        top_bar_msg: 'شحن وتوصيل لجميع أنحاء الجمهورية | اطلب الآن عبر واتساب',
+        hero_badge: 'كولكشن صيف وخريف 2026 الفاخر',
+        hero_desc: 'أحدث صيحات الملابس الرجالية بأعلى خامات وأفضل أسعار. اضغط على أي موديل لتصفح جميع ألوانه بالكامل!',
+        section_title: 'أحدث الموديلات المتوفرة',
+        section_subtitle: 'اختر الفئة وشاهد تبادل الألوان والصور تلقائياً في كل كارت',
+        no_products: 'لا توجد موديلات مطابقة',
         no_products_desc: 'جرّب تغيير خيارات البحث أو الفئة المحددة',
         nav_home: 'الرئيسية',
-        admin_panel: 'لوحة التحكم (Admin)',
-        contact_us: 'تواصل معنا مباشرة',
+        social_links_title: 'حسابات متجر BRAND',
         cart_title: 'سلة المشتريات',
         cart_savings: 'إجمالي التوفير:',
         cart_total: 'المجموع الكلي:',
         order_whatsapp: 'إتمام الطلب عبر واتساب',
         clear_cart: 'إفراغ السلة',
         empty_cart_msg: 'سلة المشتريات فارغة حالياً.',
-        admin_login_title: 'تسجيل دخول الإدارة',
-        admin_login_desc: 'أدخل كلمة المرور لإدارة المنتجات والصور',
+        admin_login_title: 'تسجيل دخول إدارة المتجر',
+        admin_login_desc: 'أدخل كلمة المرور لإدارة الموديلات والصور',
         pw_label: 'كلمة المرور:',
         wrong_pw: 'كلمة المرور غير صحيحة!',
         login_btn: 'دخول',
         back_to_store: 'العودة للمتجر',
-        admin_dash_title: 'لوحة تحكم المنتجات',
-        admin_dash_sub: 'إضافة وتعديل الموديلات والصور المتعددة والمخزون',
+        admin_dash_title: 'لوحة تحكم الموديلات',
+        admin_dash_sub: 'إضافة وتعديل المنتجات والصور المتعددة وتحديد الأسعار',
         logout: 'تسجيل خروج',
         stat_total: 'إجمالي المنتجات',
         stat_sale: 'موديلات الخصم',
@@ -765,7 +889,7 @@
         f_price: 'السعر (ج.م):',
         f_disc: 'نسبة الخصم % (اختياري):',
         f_stock: 'الكمية بالمخزن:',
-        f_images_title: 'صور وألوان الموديل (تتبادل تلقائياً):',
+        f_images_title: 'صور وألوان الموديل (تتبادل تلقائياً وبحجم كبير):',
         f_images_desc: 'أضف روابط الصور أو ارفع من جهازك مباشرة. الصور ستظهر في كارت الموديل مع تبادل تلقائي ومعرض كامل عند الضغط.',
         upload_files: 'رفع صور من الجهاز (متعدد)',
         f_sizes_title: 'المقاسات المتاحة للموديل:',
@@ -782,18 +906,15 @@
         footer_text: 'متجر أزياء رجالية عصري - تجربة تسوق سهلة وسريعة مع طلب مباشر عبر الواتساب.'
       },
       en: {
-        hero_badge: 'Summer & Fall Collection 2026',
-        hero_title_1: 'Elevate your look with',
-        hero_desc: 'Premium modern men\'s fashion. Click any product to explore all color angles in our gallery!',
-        hero_cta: 'Shop Collection Now',
-        admin_btn: 'Admin Panel',
+        top_bar_msg: 'Fast shipping all across Egypt | Order directly via WhatsApp',
+        hero_badge: 'Exclusive 2026 Collection',
+        hero_desc: 'Premium modern men\'s fashion. Click any product to explore all color angles in full detail!',
         section_title: 'Featured Models',
         section_subtitle: 'Select a category to view models with auto color cycling in each card',
         no_products: 'No matching products found',
         no_products_desc: 'Try changing your search query or selected category',
         nav_home: 'Home',
-        admin_panel: 'Admin Dashboard',
-        contact_us: 'Contact Us Directly',
+        social_links_title: 'BRAND Official Accounts',
         cart_title: 'Shopping Bag',
         cart_savings: 'Total Savings:',
         cart_total: 'Grand Total:',
@@ -857,7 +978,7 @@
     let cardIntervals = {};
     let cardActiveIndices = {};
 
-    // Card Selected Sizes Map { prodId: selectedSize }
+    // Card Selected Sizes Map
     let cardSelectedSizes = {};
 
     // Form Temporary State
@@ -901,7 +1022,6 @@
       return `${formatted} ${unit}`;
     }
 
-    /* Helper: Escape HTML strings */
     function escapeHTML(str) {
       if (!str) return '';
       return String(str)
@@ -912,7 +1032,6 @@
         .replace(/'/g, '&#39;');
     }
 
-    /* Helper: Calculate discounted price */
     function getDiscountPrice(product) {
       if (!product.discount || product.discount <= 0) return null;
       return Math.round(product.price * (1 - product.discount / 100));
@@ -940,14 +1059,12 @@
       document.documentElement.setAttribute('dir', isAr ? 'rtl' : 'ltr');
       document.getElementById('langLabel').textContent = isAr ? 'EN' : 'عربي';
 
-      // Update static text elements
       const t = I18N[lang];
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.textContent = t[key];
       });
 
-      // Update search placeholders
       const searchPlaceholder = isAr ? 'ابحث عن موديل، لون، فئة...' : 'Search models, colors, categories...';
       document.getElementById('desktopSearchInput').placeholder = searchPlaceholder;
       document.getElementById('mobileSearchInput').placeholder = searchPlaceholder;
@@ -1049,7 +1166,6 @@
       const card = document.querySelector(`.product-card[data-pid="${prodId}"]`);
       if (!card) return;
 
-      // Update slide opacities
       const slides = card.querySelectorAll('.card-img-slide');
       slides.forEach((slide, i) => {
         if (i === safeIdx) {
@@ -1063,7 +1179,6 @@
         }
       });
 
-      // Update dots
       const dots = card.querySelectorAll('.card-dot');
       dots.forEach((dot, i) => {
         dot.classList.toggle('bg-cyan-400', i === safeIdx);
@@ -1077,7 +1192,6 @@
       if (totalImages <= 1) return;
       if (cardIntervals[prodId]) clearInterval(cardIntervals[prodId]);
 
-      // Slight random delay to prevent robotic sync
       const intervalMs = 2800 + (Math.abs(prodId.charCodeAt(0)) % 1000);
       cardIntervals[prodId] = setInterval(() => {
         const cur = cardActiveIndices[prodId] || 0;
@@ -1086,7 +1200,7 @@
     }
 
     /* ---------------------------------------------------------
-       RENDER STORE PRODUCTS
+       RENDER STORE PRODUCTS (LARGE ADAPTIVE IMAGES)
        --------------------------------------------------------- */
     function renderStore() {
       stopAllCardIntervals();
@@ -1094,7 +1208,6 @@
       const emptyState = document.getElementById('emptyState');
       const t = I18N[lang];
 
-      // Filter products by category and search
       const q = searchQuery.toLowerCase().trim();
       const filtered = products.filter(p => {
         const matchCat = activeCategory === 'All' 
@@ -1120,33 +1233,31 @@
         const isOutOfStock = p.stock <= 0;
         const discountPrice = getDiscountPrice(p);
         
-        // Ensure default size selection
         if (!cardSelectedSizes[p.id] && p.sizes && p.sizes.length > 0) {
           cardSelectedSizes[p.id] = p.sizes[0];
         }
         const selectedSize = cardSelectedSizes[p.id] || '';
 
-        // Check if item is already in cart
         const cartKey = p.id + (selectedSize ? '_' + selectedSize : '');
         const inCart = cart.some(c => c.cartKey === cartKey);
 
         return `
-          <div class="product-card glass-card rounded-2xl overflow-hidden flex flex-col border border-white/10 group relative" data-pid="${escapeHTML(p.id)}">
+          <div class="product-card glass-card rounded-3xl overflow-hidden flex flex-col border border-white/10 group relative" data-pid="${escapeHTML(p.id)}">
             
-            <!-- Image Carousel Container -->
-            <div class="relative w-full aspect-square bg-slate-900/80 overflow-hidden cursor-pointer card-image-trigger" data-pid="${escapeHTML(p.id)}">
+            <!-- Large Adaptive Showcase Box -->
+            <div class="card-img-wrapper cursor-pointer card-image-trigger" data-pid="${escapeHTML(p.id)}">
               
               <!-- Badges -->
-              <div class="absolute top-3 right-3 z-10 flex flex-col gap-1.5 items-end pointer-events-none">
-                ${discountPrice ? `<span class="bg-red-500 text-white font-black text-[11px] px-2 py-0.5 rounded-full shadow-lg">-${p.discount}%</span>` : ''}
-                ${isOutOfStock ? `<span class="bg-slate-900/90 text-red-400 border border-red-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full">${t.out_of_stock}</span>` : ''}
+              <div class="absolute top-3.5 right-3.5 z-10 flex flex-col gap-1.5 items-end pointer-events-none">
+                ${discountPrice ? `<span class="bg-red-500 text-white font-black text-xs px-2.5 py-0.5 rounded-full shadow-xl">-${p.discount}%</span>` : ''}
+                ${isOutOfStock ? `<span class="bg-slate-950/90 text-red-400 border border-red-500/30 text-[11px] font-bold px-2.5 py-0.5 rounded-full">${t.out_of_stock}</span>` : ''}
               </div>
 
               <!-- Colors count badge -->
               ${totalImgs > 1 ? `
-                <div class="absolute bottom-3 right-3 z-10 bg-slate-950/80 backdrop-blur-md border border-cyan-400/40 text-cyan-300 text-[10px] font-black px-2 py-0.5 rounded-full shadow-md pointer-events-none flex items-center gap-1">
-                  <span>${totalImgs}</span>
-                  <span>${t.colors_count}</span>
+                <div class="absolute bottom-3.5 right-3.5 z-10 bg-slate-950/85 backdrop-blur-md border border-cyan-400/50 text-cyan-300 text-[11px] font-black px-2.5 py-1 rounded-full shadow-lg pointer-events-none flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                  <span>${totalImgs} ${t.colors_count}</span>
                 </div>
               ` : ''}
 
@@ -1161,17 +1272,17 @@
                 />
               `).join('')}
 
-              <!-- Navigation Arrows (Desktop hover) -->
+              <!-- Navigation Arrows -->
               ${totalImgs > 1 ? `
-                <button type="button" class="card-prev-arrow absolute top-1/2 right-2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-slate-950/70 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-pid="${escapeHTML(p.id)}">
-                  <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+                <button type="button" class="card-prev-arrow absolute top-1/2 right-3 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-slate-950/75 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg" data-pid="${escapeHTML(p.id)}">
+                  <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
-                <button type="button" class="card-next-arrow absolute top-1/2 left-2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-slate-950/70 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" data-pid="${escapeHTML(p.id)}">
-                  <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                <button type="button" class="card-next-arrow absolute top-1/2 left-3 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-slate-950/75 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg" data-pid="${escapeHTML(p.id)}">
+                  <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
                 </button>
 
                 <!-- Dots -->
-                <div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1 pointer-events-auto">
+                <div class="absolute bottom-3.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 pointer-events-auto">
                   ${imgs.map((_, i) => `
                     <button type="button" class="card-dot h-1.5 rounded-full transition-all ${i === currentIdx ? 'w-4 bg-cyan-400' : 'w-1.5 bg-white/40'}" data-pid="${escapeHTML(p.id)}" data-idx="${i}"></button>
                   `).join('')}
@@ -1180,21 +1291,21 @@
             </div>
 
             <!-- Content -->
-            <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+            <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
               <div>
-                <div class="flex items-center justify-between text-xs text-slate-400 mb-1">
-                  <span>${escapeHTML(p.category)}</span>
-                  <span class="text-cyan-400 font-semibold font-en">${p.stock} in stock</span>
+                <div class="flex items-center justify-between text-xs text-slate-400 mb-1.5">
+                  <span class="font-semibold text-cyan-400">${escapeHTML(p.category)}</span>
+                  <span class="text-slate-400 font-en font-medium">${p.stock} in stock</span>
                 </div>
-                <h3 class="font-bold text-sm sm:text-base text-slate-100 line-clamp-1 hover:text-cyan-400 transition-colors cursor-pointer card-image-trigger" data-pid="${escapeHTML(p.id)}">
+                <h3 class="font-bold text-base text-slate-100 line-clamp-1 hover:text-cyan-400 transition-colors cursor-pointer card-image-trigger" data-pid="${escapeHTML(p.id)}">
                   ${escapeHTML(p.title)}
                 </h3>
               </div>
 
               <!-- Sizes Selection -->
               ${p.sizes && p.sizes.length ? `
-                <div class="space-y-1">
-                  <div class="flex items-center justify-between text-[11px] text-slate-400">
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between text-xs text-slate-400">
                     <span>${t.size_label}</span>
                     <span class="font-bold text-cyan-300 font-en">${escapeHTML(selectedSize)}</span>
                   </div>
@@ -1202,7 +1313,7 @@
                     ${p.sizes.map(sz => `
                       <button 
                         type="button" 
-                        class="size-btn px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${sz === selectedSize ? 'active' : 'bg-slate-800/80 text-slate-300 border-white/10 hover:border-cyan-400/50'}"
+                        class="size-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${sz === selectedSize ? 'active' : 'bg-slate-900 text-slate-300 border-white/10 hover:border-cyan-400/50'}"
                         data-pid="${escapeHTML(p.id)}" 
                         data-sz="${escapeHTML(sz)}"
                       >
@@ -1214,19 +1325,19 @@
               ` : ''}
 
               <!-- Pricing & Add to Cart -->
-              <div class="pt-2 border-t border-white/10 flex items-center justify-between gap-2">
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-3">
                 <div class="text-right">
                   ${discountPrice ? `
                     <span class="text-xs line-through text-slate-500 font-en">${formatMoney(p.price)}</span>
-                    <div class="text-base sm:text-lg font-black text-red-400 font-en">${formatMoney(discountPrice)}</div>
+                    <div class="text-lg font-black text-red-400 font-en">${formatMoney(discountPrice)}</div>
                   ` : `
-                    <div class="text-base sm:text-lg font-black text-cyan-400 font-en">${formatMoney(p.price)}</div>
+                    <div class="text-lg font-black text-cyan-400 font-en">${formatMoney(p.price)}</div>
                   `}
                 </div>
 
                 <button 
                   type="button" 
-                  class="add-to-cart-btn px-4 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${isOutOfStock ? 'bg-red-500/10 text-red-400 border border-red-500/20 cursor-not-allowed' : (inCart ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'neon-btn text-white')}"
+                  class="add-to-cart-btn px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${isOutOfStock ? 'bg-red-500/10 text-red-400 border border-red-500/20 cursor-not-allowed' : (inCart ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'neon-btn text-white')}"
                   data-pid="${escapeHTML(p.id)}"
                   ${isOutOfStock ? 'disabled' : ''}
                 >
@@ -1239,7 +1350,6 @@
         `;
       }).join('');
 
-      // Initialize slideshow intervals for multi-image cards
       filtered.forEach(p => {
         if (p.images && p.images.length > 1) {
           startCardSlideshow(p.id, p.images.length);
@@ -1280,22 +1390,19 @@
       const total = imgs.length;
       activeLightboxIdx = ((activeLightboxIdx % total) + total) % total;
 
-      // Update main image & counter
       lbMainImg.src = imgs[activeLightboxIdx];
       document.getElementById('lbCounter').textContent = `${activeLightboxIdx + 1} / ${total}`;
 
-      // Show/Hide arrows
       document.getElementById('lbPrevBtn').style.display = total > 1 ? 'flex' : 'none';
       document.getElementById('lbNextBtn').style.display = total > 1 ? 'flex' : 'none';
 
-      // Thumbnails strip
       const strip = document.getElementById('lbThumbStrip');
       if (total > 1) {
         strip.style.display = 'flex';
         strip.innerHTML = imgs.map((imgUrl, i) => `
           <img 
             src="${escapeHTML(imgUrl)}" 
-            class="w-12 h-12 rounded-lg object-cover cursor-pointer border-2 transition-all ${i === activeLightboxIdx ? 'border-cyan-400 scale-105 shadow-md shadow-cyan-500/50' : 'border-transparent opacity-60 hover:opacity-100'}"
+            class="w-14 h-14 rounded-xl object-cover cursor-pointer border-2 transition-all ${i === activeLightboxIdx ? 'border-cyan-400 scale-105 shadow-lg shadow-cyan-500/50' : 'border-transparent opacity-50 hover:opacity-100'}"
             data-idx="${i}"
             onerror="this.src='brand_logo.png'"
           />
@@ -1304,19 +1411,17 @@
         strip.style.display = 'none';
       }
 
-      // Price container in modal
       const discountPrice = getDiscountPrice(p);
       document.getElementById('lbPriceContainer').innerHTML = discountPrice ? `
         <span class="text-xs line-through text-slate-500 font-en">${formatMoney(p.price)}</span>
         <span class="text-lg font-black text-red-400 font-en mr-2">${formatMoney(discountPrice)}</span>
       ` : `<span class="text-lg font-black text-cyan-400 font-en">${formatMoney(p.price)}</span>`;
 
-      // Sizes in modal
       const sizesContainer = document.getElementById('lbSizesContainer');
       const selectedSize = cardSelectedSizes[p.id] || (p.sizes && p.sizes[0]) || '';
       if (p.sizes && p.sizes.length) {
         sizesContainer.innerHTML = p.sizes.map(sz => `
-          <button type="button" class="size-btn px-3 py-1 rounded-lg text-xs font-bold border transition-all ${sz === selectedSize ? 'active' : 'bg-slate-800 text-slate-300 border-white/10'}" data-pid="${escapeHTML(p.id)}" data-sz="${escapeHTML(sz)}">
+          <button type="button" class="size-btn px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${sz === selectedSize ? 'active' : 'bg-slate-800 text-slate-300 border-white/10'}" data-pid="${escapeHTML(p.id)}" data-sz="${escapeHTML(sz)}">
             ${escapeHTML(sz)}
           </button>
         `).join('');
@@ -1324,7 +1429,6 @@
         sizesContainer.innerHTML = '';
       }
 
-      // Add to Cart Button state
       const isOutOfStock = p.stock <= 0;
       const cartKey = p.id + (selectedSize ? '_' + selectedSize : '');
       const inCart = cart.some(c => c.cartKey === cartKey);
@@ -1409,7 +1513,6 @@
       const savingsAmt = document.getElementById('cartSavingsAmt');
       const t = I18N[lang];
 
-      // Update badge count
       const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
       badge.textContent = totalCount;
       badge.classList.toggle('scale-0', totalCount === 0);
@@ -1436,21 +1539,20 @@
         totalOriginal += (item.price * item.qty);
 
         return `
-          <div class="py-3 flex items-center gap-3">
-            <img src="${escapeHTML(item.image)}" alt="" class="w-16 h-16 rounded-xl object-cover bg-slate-800 border border-white/10" onerror="this.src='brand_logo.png'" />
+          <div class="py-3.5 flex items-center gap-3">
+            <img src="${escapeHTML(item.image)}" alt="" class="w-16 h-20 rounded-xl object-cover bg-slate-800 border border-white/10" onerror="this.src='brand_logo.png'" />
             <div class="flex-1 min-w-0">
               <h4 class="text-xs font-bold text-slate-100 truncate">${escapeHTML(item.title)}</h4>
-              <div class="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
+              <div class="text-[11px] text-slate-400 flex items-center gap-2 mt-1">
                 <span>${t.size_label} <b class="text-cyan-300 font-en">${escapeHTML(item.size)}</b></span>
                 <span>•</span>
                 <span class="text-cyan-400 font-en">${formatMoney(item.finalPrice)}</span>
               </div>
               
-              <!-- Qty controls -->
-              <div class="flex items-center gap-2 mt-2">
-                <button type="button" class="w-6 h-6 rounded bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center text-xs cart-qty-btn" data-key="${escapeHTML(item.cartKey)}" data-delta="-1">-</button>
+              <div class="flex items-center gap-2 mt-2.5">
+                <button type="button" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center text-xs cart-qty-btn" data-key="${escapeHTML(item.cartKey)}" data-delta="-1">-</button>
                 <span class="text-xs font-bold font-en px-1">${item.qty}</span>
-                <button type="button" class="w-6 h-6 rounded bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center text-xs cart-qty-btn" data-key="${escapeHTML(item.cartKey)}" data-delta="1">+</button>
+                <button type="button" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center text-xs cart-qty-btn" data-key="${escapeHTML(item.cartKey)}" data-delta="1">+</button>
               </div>
             </div>
 
@@ -1501,7 +1603,7 @@
     }
 
     /* ---------------------------------------------------------
-       ADMIN PANEL LOGIC
+       ADMIN PANEL LOGIC (PROTECTED & HIDDEN)
        --------------------------------------------------------- */
     function renderAdminView() {
       const totalCount = document.getElementById('statTotalCount');
@@ -1528,7 +1630,7 @@
           <tr class="hover:bg-white/5 transition-colors">
             <td class="p-3 flex items-center gap-3">
               <div class="relative">
-                <img src="${escapeHTML(mainImg)}" alt="" class="w-12 h-12 rounded-lg object-cover bg-slate-800 border border-white/10" onerror="this.src='brand_logo.png'" />
+                <img src="${escapeHTML(mainImg)}" alt="" class="w-12 h-14 rounded-lg object-cover bg-slate-800 border border-white/10" onerror="this.src='brand_logo.png'" />
                 <span class="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 font-black text-[9px] px-1 rounded-full">${imgs.length}</span>
               </div>
               <div class="min-w-0">
@@ -1588,7 +1690,7 @@
 
       list.innerHTML = formImages.map((imgUrl, i) => `
         <div class="relative group rounded-xl border ${i === 0 ? 'border-cyan-400/80 bg-cyan-500/10' : 'border-white/10 bg-slate-900'} p-1.5 flex flex-col items-center gap-1.5">
-          <div class="w-full h-20 rounded-lg overflow-hidden bg-slate-950 flex items-center justify-center relative">
+          <div class="w-full h-24 rounded-lg overflow-hidden bg-slate-950 flex items-center justify-center relative">
             <img src="${escapeHTML(imgUrl)}" alt="" class="w-full h-full object-contain p-1" onerror="this.src='brand_logo.png'" />
             ${i === 0 ? `<span class="absolute top-1 right-1 bg-cyan-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded shadow">رئيسية</span>` : ''}
           </div>
@@ -1646,18 +1748,15 @@
        EVENT LISTENERS ATTACHMENT
        --------------------------------------------------------- */
     function attachEventListeners() {
-      // Theme & Lang
       document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
       document.getElementById('langToggleBtn').addEventListener('click', toggleLanguage);
 
-      // Drawers
       document.getElementById('menuToggleBtn').addEventListener('click', openSideMenu);
       document.getElementById('closeSideMenuBtn').addEventListener('click', closeSideMenu);
       document.getElementById('cartToggleBtn').addEventListener('click', openCartDrawer);
       document.getElementById('closeCartBtn').addEventListener('click', closeCartDrawer);
       overlay.addEventListener('click', closeAllDrawers);
 
-      // Search Inputs
       const handleSearch = (e) => {
         searchQuery = e.target.value;
         renderStore();
@@ -1665,7 +1764,6 @@
       document.getElementById('desktopSearchInput').addEventListener('input', handleSearch);
       document.getElementById('mobileSearchInput').addEventListener('input', handleSearch);
 
-      // Category filter buttons
       document.getElementById('categoryPills').addEventListener('click', (e) => {
         const btn = e.target.closest('.cat-btn');
         if (!btn) return;
@@ -1675,7 +1773,7 @@
         renderStore();
       });
 
-      // Triple Click on Logo to Open Admin
+      // SECRET 3-CLICK GESTURE ON STORE LOGO TO OPEN ADMIN LOGIN
       let logoClickCount = 0;
       let logoClickTimer = null;
       document.getElementById('brandLogoBtn').addEventListener('click', () => {
@@ -1692,22 +1790,12 @@
         }
       });
 
-      // Admin direct buttons
-      document.getElementById('adminDirectBtn').addEventListener('click', () => {
-        if (isAdminLoggedIn) showView('admin');
-        else showView('login');
-      });
-      document.getElementById('sideAdminBtn').addEventListener('click', () => {
-        closeSideMenu();
-        if (isAdminLoggedIn) showView('admin');
-        else showView('login');
-      });
       document.getElementById('sideHomeBtn').addEventListener('click', () => {
         closeSideMenu();
         showView('store');
       });
 
-      // Login View Handlers
+      // Login Handlers
       document.getElementById('submitLoginBtn').addEventListener('click', () => {
         const pw = document.getElementById('adminPasswordInput').value;
         if (pw === ADMIN_PASSWORD) {
@@ -1731,14 +1819,12 @@
         showView('store');
       });
 
-      // Category Change in Form
       document.getElementById('formCategory').addEventListener('change', () => {
         const cat = document.getElementById('formCategory').value;
         formSelectedSizes = [...(PRESET_SIZES[cat] || [])];
         renderFormSizes();
       });
 
-      // Form Sizes Toggles
       document.getElementById('formSizesContainer').addEventListener('click', (e) => {
         const btn = e.target.closest('.form-size-toggle');
         if (!btn) return;
@@ -1756,7 +1842,6 @@
         const input = document.getElementById('formImgUrlInput');
         const url = input.value.trim();
         if (url) {
-          // split by commas or newlines if multiple
           const urls = url.split(/[\r\n,]+/).map(u => u.trim()).filter(Boolean);
           formImages.push(...urls);
           input.value = '';
@@ -1770,7 +1855,7 @@
         }
       });
 
-      // Form Upload Files (Multiple)
+      // Form Upload Files
       document.getElementById('formFileInput').addEventListener('change', (e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
@@ -1785,7 +1870,7 @@
         e.target.value = '';
       });
 
-      // Form Images Manager (Set cover or delete)
+      // Form Images Manager
       document.getElementById('formImagesList').addEventListener('click', (e) => {
         const coverBtn = e.target.closest('.set-cover-btn');
         if (coverBtn) {
@@ -1842,7 +1927,7 @@
 
       document.getElementById('formCancelBtn').addEventListener('click', resetForm);
 
-      // Admin Table Actions (Edit / Delete)
+      // Admin Table Actions
       document.getElementById('adminTableBody').addEventListener('click', (e) => {
         const editBtn = e.target.closest('.admin-edit-btn');
         if (editBtn) {
@@ -1902,7 +1987,6 @@
         renderLightbox();
       });
 
-      // Keyboard support for Lightbox
       window.addEventListener('keydown', (e) => {
         if (!lightboxModal.classList.contains('hidden')) {
           if (e.key === 'Escape') closeLightbox();
@@ -1911,9 +1995,8 @@
         }
       });
 
-      // Store Products Grid Delegations (Card Triggers, Arrows, Dots, Sizes, Add to Cart)
+      // Grid Delegations
       document.getElementById('productsGrid').addEventListener('click', (e) => {
-        // Image click -> Lightbox
         const trigger = e.target.closest('.card-image-trigger');
         if (trigger) {
           const pid = trigger.dataset.pid;
@@ -1922,7 +2005,6 @@
           return;
         }
 
-        // Prev Arrow
         const prevBtn = e.target.closest('.card-prev-arrow');
         if (prevBtn) {
           e.stopPropagation();
@@ -1932,7 +2014,6 @@
           return;
         }
 
-        // Next Arrow
         const nextBtn = e.target.closest('.card-next-arrow');
         if (nextBtn) {
           e.stopPropagation();
@@ -1942,7 +2023,6 @@
           return;
         }
 
-        // Dot Click
         const dot = e.target.closest('.card-dot');
         if (dot) {
           e.stopPropagation();
@@ -1952,7 +2032,6 @@
           return;
         }
 
-        // Size Pill Click
         const sizeBtn = e.target.closest('.size-btn');
         if (sizeBtn) {
           e.stopPropagation();
@@ -1963,7 +2042,6 @@
           return;
         }
 
-        // Add to Cart Click
         const addBtn = e.target.closest('.add-to-cart-btn');
         if (addBtn) {
           e.stopPropagation();
