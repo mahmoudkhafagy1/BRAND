@@ -1184,8 +1184,7 @@ document.getElementById('fAddUrlBtn').addEventListener('click',()=>{
   const val=input.value.trim();
   if(val){
     // support comma or newline split
-    val.split(/[
-,]+/).forEach(u=>addImageToForm(u));
+    val.split(/[\r\n,]+/).forEach(u=>addImageToForm(u));
     input.value='';
     renderFormImagesManager();
   }
