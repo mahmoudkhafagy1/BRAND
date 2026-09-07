@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>BRAND | براند - أزياء رجالية فاخرة 2026</title>
   <meta name="description" content="BRAND - متجر أزياء رجالية فاخرة بأحدث الموديلات والألوان. شحن وتوصيل لجميع المحافظات وطلب مباشر عبر واتساب." />
-  <link rel="icon" type="image/png" href="brand_logo.png" />
   
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Cairo + Outfit + Playfair Display + Cinzel for Luxury Logo -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Cinzel:wght@700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -21,7 +20,8 @@
         extend: {
           fontFamily: {
             sans: ['Cairo', 'Outfit', 'sans-serif'],
-            en: ['Outfit', 'Cairo', 'sans-serif']
+            en: ['Outfit', 'Cairo', 'sans-serif'],
+            serif: ['Playfair Display', 'Cinzel', 'serif']
           },
           colors: {
             brand: {
@@ -48,25 +48,25 @@
 
     /* Glassmorphism */
     .glass-card {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15, 23, 42, 0.8);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .dark .glass-nav {
-      background: rgba(10, 15, 30, 0.9);
+      background: rgba(8, 12, 24, 0.92);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
     html:not(.dark) .glass-nav {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
     html:not(.dark) .glass-card {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       border: 1px solid rgba(0, 0, 0, 0.06);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
@@ -88,6 +88,46 @@
     }
     .neon-btn:active {
       transform: translateY(0);
+    }
+
+    /* PURE CSS/SVG LOGO STYLING (EXACT REPLICA OF THE IMAGE) */
+    .brand-logo-container {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .logo-rings-svg {
+      animation: rotateSlow 25s linear infinite;
+      transform-origin: center center;
+    }
+    .logo-rings-svg-ccw {
+      animation: rotateSlowCCW 35s linear infinite;
+      transform-origin: center center;
+    }
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes rotateSlowCCW {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(-360deg); }
+    }
+
+    .brand-title-gradient {
+      background: linear-gradient(135deg, #00d4ff 0%, #0099ff 45%, #7b2fff 85%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: 'Playfair Display', 'Cinzel', Georgia, serif;
+      letter-spacing: 0.05em;
+      filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.6));
+    }
+    .brand-subtitle-text {
+      font-family: 'Outfit', 'Cairo', sans-serif;
+      letter-spacing: 0.32em;
+      color: #f1f5f9;
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.7);
     }
 
     /* Social Icons Glow */
@@ -126,7 +166,7 @@
     .card-img-wrapper {
       position: relative;
       width: 100%;
-      aspect-ratio: 4 / 5; /* Big, modern fashion showcase aspect ratio */
+      aspect-ratio: 4 / 5;
       min-height: 340px;
       overflow: hidden;
       background: #0b1120;
@@ -172,15 +212,6 @@
       overflow: hidden !important;
       touch-action: none;
     }
-
-    /* Pulse Glow Animation for Center Logo */
-    @keyframes logoPulse {
-      0%, 100% { filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.4)); }
-      50% { filter: drop-shadow(0 0 28px rgba(0, 212, 255, 0.85)); }
-    }
-    .logo-glow {
-      animation: logoPulse 3s ease-in-out infinite;
-    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300 antialiased selection:bg-cyan-500 selection:text-black">
@@ -220,12 +251,12 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- NAVIGATION BAR (WITH CENTERED PROMINENT LOGO) -->
+  <!-- NAVIGATION BAR (WITH PURE CSS/SVG LOGO CENTERED) -->
   <!-- ========================================================================= -->
   <header id="mainHeader" class="sticky top-0 z-30 glass-nav transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4">
       
-      <!-- Right / Start: Menu Toggle Button & Search (Desktop) -->
+      <!-- Right / Start: Menu Toggle & Desktop Search -->
       <div class="flex items-center gap-3 flex-1">
         <button id="menuToggleBtn" type="button" aria-label="Toggle Menu" class="p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -243,12 +274,37 @@
         </div>
       </div>
 
-      <!-- CENTER: PROMINENT LOGO (Centered & Clear) -->
+      <!-- CENTER: PURE CODE LOGO (EXACT REPLICA WITH NEON RINGS) -->
       <div class="flex items-center justify-center">
         <!-- Secret 3-click on Logo for owner login without any public button -->
-        <button id="brandLogoBtn" type="button" class="flex flex-col items-center justify-center group focus:outline-none select-none" title="BRAND Store 2026">
-          <div class="relative flex items-center justify-center">
-            <img src="brand_logo.png" alt="BRAND - Men's Fashion" class="h-12 sm:h-16 w-auto object-contain logo-glow transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/180x60/0f172a/00d4ff?text=BRAND+2026'" />
+        <button id="brandLogoBtn" type="button" class="brand-logo-container group focus:outline-none py-1 cursor-pointer" title="BRAND 2026 (اضغط 3 مرات للإدارة)">
+          <div class="relative w-44 sm:w-56 h-16 sm:h-20 flex items-center justify-center overflow-hidden">
+            <!-- Neon Concentric Rings SVG in Background -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-90" viewBox="0 0 220 100" fill="none">
+              <defs>
+                <filter id="navGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <ellipse cx="110" cy="50" rx="35" ry="32" stroke="#00d4ff" stroke-width="1.8" filter="url(#navGlow)" opacity="0.8" />
+              <ellipse cx="110" cy="50" rx="55" ry="40" stroke="#0099ff" stroke-width="1.6" filter="url(#navGlow)" opacity="0.9" />
+              <ellipse cx="110" cy="50" rx="78" ry="46" stroke="#0066ff" stroke-width="1.5" filter="url(#navGlow)" opacity="0.75" />
+              <ellipse cx="110" cy="50" rx="98" ry="49" stroke="#7b2fff" stroke-width="1.2" opacity="0.6" />
+            </svg>
+
+            <!-- Text Foreground -->
+            <div class="relative z-10 flex flex-col items-center justify-center -space-y-1">
+              <span class="brand-title-gradient text-3xl sm:text-4xl font-serif font-black tracking-wider group-hover:scale-105 transition-transform duration-300">
+                BRAND
+              </span>
+              <span class="brand-subtitle-text text-[7.5px] sm:text-[9px] font-bold uppercase tracking-[0.28em] text-slate-200">
+                MEN'S COLLECTION 2026
+              </span>
+            </div>
           </div>
         </button>
       </div>
@@ -293,20 +349,48 @@
   <!-- ========================================================================= -->
   <main id="storeView" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
     
-    <!-- Hero Showcase (Centered Logo & Direct Socials) -->
+    <!-- Hero Showcase (Centered Big Code-Rendered Logo) -->
     <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-12 border border-white/10 text-center space-y-6">
       <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -bottom-32 right-1/4 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
       
-      <!-- Big Centered Logo in Hero -->
+      <!-- Big Centered Logo Badge in Hero (100% Pure CSS/SVG) -->
       <div class="relative z-10 flex flex-col items-center justify-center space-y-4 max-w-2xl mx-auto">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold shadow-sm">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
           <span data-i18n="hero_badge">كولكشن صيف وخريف 2026 الفاخر</span>
         </div>
 
-        <div class="p-3">
-          <img src="brand_logo.png" alt="BRAND" class="h-28 sm:h-36 w-auto object-contain mx-auto drop-shadow-[0_10px_35px_rgba(0,212,255,0.45)]" onerror="this.src='https://placehold.co/400x160/0f172a/00d4ff?text=BRAND+COLLECTION'" />
+        <!-- Big Hero Logo (Pure Code with Multi-Ring Neon Glow) -->
+        <div class="relative w-72 sm:w-96 h-36 sm:h-44 flex items-center justify-center my-2">
+          <!-- Concentric Neon Rings -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 360 180" fill="none">
+            <defs>
+              <filter id="heroGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2" />
+                <feMerge>
+                  <feMergeNode in="blur1" />
+                  <feMergeNode in="blur2" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <ellipse cx="180" cy="90" rx="55" ry="48" stroke="#00d4ff" stroke-width="2.2" filter="url(#heroGlow)" opacity="0.85" />
+            <ellipse cx="180" cy="90" rx="85" ry="62" stroke="#0099ff" stroke-width="2.5" filter="url(#heroGlow)" opacity="0.95" />
+            <ellipse cx="180" cy="90" rx="120" ry="74" stroke="#0066ff" stroke-width="2" filter="url(#heroGlow)" opacity="0.8" />
+            <ellipse cx="180" cy="90" rx="155" ry="84" stroke="#7b2fff" stroke-width="1.8" filter="url(#heroGlow)" opacity="0.7" />
+          </svg>
+
+          <!-- Text -->
+          <div class="relative z-10 flex flex-col items-center justify-center -space-y-1 sm:-space-y-2">
+            <span class="brand-title-gradient text-5xl sm:text-6xl font-serif font-black tracking-wider">
+              BRAND
+            </span>
+            <span class="brand-subtitle-text text-[9px] sm:text-xs font-bold uppercase tracking-[0.35em] text-slate-100">
+              MEN'S COLLECTION 2026
+            </span>
+          </div>
         </div>
 
         <p class="text-sm sm:text-base text-slate-300 font-medium leading-relaxed max-w-xl mx-auto" data-i18n="hero_desc">
@@ -373,13 +457,13 @@
   </main>
 
   <!-- ========================================================================= -->
-  <!-- SIDE MENU DRAWER (NO VISIBLE ADMIN BUTTON) -->
+  <!-- SIDE MENU DRAWER -->
   <!-- ========================================================================= -->
   <aside id="sideMenuDrawer" class="fixed top-0 right-0 z-50 w-80 max-w-[85vw] h-full bg-slate-900 text-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l border-white/10 rtl:right-0 rtl:left-auto ltr:left-0 ltr:right-auto ltr:-translate-x-full">
     <div class="p-5 border-b border-white/10 flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <img src="brand_logo.png" alt="BRAND" class="w-8 h-8 rounded-full object-contain" />
-        <span class="font-black text-lg font-en neon-gradient-text">BRAND STORE</span>
+      <div class="flex items-center gap-2">
+        <span class="brand-title-gradient font-serif font-black text-xl">BRAND</span>
+        <span class="text-[9px] text-cyan-400 font-bold uppercase tracking-widest font-en">2026</span>
       </div>
       <button id="closeSideMenuBtn" type="button" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -541,7 +625,10 @@
   <!-- ========================================================================= -->
   <section id="loginView" class="hidden flex-1 max-w-md w-full mx-auto px-4 py-16 flex flex-col justify-center">
     <div class="glass-card rounded-3xl p-8 border border-white/10 text-center space-y-6">
-      <img src="brand_logo.png" alt="BRAND" class="w-20 h-20 mx-auto rounded-full ring-4 ring-cyan-500/30 object-contain" />
+      <div class="relative w-36 h-20 mx-auto flex items-center justify-center">
+        <span class="brand-title-gradient text-4xl font-serif font-black">BRAND</span>
+      </div>
+
       <div>
         <h2 class="text-2xl font-black neon-gradient-text" data-i18n="admin_login_title">تسجيل دخول إدارة المتجر</h2>
         <p class="text-xs text-slate-400 mt-1" data-i18n="admin_login_desc">أدخل كلمة المرور لإدارة الموديلات والصور</p>
@@ -571,7 +658,7 @@
     <!-- Admin Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-card p-5 rounded-2xl border border-white/10">
       <div class="flex items-center gap-3">
-        <img src="brand_logo.png" alt="BRAND" class="w-12 h-12 rounded-full object-contain" />
+        <span class="brand-title-gradient font-serif font-black text-2xl">BRAND</span>
         <div>
           <h2 class="text-xl font-black neon-gradient-text" data-i18n="admin_dash_title">لوحة تحكم الموديلات</h2>
           <p class="text-xs text-slate-400" data-i18n="admin_dash_sub">إضافة وتعديل المنتجات والصور المتعددة وتحديد الأسعار</p>
@@ -742,13 +829,13 @@
   </section>
 
   <!-- ========================================================================= -->
-  <!-- FOOTER (WITH SOCIAL LINKS & CENTERED LOGO) -->
+  <!-- FOOTER -->
   <!-- ========================================================================= -->
   <footer class="mt-auto border-t border-white/10 bg-slate-950 py-10 px-4 text-center space-y-6">
-    <!-- Centered Footer Logo -->
-    <div class="flex flex-col items-center justify-center gap-3">
-      <img src="brand_logo.png" alt="BRAND" class="h-14 sm:h-16 w-auto object-contain drop-shadow-[0_4px_20px_rgba(0,212,255,0.35)]" />
-      <span class="font-black text-base text-white font-en tracking-wider">BRAND MEN'S COLLECTION 2026</span>
+    <!-- Centered Footer Code Logo -->
+    <div class="flex flex-col items-center justify-center gap-1">
+      <span class="brand-title-gradient text-3xl font-serif font-black">BRAND</span>
+      <span class="text-[9px] font-bold text-cyan-400 tracking-[0.25em] font-en uppercase">MEN'S COLLECTION 2026</span>
     </div>
 
     <!-- Social Media Links in Footer -->
@@ -790,10 +877,10 @@
     const ADMIN_PASSWORD = 'admin123';
     const CURRENCY_AR = 'ج.م';
     const CURRENCY_EN = 'EGP';
-    const STORAGE_KEY_PRODS = 'brand_products_v6';
-    const STORAGE_KEY_CART = 'brand_cart_v6';
-    const STORAGE_KEY_THEME = 'brand_theme_v6';
-    const STORAGE_KEY_LANG = 'brand_lang_v6';
+    const STORAGE_KEY_PRODS = 'brand_products_v7';
+    const STORAGE_KEY_CART = 'brand_cart_v7';
+    const STORAGE_KEY_THEME = 'brand_theme_v7';
+    const STORAGE_KEY_LANG = 'brand_lang_v7';
 
     /* Category Standard Sizes */
     const PRESET_SIZES = {
@@ -803,7 +890,7 @@
       'Other': ['Free Size', 'S', 'M', 'L', 'XL']
     };
 
-    /* Initial Default Products (Rich multi-image models) */
+    /* Initial Default Products (With reliable Unsplash fashion URLs) */
     const INITIAL_PRODUCTS = [
       {
         id: 'p1',
@@ -1037,6 +1124,9 @@
       return Math.round(product.price * (1 - product.discount / 100));
     }
 
+    /* Fallback image helper */
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=85';
+
     /* ---------------------------------------------------------
        THEME & LANGUAGE CONTROLLERS
        --------------------------------------------------------- */
@@ -1227,7 +1317,7 @@
       emptyState.classList.add('hidden');
 
       grid.innerHTML = filtered.map(p => {
-        const imgs = (p.images && p.images.length) ? p.images : ['brand_logo.png'];
+        const imgs = (p.images && p.images.length) ? p.images : [FALLBACK_IMG];
         const totalImgs = imgs.length;
         const currentIdx = cardActiveIndices[p.id] || 0;
         const isOutOfStock = p.stock <= 0;
@@ -1268,7 +1358,7 @@
                   alt="${escapeHTML(p.title)}" 
                   class="card-img-slide ${i === currentIdx ? 'opacity-100 z-[2] scale-100' : 'opacity-0 z-[1] scale-95'}"
                   loading="lazy"
-                  onerror="this.src='brand_logo.png'"
+                  onerror="this.src='${FALLBACK_IMG}'"
                 />
               `).join('')}
 
@@ -1367,7 +1457,7 @@
       const p = products.find(x => x.id === prodId);
       if (!p) return;
       activeLightboxProd = p;
-      const imgs = (p.images && p.images.length) ? p.images : ['brand_logo.png'];
+      const imgs = (p.images && p.images.length) ? p.images : [FALLBACK_IMG];
       activeLightboxIdx = Math.max(0, Math.min(initialIdx, imgs.length - 1));
 
       document.getElementById('lbTitle').textContent = p.title;
@@ -1386,7 +1476,7 @@
       if (!activeLightboxProd) return;
       const p = activeLightboxProd;
       const t = I18N[lang];
-      const imgs = (p.images && p.images.length) ? p.images : ['brand_logo.png'];
+      const imgs = (p.images && p.images.length) ? p.images : [FALLBACK_IMG];
       const total = imgs.length;
       activeLightboxIdx = ((activeLightboxIdx % total) + total) % total;
 
@@ -1404,7 +1494,7 @@
             src="${escapeHTML(imgUrl)}" 
             class="w-14 h-14 rounded-xl object-cover cursor-pointer border-2 transition-all ${i === activeLightboxIdx ? 'border-cyan-400 scale-105 shadow-lg shadow-cyan-500/50' : 'border-transparent opacity-50 hover:opacity-100'}"
             data-idx="${i}"
-            onerror="this.src='brand_logo.png'"
+            onerror="this.src='${FALLBACK_IMG}'"
           />
         `).join('');
       } else {
@@ -1460,7 +1550,7 @@
       const size = chosenSize || cardSelectedSizes[prodId] || (p.sizes && p.sizes[0]) || 'Standard';
       const cartKey = `${p.id}_${size}`;
       const finalPrice = getDiscountPrice(p) || p.price;
-      const mainImg = (p.images && p.images.length) ? p.images[0] : 'brand_logo.png';
+      const mainImg = (p.images && p.images.length) ? p.images[0] : FALLBACK_IMG;
 
       const existingIndex = cart.findIndex(c => c.cartKey === cartKey);
       if (existingIndex >= 0) {
@@ -1540,7 +1630,7 @@
 
         return `
           <div class="py-3.5 flex items-center gap-3">
-            <img src="${escapeHTML(item.image)}" alt="" class="w-16 h-20 rounded-xl object-cover bg-slate-800 border border-white/10" onerror="this.src='brand_logo.png'" />
+            <img src="${escapeHTML(item.image)}" alt="" class="w-16 h-20 rounded-xl object-cover bg-slate-800 border border-white/10" onerror="this.src='${FALLBACK_IMG}'" />
             <div class="flex-1 min-w-0">
               <h4 class="text-xs font-bold text-slate-100 truncate">${escapeHTML(item.title)}</h4>
               <div class="text-[11px] text-slate-400 flex items-center gap-2 mt-1">
@@ -1623,14 +1713,14 @@
 
       tbody.innerHTML = products.map(p => {
         const discountPrice = getDiscountPrice(p);
-        const imgs = (p.images && p.images.length) ? p.images : ['brand_logo.png'];
+        const imgs = (p.images && p.images.length) ? p.images : [FALLBACK_IMG];
         const mainImg = imgs[0];
 
         return `
           <tr class="hover:bg-white/5 transition-colors">
             <td class="p-3 flex items-center gap-3">
               <div class="relative">
-                <img src="${escapeHTML(mainImg)}" alt="" class="w-12 h-14 rounded-lg object-cover bg-slate-800 border border-white/10" onerror="this.src='brand_logo.png'" />
+                <img src="${escapeHTML(mainImg)}" alt="" class="w-12 h-14 rounded-lg object-cover bg-slate-800 border border-white/10" onerror="this.src='${FALLBACK_IMG}'" />
                 <span class="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 font-black text-[9px] px-1 rounded-full">${imgs.length}</span>
               </div>
               <div class="min-w-0">
@@ -1691,7 +1781,7 @@
       list.innerHTML = formImages.map((imgUrl, i) => `
         <div class="relative group rounded-xl border ${i === 0 ? 'border-cyan-400/80 bg-cyan-500/10' : 'border-white/10 bg-slate-900'} p-1.5 flex flex-col items-center gap-1.5">
           <div class="w-full h-24 rounded-lg overflow-hidden bg-slate-950 flex items-center justify-center relative">
-            <img src="${escapeHTML(imgUrl)}" alt="" class="w-full h-full object-contain p-1" onerror="this.src='brand_logo.png'" />
+            <img src="${escapeHTML(imgUrl)}" alt="" class="w-full h-full object-contain p-1" onerror="this.src='${FALLBACK_IMG}'" />
             ${i === 0 ? `<span class="absolute top-1 right-1 bg-cyan-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded shadow">رئيسية</span>` : ''}
           </div>
           <div class="w-full flex items-center justify-between gap-1">
@@ -1908,7 +1998,7 @@
           discount: discount,
           stock: stock,
           sizes: formSelectedSizes.length ? formSelectedSizes : ['Free Size'],
-          images: formImages.length ? formImages : ['brand_logo.png']
+          images: formImages.length ? formImages : [FALLBACK_IMG]
         };
 
         const existingIdx = products.findIndex(p => p.id === pid);
