@@ -6,7 +6,7 @@
   <title>BRAND | براند - أزياء رجالية فاخرة 2026</title>
   <meta name="description" content="BRAND - متجر أزياء رجالية فاخرة بأحدث الموديلات والألوان. شحن وتوصيل لجميع المحافظات وطلب مباشر عبر واتساب." />
   
-  <!-- Google Fonts: Cairo + Outfit + Playfair Display + Cinzel for Luxury Logo -->
+  <!-- Google Fonts: Cairo + Outfit + Playfair Display + Cinzel -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Cinzel:wght@700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
@@ -48,13 +48,13 @@
 
     /* Glassmorphism */
     .glass-card {
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .dark .glass-nav {
-      background: rgba(8, 12, 24, 0.92);
+      background: rgba(8, 12, 24, 0.94);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -90,29 +90,13 @@
       transform: translateY(0);
     }
 
-    /* PURE CSS/SVG LOGO STYLING (EXACT REPLICA OF THE IMAGE) */
+    /* PURE CSS/SVG LOGO STYLING */
     .brand-logo-container {
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       user-select: none;
-    }
-    .logo-rings-svg {
-      animation: rotateSlow 25s linear infinite;
-      transform-origin: center center;
-    }
-    .logo-rings-svg-ccw {
-      animation: rotateSlowCCW 35s linear infinite;
-      transform-origin: center center;
-    }
-    @keyframes rotateSlow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    @keyframes rotateSlowCCW {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(-360deg); }
     }
 
     .brand-title-gradient {
@@ -159,21 +143,32 @@
     }
     .product-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 20px 45px rgba(0, 212, 255, 0.16);
+      box-shadow: 0 20px 45px rgba(0, 212, 255, 0.18);
     }
 
-    /* Large adaptive image display */
+    /* =========================================================
+       PERFECT WIDE & LARGE ADAPTIVE IMAGE SHOWCASE
+       (Optimized for FRONT & BACK T-Shirt Mockups)
+       ========================================================= */
     .card-img-wrapper {
       position: relative;
       width: 100%;
-      aspect-ratio: 4 / 5;
-      min-height: 340px;
+      aspect-ratio: 16 / 11; /* Wide ratio matching Front & Back mockups */
+      min-height: 280px;
       overflow: hidden;
-      background: #0b1120;
+      background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     @media (min-width: 640px) {
       .card-img-wrapper {
-        min-height: 380px;
+        min-height: 340px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .card-img-wrapper {
+        min-height: 360px;
       }
     }
 
@@ -183,8 +178,9 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center top;
+      object-fit: contain; /* Shows 100% of the image without any cutoffs */
+      object-position: center center;
+      padding: 6px;
     }
     .product-card:hover .card-img-slide {
       transform: scale(1.03);
@@ -349,12 +345,12 @@
   <!-- ========================================================================= -->
   <main id="storeView" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
     
-    <!-- Hero Showcase (Centered Big Code-Rendered Logo) -->
+    <!-- Hero Showcase -->
     <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-12 border border-white/10 text-center space-y-6">
       <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -bottom-32 right-1/4 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
       
-      <!-- Big Centered Logo Badge in Hero (100% Pure CSS/SVG) -->
+      <!-- Big Centered Logo Badge in Hero -->
       <div class="relative z-10 flex flex-col items-center justify-center space-y-4 max-w-2xl mx-auto">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold shadow-sm">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
@@ -441,8 +437,8 @@
         </div>
       </div>
 
-      <!-- Products Grid (Big, spacious image containers) -->
-      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Products Grid (2 columns on tablet/desktop to give mockups massive space) -->
+      <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
         <!-- Injected by JS -->
       </div>
 
@@ -585,9 +581,9 @@
         <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
       </button>
 
-      <!-- Main Big Image -->
-      <div class="w-full h-full max-w-4xl flex items-center justify-center">
-        <img id="lbMainImg" src="" alt="" class="max-h-[72vh] sm:max-h-[75vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl transition-all duration-300 select-none border border-white/10" />
+      <!-- Main Big Image (Fit fully without crop) -->
+      <div class="w-full h-full max-w-5xl flex items-center justify-center">
+        <img id="lbMainImg" src="" alt="" class="max-h-[75vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl transition-all duration-300 select-none border border-white/10 bg-black/40" />
       </div>
 
       <!-- Next Arrow -->
@@ -708,7 +704,7 @@
           <!-- Title -->
           <div class="md:col-span-2">
             <label class="block text-xs font-bold text-slate-300 mb-1" data-i18n="f_title">اسم الموديل / المنتج:</label>
-            <input type="text" id="formTitle" required placeholder="مثال: تيشرت اوفر سايز بيسك قطن 100%" class="w-full h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-sm text-white focus:outline-none focus:border-cyan-400" />
+            <input type="text" id="formTitle" required placeholder="مثال: تيشرت اوفر سايز UP'TO براند قطن 100%" class="w-full h-11 px-4 rounded-xl bg-slate-900 border border-white/10 text-sm text-white focus:outline-none focus:border-cyan-400" />
           </div>
 
           <!-- Category -->
@@ -877,63 +873,58 @@
     const ADMIN_PASSWORD = 'admin123';
     const CURRENCY_AR = 'ج.م';
     const CURRENCY_EN = 'EGP';
-    const STORAGE_KEY_PRODS = 'brand_products_v7';
-    const STORAGE_KEY_CART = 'brand_cart_v7';
-    const STORAGE_KEY_THEME = 'brand_theme_v7';
-    const STORAGE_KEY_LANG = 'brand_lang_v7';
+    const STORAGE_KEY_PRODS = 'brand_products_v8';
+    const STORAGE_KEY_CART = 'brand_cart_v8';
+    const STORAGE_KEY_THEME = 'brand_theme_v8';
+    const STORAGE_KEY_LANG = 'brand_lang_v8';
 
     /* Category Standard Sizes */
     const PRESET_SIZES = {
-      'T-Shirts': ['S', 'M', 'L', 'XL', '2XL', '3XL'],
+      'T-Shirts': ['M', 'L', 'XL', '2XL', '3XL'],
       'Pants': ['30', '32', '34', '36', '38', '40'],
       'Shoes': ['40', '41', '42', '43', '44', '45'],
       'Other': ['Free Size', 'S', 'M', 'L', 'XL']
     };
 
-    /* Initial Default Products (With reliable Unsplash fashion URLs) */
+    /* Initial Default Products */
     const INITIAL_PRODUCTS = [
       {
         id: 'p1',
-        title: 'Urban Oversized Tee (3 ألوان)',
+        title: "تيشرت اوفر سايز UP'TO (أسود / أبيض)",
         category: 'T-Shirts',
         price: 450,
-        discount: 0,
-        stock: 15,
+        discount: 10,
+        stock: 20,
         sizes: ['M', 'L', 'XL', '2XL'],
         images: [
-          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=85',
-          'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=900&q=85',
-          'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=900&q=85',
-          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=900&q=85'
+          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85',
+          'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1100&q=85'
         ]
       },
       {
         id: 'p2',
-        title: 'Cargo Street Pants Edition 2026',
-        category: 'Pants',
-        price: 1250,
-        discount: 20,
-        stock: 8,
-        sizes: ['30', '32', '34', '36', '38'],
+        title: 'تيشرت اوفر سايز CHAOS Cchange (Front & Back)',
+        category: 'T-Shirts',
+        price: 490,
+        discount: 0,
+        stock: 12,
+        sizes: ['L', 'XL', '2XL'],
         images: [
-          'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?w=900&q=85',
-          'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=900&q=85',
-          'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=900&q=85'
+          'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=1100&q=85',
+          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1100&q=85'
         ]
       },
       {
         id: 'p3',
-        title: 'Air Boost Runner Kicks (Triple Color)',
-        category: 'Shoes',
-        price: 2800,
+        title: 'تيشرت اوفر سايز ITALY Premium Edition',
+        category: 'T-Shirts',
+        price: 520,
         discount: 15,
-        stock: 5,
-        sizes: ['41', '42', '43', '44', '45'],
+        stock: 10,
+        sizes: ['M', 'L', 'XL', '2XL'],
         images: [
-          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&q=85',
-          'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=900&q=85',
-          'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=900&q=85',
-          'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=900&q=85'
+          'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=1100&q=85',
+          'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1100&q=85'
         ]
       }
     ];
@@ -1124,8 +1115,7 @@
       return Math.round(product.price * (1 - product.discount / 100));
     }
 
-    /* Fallback image helper */
-    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=85';
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85';
 
     /* ---------------------------------------------------------
        THEME & LANGUAGE CONTROLLERS
@@ -1290,7 +1280,7 @@
     }
 
     /* ---------------------------------------------------------
-       RENDER STORE PRODUCTS (LARGE ADAPTIVE IMAGES)
+       RENDER STORE PRODUCTS (LARGE WIDE ADAPTIVE IMAGES)
        --------------------------------------------------------- */
     function renderStore() {
       stopAllCardIntervals();
@@ -1334,7 +1324,7 @@
         return `
           <div class="product-card glass-card rounded-3xl overflow-hidden flex flex-col border border-white/10 group relative" data-pid="${escapeHTML(p.id)}">
             
-            <!-- Large Adaptive Showcase Box -->
+            <!-- Large Adaptive Dual-View Showcase Box (16:11 Aspect Ratio) -->
             <div class="card-img-wrapper cursor-pointer card-image-trigger" data-pid="${escapeHTML(p.id)}">
               
               <!-- Badges -->
@@ -1351,7 +1341,7 @@
                 </div>
               ` : ''}
 
-              <!-- Slides -->
+              <!-- Slides (Contain Mode: 100% visible, no crop) -->
               ${imgs.map((imgUrl, i) => `
                 <img 
                   src="${escapeHTML(imgUrl)}" 
@@ -1364,10 +1354,10 @@
 
               <!-- Navigation Arrows -->
               ${totalImgs > 1 ? `
-                <button type="button" class="card-prev-arrow absolute top-1/2 right-3 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-slate-950/75 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg" data-pid="${escapeHTML(p.id)}">
+                <button type="button" class="card-prev-arrow absolute top-1/2 right-3 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-slate-950/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg" data-pid="${escapeHTML(p.id)}">
                   <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
-                <button type="button" class="card-next-arrow absolute top-1/2 left-3 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-slate-950/75 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg" data-pid="${escapeHTML(p.id)}">
+                <button type="button" class="card-next-arrow absolute top-1/2 left-3 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-slate-950/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg" data-pid="${escapeHTML(p.id)}">
                   <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
                 </button>
 
@@ -1387,7 +1377,7 @@
                   <span class="font-semibold text-cyan-400">${escapeHTML(p.category)}</span>
                   <span class="text-slate-400 font-en font-medium">${p.stock} in stock</span>
                 </div>
-                <h3 class="font-bold text-base text-slate-100 line-clamp-1 hover:text-cyan-400 transition-colors cursor-pointer card-image-trigger" data-pid="${escapeHTML(p.id)}">
+                <h3 class="font-bold text-base sm:text-lg text-slate-100 line-clamp-1 hover:text-cyan-400 transition-colors cursor-pointer card-image-trigger" data-pid="${escapeHTML(p.id)}">
                   ${escapeHTML(p.title)}
                 </h3>
               </div>
@@ -1403,7 +1393,7 @@
                     ${p.sizes.map(sz => `
                       <button 
                         type="button" 
-                        class="size-btn px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${sz === selectedSize ? 'active' : 'bg-slate-900 text-slate-300 border-white/10 hover:border-cyan-400/50'}"
+                        class="size-btn px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${sz === selectedSize ? 'active' : 'bg-slate-900 text-slate-300 border-white/10 hover:border-cyan-400/50'}"
                         data-pid="${escapeHTML(p.id)}" 
                         data-sz="${escapeHTML(sz)}"
                       >
@@ -1419,15 +1409,15 @@
                 <div class="text-right">
                   ${discountPrice ? `
                     <span class="text-xs line-through text-slate-500 font-en">${formatMoney(p.price)}</span>
-                    <div class="text-lg font-black text-red-400 font-en">${formatMoney(discountPrice)}</div>
+                    <div class="text-lg sm:text-xl font-black text-red-400 font-en">${formatMoney(discountPrice)}</div>
                   ` : `
-                    <div class="text-lg font-black text-cyan-400 font-en">${formatMoney(p.price)}</div>
+                    <div class="text-lg sm:text-xl font-black text-cyan-400 font-en">${formatMoney(p.price)}</div>
                   `}
                 </div>
 
                 <button 
                   type="button" 
-                  class="add-to-cart-btn px-5 py-2.5 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${isOutOfStock ? 'bg-red-500/10 text-red-400 border border-red-500/20 cursor-not-allowed' : (inCart ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'neon-btn text-white')}"
+                  class="add-to-cart-btn px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all flex items-center gap-2 ${isOutOfStock ? 'bg-red-500/10 text-red-400 border border-red-500/20 cursor-not-allowed' : (inCart ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'neon-btn text-white')}"
                   data-pid="${escapeHTML(p.id)}"
                   ${isOutOfStock ? 'disabled' : ''}
                 >
@@ -1492,7 +1482,7 @@
         strip.innerHTML = imgs.map((imgUrl, i) => `
           <img 
             src="${escapeHTML(imgUrl)}" 
-            class="w-14 h-14 rounded-xl object-cover cursor-pointer border-2 transition-all ${i === activeLightboxIdx ? 'border-cyan-400 scale-105 shadow-lg shadow-cyan-500/50' : 'border-transparent opacity-50 hover:opacity-100'}"
+            class="w-16 h-12 rounded-xl object-contain bg-slate-900 border-2 cursor-pointer transition-all ${i === activeLightboxIdx ? 'border-cyan-400 scale-105 shadow-lg shadow-cyan-500/50' : 'border-transparent opacity-50 hover:opacity-100'}"
             data-idx="${i}"
             onerror="this.src='${FALLBACK_IMG}'"
           />
@@ -1630,7 +1620,7 @@
 
         return `
           <div class="py-3.5 flex items-center gap-3">
-            <img src="${escapeHTML(item.image)}" alt="" class="w-16 h-20 rounded-xl object-cover bg-slate-800 border border-white/10" onerror="this.src='${FALLBACK_IMG}'" />
+            <img src="${escapeHTML(item.image)}" alt="" class="w-16 h-16 rounded-xl object-contain bg-slate-950 border border-white/10" onerror="this.src='${FALLBACK_IMG}'" />
             <div class="flex-1 min-w-0">
               <h4 class="text-xs font-bold text-slate-100 truncate">${escapeHTML(item.title)}</h4>
               <div class="text-[11px] text-slate-400 flex items-center gap-2 mt-1">
@@ -1720,7 +1710,7 @@
           <tr class="hover:bg-white/5 transition-colors">
             <td class="p-3 flex items-center gap-3">
               <div class="relative">
-                <img src="${escapeHTML(mainImg)}" alt="" class="w-12 h-14 rounded-lg object-cover bg-slate-800 border border-white/10" onerror="this.src='${FALLBACK_IMG}'" />
+                <img src="${escapeHTML(mainImg)}" alt="" class="w-14 h-12 rounded-lg object-contain bg-slate-900 border border-white/10" onerror="this.src='${FALLBACK_IMG}'" />
                 <span class="absolute -bottom-1 -right-1 bg-cyan-500 text-slate-950 font-black text-[9px] px-1 rounded-full">${imgs.length}</span>
               </div>
               <div class="min-w-0">
