@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Cinzel:wght@700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
   
-    <!-- Firebase App & Firestore Compat SDK -->
+  <!-- Firebase App & Firestore SDK (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
@@ -101,6 +101,32 @@
       align-items: center;
       justify-content: center;
       user-select: none;
+      cursor: pointer;
+    }
+    .brand-logo-badge {
+      position: relative;
+      background: radial-gradient(circle at center, #0a0e1a 0%, #030712 100%);
+      border: 2px solid transparent;
+      border-radius: 9999px;
+      padding: 6px 20px;
+      box-shadow: 0 0 25px rgba(0, 212, 255, 0.3), inset 0 0 15px rgba(123, 47, 255, 0.2);
+    }
+    .brand-logo-badge::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 9999px;
+      padding: 2px;
+      background: linear-gradient(135deg, #00d4ff, #7b2fff, #00d4ff);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      animation: rotateGradient 6s linear infinite;
+    }
+    @keyframes rotateGradient {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
     }
 
     .brand-title-gradient {
@@ -157,7 +183,7 @@
     .card-img-wrapper {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 11; /* Wide ratio matching Front & Back mockups */
+      aspect-ratio: 16 / 11;
       min-height: 280px;
       overflow: hidden;
       background: radial-gradient(circle at center, #111827 0%, #030712 100%);
@@ -182,7 +208,7 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain; /* Shows 100% of the image without any cutoffs */
+      object-fit: contain;
       object-position: center center;
       padding: 6px;
     }
@@ -251,367 +277,322 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- NAVIGATION BAR (WITH PURE CSS/SVG LOGO CENTERED) -->
+  <!-- MAIN NAVBAR -->
   <!-- ========================================================================= -->
-  <header id="mainHeader" class="sticky top-0 z-30 glass-nav transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4">
-      
-      <!-- Right / Start: Menu Toggle & Desktop Search -->
-      <div class="flex items-center gap-3 flex-1">
-        <button id="menuToggleBtn" type="button" aria-label="Toggle Menu" class="p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
+  <nav id="mainNav" class="glass-nav sticky top-0 z-30 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 sm:h-24">
+        
+        <!-- Left: Side Menu Toggle & Social Icons -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button id="menuToggleBtn" type="button" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-all" aria-label="Menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          </button>
 
-        <div class="hidden lg:flex w-64">
-          <div class="relative w-full">
-            <input type="text" id="desktopSearchInput" placeholder="بحث عن موديل..." class="w-full h-10 pr-9 pl-3 rounded-xl bg-slate-900/80 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all" />
-            <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
+          <!-- Social Quick Buttons Desktop -->
+          <div class="hidden lg:flex items-center gap-2">
+            <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="social-btn social-tiktok p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white" title="TikTok">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="social-btn social-fb p-2 rounded-xl bg-white/5 border border-white/10 text-slate-300 hover:text-white" title="Facebook Group">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="social-btn social-wa p-2 rounded-xl bg-white/5 border border-white/10 text-emerald-400 hover:text-white" title="WhatsApp">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+            </a>
           </div>
         </div>
-      </div>
 
-      <!-- CENTER: PURE CODE LOGO (EXACT REPLICA WITH NEON RINGS) -->
-      <div class="flex items-center justify-center">
-        <!-- Secret 3-click on Logo for owner login without any public button -->
-        <button id="brandLogoBtn" type="button" class="brand-logo-container group focus:outline-none py-1 cursor-pointer" title="BRAND 2026 (اضغط 3 مرات للإدارة)">
-          <div class="relative w-44 sm:w-56 h-16 sm:h-20 flex items-center justify-center overflow-hidden">
-            <!-- Neon Concentric Rings SVG in Background -->
-            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-90" viewBox="0 0 220 100" fill="none">
-              <defs>
-                <filter id="navGlow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
-              <ellipse cx="110" cy="50" rx="35" ry="32" stroke="#00d4ff" stroke-width="1.8" filter="url(#navGlow)" opacity="0.8" />
-              <ellipse cx="110" cy="50" rx="55" ry="40" stroke="#0099ff" stroke-width="1.6" filter="url(#navGlow)" opacity="0.9" />
-              <ellipse cx="110" cy="50" rx="78" ry="46" stroke="#0066ff" stroke-width="1.5" filter="url(#navGlow)" opacity="0.75" />
-              <ellipse cx="110" cy="50" rx="98" ry="49" stroke="#7b2fff" stroke-width="1.2" opacity="0.6" />
-            </svg>
-
-            <!-- Text Foreground -->
-            <div class="relative z-10 flex flex-col items-center justify-center -space-y-1">
-              <span class="brand-title-gradient text-3xl sm:text-4xl font-serif font-black tracking-wider group-hover:scale-105 transition-transform duration-300">
-                BRAND
-              </span>
-              <span class="brand-subtitle-text text-[7.5px] sm:text-[9px] font-bold uppercase tracking-[0.28em] text-slate-200">
-                MEN'S COLLECTION 2026
-              </span>
-            </div>
-          </div>
-        </button>
-      </div>
-
-      <!-- Left / End: Lang, Theme & Cart -->
-      <div class="flex items-center justify-end gap-2 flex-1">
-        <!-- Language -->
-        <button id="langToggleBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-white/10 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
-          <span id="langLabel">EN</span>
-        </button>
-
-        <!-- Theme Switch -->
-        <button id="themeToggleBtn" type="button" aria-label="Toggle Theme" class="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
-          <svg id="themeIconSun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-          <svg id="themeIconMoon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-        </button>
-
-        <!-- Cart Button -->
-        <button id="cartToggleBtn" type="button" class="relative p-2.5 rounded-xl bg-cyan-500/15 border border-cyan-400/40 text-cyan-400 hover:bg-cyan-500/25 transition-all flex items-center justify-center">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-          </svg>
-          <span id="cartCountBadge" class="absolute -top-1.5 -left-1.5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-950 shadow-lg scale-0 transition-transform duration-200">0</span>
-        </button>
-      </div>
-
-    </div>
-
-    <!-- Mobile Search Bar (Below Header) -->
-    <div class="lg:hidden px-4 pb-2.5">
-      <div class="relative w-full">
-        <input type="text" id="mobileSearchInput" placeholder="بحث عن موديل، لون، فئة..." class="w-full h-10 pr-9 pl-4 rounded-xl bg-slate-900/90 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400" />
-        <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-      </div>
-    </div>
-  </header>
-
-  <!-- ========================================================================= -->
-  <!-- MAIN STORE VIEW -->
-  <!-- ========================================================================= -->
-  <main id="storeView" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-    
-    <!-- Hero Showcase -->
-    <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-12 border border-white/10 text-center space-y-6">
-      <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-32 right-1/4 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
-      
-      <!-- Big Centered Logo Badge in Hero -->
-      <div class="relative z-10 flex flex-col items-center justify-center space-y-4 max-w-2xl mx-auto">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold shadow-sm">
-          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-          <span data-i18n="hero_badge">كولكشن صيف وخريف 2026 الفاخر</span>
-        </div>
-
-        <!-- Big Hero Logo (Pure Code with Multi-Ring Neon Glow) -->
-        <div class="relative w-72 sm:w-96 h-36 sm:h-44 flex items-center justify-center my-2">
-          <!-- Concentric Neon Rings -->
-          <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 360 180" fill="none">
-            <defs>
-              <filter id="heroGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1" />
-                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2" />
-                <feMerge>
-                  <feMergeNode in="blur1" />
-                  <feMergeNode in="blur2" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-            <ellipse cx="180" cy="90" rx="55" ry="48" stroke="#00d4ff" stroke-width="2.2" filter="url(#heroGlow)" opacity="0.85" />
-            <ellipse cx="180" cy="90" rx="85" ry="62" stroke="#0099ff" stroke-width="2.5" filter="url(#heroGlow)" opacity="0.95" />
-            <ellipse cx="180" cy="90" rx="120" ry="74" stroke="#0066ff" stroke-width="2" filter="url(#heroGlow)" opacity="0.8" />
-            <ellipse cx="180" cy="90" rx="155" ry="84" stroke="#7b2fff" stroke-width="1.8" filter="url(#heroGlow)" opacity="0.7" />
-          </svg>
-
-          <!-- Text -->
-          <div class="relative z-10 flex flex-col items-center justify-center -space-y-1 sm:-space-y-2">
-            <span class="brand-title-gradient text-5xl sm:text-6xl font-serif font-black tracking-wider">
+        <!-- Center: PURE CSS/SVG LUXURY BRAND LOGO (Matches Exact User Design) -->
+        <div id="brandLogoBtn" class="brand-logo-container group py-1" title="BRAND MEN'S STORE (اضغط 3 مرات للدخول السري)">
+          <div class="brand-logo-badge flex flex-col items-center justify-center transition-transform duration-300 group-hover:scale-105">
+            <!-- BRAND Text with glowing luxury gradient -->
+            <span class="brand-title-gradient text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-widest leading-none">
               BRAND
             </span>
-            <span class="brand-subtitle-text text-[9px] sm:text-xs font-bold uppercase tracking-[0.35em] text-slate-100">
+            <!-- MEN'S COLLECTION Subtitle -->
+            <span class="brand-subtitle-text text-[8px] sm:text-[9px] font-bold tracking-[0.3em] uppercase mt-0.5">
               MEN'S COLLECTION 2026
             </span>
           </div>
         </div>
 
-        <p class="text-sm sm:text-base text-slate-300 font-medium leading-relaxed max-w-xl mx-auto" data-i18n="hero_desc">
-          أحدث صيحات الملابس الرجالية بأعلى خامات وأفضل أسعار. اضغط على أي موديل لتصفح جميع ألوانه بالكامل!
+        <!-- Right: Search Bar, Theme Toggle, Language & Cart -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Desktop Search Input -->
+          <div class="relative hidden md:block w-48 lg:w-64">
+            <input 
+              type="text" 
+              id="desktopSearchInput" 
+              placeholder="بحث في الموديلات..." 
+              class="w-full h-10 pr-9 pl-4 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
+            />
+            <svg class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+
+          <!-- Language Toggle -->
+          <button id="langToggleBtn" type="button" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold text-slate-300 hover:text-white border border-white/10 transition-colors font-en">
+            <span id="langLabel">EN</span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button id="themeToggleBtn" type="button" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" aria-label="Toggle Theme">
+            <svg id="themeIconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <svg id="themeIconMoon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+          </button>
+
+          <!-- Cart Drawer Button -->
+          <button id="cartToggleBtn" type="button" class="relative p-2.5 sm:px-4 sm:py-2.5 rounded-2xl neon-btn text-white font-bold text-xs flex items-center gap-2 shadow-lg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            <span class="hidden sm:inline" data-i18n="cart_btn">السلة</span>
+            <!-- Cart Count Badge -->
+            <span id="cartCountBadge" class="w-5 h-5 rounded-full bg-red-500 text-white font-en font-black text-[11px] flex items-center justify-center scale-0 transition-transform shadow-md">
+              0
+            </span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Search Input Bar -->
+      <div class="pb-3 md:hidden">
+        <div class="relative w-full">
+          <input 
+            type="text" 
+            id="mobileSearchInput" 
+            placeholder="بحث في الموديلات، الألوان، الأكواد..." 
+            class="w-full h-10 pr-9 pl-4 rounded-xl bg-white/5 border border-white/10 text-xs text-slate-100 placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all"
+          />
+          <svg class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN CONTENT CONTAINER (STORE VIEW) -->
+  <!-- ========================================================================= -->
+  <main id="storeView" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+    
+    <!-- Hero Banner (Luxury Men's Wear) -->
+    <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-10 border border-white/10 bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-950/40 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-4 max-w-xl text-center md:text-right">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span data-i18n="hero_badge">ORIGINAL OVERSIZED & SUMMER COLLECTION</span>
+        </div>
+        
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+          أحدث استايلات <span class="neon-gradient-text">BRAND 2026</span>
+        </h1>
+        
+        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed" data-i18n="hero_desc">
+          اكتشف أفخم تشكيلة تيشرتات اوفر سايز وبناطيل مصممة بأعلى جودة قطن معالجة وأفضل قصات تريندي. جميع الموديلات مدعومة بصور متعددة لكل زاوية ولون.
         </p>
 
-        <!-- Social Media Buttons Row -->
-        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
-          <!-- TikTok Button -->
-          <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="social-btn social-tiktok px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-white/15 text-xs font-bold flex items-center gap-2 shadow-lg">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
-            <span>تابعنا على تيك توك</span>
+        <div class="flex items-center justify-center md:justify-start gap-4 pt-2">
+          <a href="https://wa.me/201029478377" target="_blank" rel="noopener noreferrer" class="neon-btn px-6 py-3 rounded-2xl text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg">
+            <span>تواصل واتساب مباشر</span>
+            <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
           </a>
+          <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-2xl glass-card text-slate-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-2 border border-white/10">
+            <span>فيديوهات التيك توك</span>
+          </a>
+        </div>
+      </div>
 
-          <!-- Facebook Button -->
-          <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="social-btn social-fb px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-white/15 text-xs font-bold flex items-center gap-2 shadow-lg">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            <span>جروب فيسبوك</span>
-          </a>
-
-          <!-- WhatsApp Button -->
-          <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="social-btn social-wa px-4 py-2.5 rounded-xl bg-slate-900 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-2 shadow-lg">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
-            <span>واتساب: 01029478377</span>
-          </a>
+      <!-- Quick Trust Badges -->
+      <div class="grid grid-cols-2 gap-3 w-full md:w-auto">
+        <div class="glass-card p-4 rounded-2xl border border-white/10 text-center space-y-1">
+          <div class="text-cyan-400 font-en font-black text-xl sm:text-2xl">+1000</div>
+          <div class="text-[11px] text-slate-400" data-i18n="badge_models">موديل متاح فوراً</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border border-white/10 text-center space-y-1">
+          <div class="text-cyan-400 font-en font-black text-xl sm:text-2xl">400+</div>
+          <div class="text-[11px] text-slate-400" data-i18n="badge_clients">عميل يتسوقون الآن</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border border-white/10 text-center space-y-1">
+          <div class="text-emerald-400 font-en font-black text-xl sm:text-2xl">100%</div>
+          <div class="text-[11px] text-slate-400" data-i18n="badge_cotton">قطن ميلتون أصلي</div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl border border-white/10 text-center space-y-1">
+          <div class="text-amber-400 font-en font-black text-xl sm:text-2xl">24/48h</div>
+          <div class="text-[11px] text-slate-400" data-i18n="badge_delivery">شحن فوري لباب البيت</div>
         </div>
       </div>
     </section>
 
-    <!-- Categories Filter & Section Title -->
-    <section id="productsSection" class="space-y-5">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 class="text-2xl font-black tracking-wide flex items-center gap-2">
-            <span class="w-2.5 h-6 rounded-full bg-cyan-400 inline-block"></span>
-            <span data-i18n="section_title">أحدث الموديلات المتوفرة</span>
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1" data-i18n="section_subtitle">اختر الفئة وشاهد تبادل الألوان والصور تلقائياً في كل كارت</p>
-        </div>
-
-        <!-- Category Pills -->
-        <div id="categoryPills" class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
-          <button type="button" data-cat="All" class="cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-white/10 transition-all whitespace-nowrap">الكل</button>
-          <button type="button" data-cat="T-Shirts" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">تيشيرتات</button>
-          <button type="button" data-cat="Pants" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">بناطيل</button>
-          <button type="button" data-cat="Shoes" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">أحذية</button>
-          <button type="button" data-cat="Sale" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-red-400 border border-red-500/20 hover:bg-red-500/10 transition-all whitespace-nowrap">🔥 عروض وتخفيضات</button>
-        </div>
+    <!-- Category Filter Bar -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div id="categoryPills" class="flex items-center gap-2 flex-nowrap sm:flex-wrap">
+        <button type="button" class="cat-btn active px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="All" data-i18n="cat_all">
+          🔥 جميع الموديلات
+        </button>
+        <button type="button" class="cat-btn px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="T-Shirts" data-i18n="cat_tshirts">
+          👕 تيشيرتات أوفر سايز (T-Shirts)
+        </button>
+        <button type="button" class="cat-btn px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="Pants" data-i18n="cat_pants">
+          👖 بناطيل (Pants)
+        </button>
+        <button type="button" class="cat-btn px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="Shoes" data-i18n="cat_shoes">
+          👟 أحذية وسنيكرز (Shoes)
+        </button>
+        <button type="button" class="cat-btn px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="Sale" data-i18n="cat_sale">
+          🏷️ عروض وخصومات خاصة
+        </button>
       </div>
+    </div>
 
-      <!-- Products Grid (2 columns on tablet/desktop to give mockups massive space) -->
-      <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-        <!-- Injected by JS -->
-      </div>
+    <!-- Products Grid (Adaptive Large 16:11 Showcase) -->
+    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Injected by JavaScript -->
+    </div>
 
-      <!-- Empty State -->
-      <div id="emptyState" class="hidden text-center py-16 px-4 glass-card rounded-2xl border border-white/10">
-        <svg class="w-16 h-16 mx-auto text-slate-500 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-        <h3 class="text-base font-bold text-slate-200" data-i18n="no_products">لا توجد موديلات مطابقة</h3>
-        <p class="text-xs text-slate-400 mt-1" data-i18n="no_products_desc">جرّب تغيير خيارات البحث أو الفئة المحددة</p>
-      </div>
-    </section>
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden py-20 text-center space-y-4 glass-card rounded-3xl border border-white/10">
+      <svg class="w-16 h-16 mx-auto text-slate-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4M12 4v16"></path></svg>
+      <h3 class="text-lg font-bold text-slate-300" data-i18n="no_prods">لا توجد موديلات مطابقة للبحث حالياً</h3>
+      <p class="text-xs text-slate-400" data-i18n="no_prods_desc">جرب اختيار فئة أخرى أو تغيير كلمات البحث</p>
+    </div>
+
+    <!-- Load More Button (Virtual pagination for 1000+ items) -->
+    <div id="loadMoreContainer" class="hidden text-center pt-4">
+      <button id="loadMoreBtn" type="button" class="px-8 py-3.5 rounded-2xl glass-card hover:border-cyan-400 text-white font-bold text-xs sm:text-sm transition-all border border-white/10">
+        <span data-i18n="load_more">عرض المزيد من الموديلات (+16)</span>
+      </button>
+    </div>
 
   </main>
 
   <!-- ========================================================================= -->
-  <!-- SIDE MENU DRAWER -->
+  <!-- SIDE MENU DRAWER (Socials & Secret Info) -->
   <!-- ========================================================================= -->
-  <aside id="sideMenuDrawer" class="fixed top-0 right-0 z-50 w-80 max-w-[85vw] h-full bg-slate-900 text-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l border-white/10 rtl:right-0 rtl:left-auto ltr:left-0 ltr:right-auto ltr:-translate-x-full">
-    <div class="p-5 border-b border-white/10 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="brand-title-gradient font-serif font-black text-xl">BRAND</span>
-        <span class="text-[9px] text-cyan-400 font-bold uppercase tracking-widest font-en">2026</span>
+  <div id="sideMenuDrawer" class="drawer fixed top-0 right-0 z-50 h-full w-80 max-w-[85vw] bg-slate-950/95 backdrop-blur-2xl border-l border-white/10 p-6 flex flex-col justify-between translate-x-full transition-transform duration-300">
+    <div class="space-y-6">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <span class="brand-title-gradient font-serif font-black text-xl">BRAND</span>
+          <span class="text-[10px] text-cyan-400 font-bold font-en">STORE 2026</span>
+        </div>
+        <button id="closeSideMenuBtn" type="button" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white">✕</button>
       </div>
-      <button id="closeSideMenuBtn" type="button" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
-      </button>
-    </div>
 
-    <div class="p-5 flex-1 overflow-y-auto space-y-6">
-      <div class="space-y-1">
-        <button type="button" id="sideHomeBtn" class="w-full text-right px-4 py-3 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold flex items-center gap-3">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-          <span data-i18n="nav_home">الرئيسية</span>
+      <!-- Navigation Links -->
+      <div class="space-y-2 text-sm font-semibold">
+        <button type="button" id="sideHomeBtn" class="w-full text-right px-4 py-3 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold">
+          🏠 الرئيسية
         </button>
       </div>
 
-      <!-- Social Media Accounts in Side Drawer -->
-      <div class="space-y-3">
-        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="social_links_title">حسابات متجر BRAND</h4>
+      <!-- Social Media Section -->
+      <div class="space-y-3 pt-4 border-t border-white/10">
+        <h4 class="text-xs font-bold text-slate-400">حسابات السوشيال ميديا:</h4>
         
-        <div class="space-y-2">
-          <!-- TikTok -->
-          <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-slate-950 hover:bg-black text-white font-bold border border-white/10 flex items-center gap-3 transition-colors">
-            <svg class="w-5 h-5 fill-current text-[#00f2ea]" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
-            <div class="text-right">
-              <div class="text-xs">تيك توك (TikTok)</div>
-              <div class="text-[10px] text-slate-400 font-en">@brand.store22</div>
-            </div>
-          </a>
+        <!-- TikTok Link -->
+        <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-black border border-white/10 hover:border-cyan-400 text-slate-200 transition-all text-xs font-bold">
+          <span class="text-cyan-400 font-en font-black">TikTok</span>
+          <span class="text-slate-400 text-[11px]">@brand.store22</span>
+        </a>
 
-          <!-- Facebook -->
-          <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-slate-950 hover:bg-[#1877f2]/20 text-white font-bold border border-white/10 flex items-center gap-3 transition-colors">
-            <svg class="w-5 h-5 fill-current text-[#1877f2]" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            <div class="text-right">
-              <div class="text-xs">جروب فيسبوك</div>
-              <div class="text-[10px] text-slate-400 font-en">Facebook Group</div>
-            </div>
-          </a>
+        <!-- Facebook Group Link -->
+        <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-blue-600/30 border border-white/10 hover:border-blue-400 text-slate-200 transition-all text-xs font-bold">
+          <span class="text-blue-400 font-en font-black">Facebook</span>
+          <span class="text-slate-400 text-[11px]">جروب محبي BRAND الرسمي</span>
+        </a>
 
-          <!-- WhatsApp -->
-          <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-emerald-500/15 text-emerald-400 font-bold border border-emerald-500/30 flex items-center gap-3 hover:bg-emerald-500/25 transition-colors">
-            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
-            <div class="text-right">
-              <div class="text-xs">خدمة العملاء والطلب</div>
-              <div class="text-[10px] text-emerald-300 font-en">01029478377</div>
-            </div>
-          </a>
-        </div>
+        <!-- WhatsApp Link -->
+        <a href="https://wa.me/201029478377" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-emerald-600/30 border border-white/10 hover:border-emerald-400 text-slate-200 transition-all text-xs font-bold">
+          <span class="text-emerald-400 font-en font-black">WhatsApp</span>
+          <span class="text-slate-400 text-[11px]">01029478377</span>
+        </a>
       </div>
     </div>
 
-    <div class="p-4 border-t border-white/10 text-center text-xs text-slate-500 font-en">
-      BRAND STORE &copy; 2026. All rights reserved.
+    <div class="text-[11px] text-slate-500 text-center">
+      BRAND Official Menswear 2026<br/>
+      Designed with Supreme Quality
     </div>
-  </aside>
+  </div>
 
   <!-- ========================================================================= -->
   <!-- CART DRAWER -->
   <!-- ========================================================================= -->
-  <aside id="cartDrawer" class="fixed top-0 left-0 z-50 w-96 max-w-[90vw] h-full bg-slate-900 text-white shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col border-r border-white/10 rtl:left-0 rtl:right-auto ltr:right-0 ltr:left-auto ltr:translate-x-full">
-    <!-- Header -->
-    <div class="p-5 border-b border-white/10 flex items-center justify-between">
+  <div id="cartDrawer" class="drawer fixed top-0 left-0 z-50 h-full w-96 max-w-[90vw] bg-slate-950/95 backdrop-blur-2xl border-r border-white/10 p-6 flex flex-col justify-between -translate-x-full transition-transform duration-300">
+    <div class="flex items-center justify-between pb-4 border-b border-white/10">
       <div class="flex items-center gap-2">
-        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-        <h3 class="font-black text-lg" data-i18n="cart_title">سلة المشتريات</h3>
+        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+        <h3 class="font-bold text-base text-white" data-i18n="cart_title">سلة المشتريات</h3>
       </div>
-      <button id="closeCartBtn" type="button" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      <button id="closeCartBtn" type="button" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white">✕</button>
+    </div>
+
+    <!-- Cart Items List -->
+    <div id="cartItemsList" class="flex-1 overflow-y-auto divide-y divide-white/5 py-4 space-y-4">
+      <!-- Injected by JavaScript -->
+    </div>
+
+    <!-- Cart Summary & WhatsApp Checkout -->
+    <div class="space-y-4 pt-4 border-t border-white/10">
+      <div class="space-y-1.5 text-xs">
+        <div class="flex items-center justify-between text-slate-400">
+          <span data-i18n="total_price">المجموع الكلي:</span>
+          <span id="cartTotalAmt" class="text-cyan-400 font-black text-base font-en">0 ج.م</span>
+        </div>
+        <div id="cartSavingsRow" class="hidden flex items-center justify-between text-emerald-400 text-[11px]">
+          <span data-i18n="total_savings">وفرت معنا:</span>
+          <span id="cartSavingsAmt" class="font-bold font-en">0 ج.م</span>
+        </div>
+      </div>
+
+      <button id="whatsappCheckoutBtn" type="button" class="w-full h-12 rounded-2xl neon-btn text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        <span data-i18n="order_whatsapp">إرسال الطلب عبر واتساب</span>
+      </button>
+
+      <button id="clearCartBtn" type="button" class="w-full text-center text-xs text-red-400/80 hover:text-red-400 py-1" data-i18n="clear_cart">
+        تفريغ السلة
       </button>
     </div>
-
-    <!-- Items List -->
-    <div id="cartItemsList" class="flex-1 p-5 overflow-y-auto space-y-3 divide-y divide-white/5">
-      <!-- Injected by JS -->
-    </div>
-
-    <!-- Footer Summary & WhatsApp Order -->
-    <div class="p-5 bg-slate-950/90 border-t border-white/10 space-y-4">
-      <div class="space-y-1.5 text-sm">
-        <div id="cartSavingsRow" class="hidden justify-between text-emerald-400 font-semibold text-xs">
-          <span data-i18n="cart_savings">إجمالي التوفير:</span>
-          <span id="cartSavingsAmt">0 ج.م</span>
-        </div>
-        <div class="flex justify-between items-center text-base font-black">
-          <span data-i18n="cart_total">المجموع الكلي:</span>
-          <span id="cartTotalAmt" class="text-xl neon-gradient-text font-en">0 ج.م</span>
-        </div>
-      </div>
-
-      <div class="space-y-2">
-        <button id="whatsappCheckoutBtn" type="button" class="w-full h-12 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.02] active:scale-95">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
-          <span data-i18n="order_whatsapp">إتمام الطلب عبر واتساب</span>
-        </button>
-        <button id="clearCartBtn" type="button" class="w-full py-2 text-xs font-semibold text-slate-400 hover:text-red-400 transition-colors" data-i18n="clear_cart">
-          إفراغ السلة
-        </button>
-      </div>
-    </div>
-  </aside>
+  </div>
 
   <!-- ========================================================================= -->
-  <!-- FULL SCREEN LIGHTBOX GALLERY (EXPANSIVE & ADAPTIVE) -->
+  <!-- LIGHTBOX MODAL (Click image to view all photos, zoom & flip) -->
   <!-- ========================================================================= -->
-  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col transition-all duration-300">
-    <!-- Lightbox Header -->
-    <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-slate-950/70">
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col justify-between hidden">
+    <!-- Lightbox Top Bar -->
+    <div class="p-4 flex items-center justify-between border-b border-white/10">
       <div class="flex items-center gap-3">
-        <h3 id="lbTitle" class="text-base sm:text-lg font-bold text-white">عنوان الموديل</h3>
-        <span id="lbCounter" class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold font-en">1 / 1</span>
+        <span class="brand-title-gradient font-serif font-black text-xl">BRAND</span>
+        <h3 id="lbTitle" class="text-sm font-bold text-slate-200 truncate max-w-xs"></h3>
       </div>
-      <button id="closeLightboxBtn" type="button" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      <div class="flex items-center gap-4">
+        <span id="lbCounter" class="text-xs font-en font-bold text-cyan-400">1 / 1</span>
+        <button id="closeLightboxBtn" type="button" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold">✕</button>
+      </div>
+    </div>
+
+    <!-- Lightbox Main Stage -->
+    <div class="flex-1 relative flex items-center justify-center p-4 overflow-hidden">
+      <img id="lbMainImg" src="" alt="" class="max-h-[75vh] max-w-[95vw] object-contain rounded-2xl shadow-2xl transition-all duration-300" />
+
+      <!-- Arrows -->
+      <button id="lbPrevBtn" type="button" class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center transition-all shadow-xl">
+        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+      </button>
+      <button id="lbNextBtn" type="button" class="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center transition-all shadow-xl">
+        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
       </button>
     </div>
 
-    <!-- Lightbox Main Stage (Large, High Definition, Adaptive) -->
-    <div class="flex-1 relative flex items-center justify-center p-2 sm:p-6 overflow-hidden">
-      <!-- Previous Arrow -->
-      <button id="lbPrevBtn" type="button" aria-label="Previous" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center border border-white/20 transition-all shadow-2xl">
-        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-      </button>
-
-      <!-- Main Big Image (Fit fully without crop) -->
-      <div class="w-full h-full max-w-5xl flex items-center justify-center">
-        <img id="lbMainImg" src="" alt="" class="max-h-[75vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl transition-all duration-300 select-none border border-white/10 bg-black/40" />
-      </div>
-
-      <!-- Next Arrow -->
-      <button id="lbNextBtn" type="button" aria-label="Next" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center border border-white/20 transition-all shadow-2xl">
-        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
-      </button>
-    </div>
-
-    <!-- Lightbox Bottom Panel (Thumbnails + Sizes + Add to Cart) -->
+    <!-- Lightbox Bottom Strip (Thumbnails & Add to Cart) -->
     <div class="p-4 bg-slate-950 border-t border-white/10 space-y-3">
-      <!-- Thumbnails Strip -->
       <div id="lbThumbStrip" class="flex items-center justify-center gap-2 overflow-x-auto py-1">
         <!-- Thumbnails -->
       </div>
 
-      <!-- Quick Action Controls -->
       <div class="max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
-        <!-- Price in modal -->
         <div id="lbPriceContainer" class="text-right"></div>
-
-        <!-- Sizes in modal -->
         <div id="lbSizesContainer" class="flex items-center gap-1.5 flex-wrap justify-center"></div>
-
-        <!-- Add Button in modal -->
         <button id="lbAddToCartBtn" type="button" class="neon-btn px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
           <span id="lbAddBtnText">أضف للسلة</span>
@@ -621,7 +602,7 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- ADMIN LOGIN VIEW (ACCESSED ONLY BY SECRET 3-CLICKS ON LOGO) -->
+  <!-- ADMIN LOGIN VIEW -->
   <!-- ========================================================================= -->
   <section id="loginView" class="hidden flex-1 max-w-md w-full mx-auto px-4 py-16 flex flex-col justify-center">
     <div class="glass-card rounded-3xl p-8 border border-white/10 text-center space-y-6">
@@ -631,7 +612,7 @@
 
       <div>
         <h2 class="text-2xl font-black neon-gradient-text" data-i18n="admin_login_title">تسجيل دخول إدارة المتجر</h2>
-        <p class="text-xs text-slate-400 mt-1" data-i18n="admin_login_desc">أدخل كلمة المرور لإدارة الموديلات والصور</p>
+        <p class="text-xs text-slate-400 mt-1" data-i18n="admin_login_desc">أدخل كلمة المرور لإدارة الموديلات والمزامنة السحابية</p>
       </div>
 
       <div class="space-y-4 text-right">
@@ -652,7 +633,7 @@
   </section>
 
   <!-- ========================================================================= -->
-  <!-- ADMIN DASHBOARD VIEW -->
+  <!-- ADMIN DASHBOARD VIEW (FIREBASE + BULK 1000+ CAPACITY) -->
   <!-- ========================================================================= -->
   <section id="adminDashboardView" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
     <!-- Admin Header -->
@@ -660,11 +641,26 @@
       <div class="flex items-center gap-3">
         <span class="brand-title-gradient font-serif font-black text-2xl">BRAND</span>
         <div>
-          <h2 class="text-xl font-black neon-gradient-text" data-i18n="admin_dash_title">لوحة تحكم الموديلات</h2>
-          <p class="text-xs text-slate-400" data-i18n="admin_dash_sub">إضافة وتعديل المنتجات والصور المتعددة وتحديد الأسعار</p>
+          <h2 class="text-xl font-black neon-gradient-text" data-i18n="admin_dash_title">لوحة تحكم الموديلات (+1000 موديل)</h2>
+          <p class="text-xs text-slate-400" data-i18n="admin_dash_sub">متصلة سحابياً بقاعدة بيانات Firebase Firestore مع ضغط ذكي فوري للصور</p>
         </div>
       </div>
-      <div class="flex items-center gap-2">
+      
+      <!-- Actions: Backup, Restore & Store -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <!-- Export Backup -->
+        <button id="adminExportBtn" type="button" class="px-3.5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-xs font-bold text-cyan-300 border border-cyan-400/40 transition-colors flex items-center gap-1.5" title="تنزيل نسخة احتياطية لجميع الموديلات">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          <span>تصدير نسخة (Backup)</span>
+        </button>
+
+        <!-- Import Backup -->
+        <label class="px-3.5 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-xs font-bold text-purple-300 border border-purple-400/40 transition-colors flex items-center gap-1.5 cursor-pointer" title="استرجاع المنتجات من ملف سابق">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+          <span>استيراد ملف</span>
+          <input type="file" id="adminImportFile" accept=".json" class="hidden" />
+        </label>
+
         <button id="adminBackToStoreBtn" type="button" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold text-slate-300 border border-white/10 transition-colors" data-i18n="back_to_store">
           عرض المتجر
         </button>
@@ -689,7 +685,7 @@
         <h4 id="statOutCount" class="text-2xl font-black text-amber-400 mt-1 font-en">0</h4>
       </div>
       <div class="glass-card p-4 rounded-xl border border-white/10">
-        <span class="text-xs text-slate-400" data-i18n="stat_images">إجمالي الصور المرفوعة</span>
+        <span class="text-xs text-slate-400" data-i18n="stat_images">إجمالي الصور</span>
         <h4 id="statImagesCount" class="text-2xl font-black text-purple-400 mt-1 font-en">0</h4>
       </div>
     </div>
@@ -743,18 +739,18 @@
           </div>
         </div>
 
-        <!-- Multi-Images & Colors Manager -->
+        <!-- Multi-Images Manager -->
         <div class="space-y-3 p-4 rounded-xl bg-slate-900/60 border border-white/10">
           <div class="flex items-center justify-between">
             <label class="text-xs font-bold text-cyan-300 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              <span data-i18n="f_images_title">صور وألوان الموديل (تتبادل تلقائياً وبحجم كبير):</span>
+              <span data-i18n="f_images_title">صور وألوان الموديل (ضغط فوري ذكي):</span>
             </label>
             <span id="formImagesCount" class="text-xs text-slate-400 font-en">0 images</span>
           </div>
 
           <p class="text-[11px] text-slate-400 leading-relaxed" data-i18n="f_images_desc">
-            أضف روابط الصور أو ارفع من جهازك مباشرة. الصور ستظهر في كارت الموديل مع تبادل تلقائي (Loop) ومعرض كامل عند الضغط.
+            ارفع أي عدد من الصور للموديل (الوجه، الظهر، الألوان). يتم ضغط الصور تلقائياً وحفظها سحابياً لتعمل بسرعة فائقة وتظهر لجميع الزوار فوراً!
           </p>
 
           <!-- Input Controls -->
@@ -767,12 +763,18 @@
               </button>
             </div>
 
-            <!-- File Upload -->
+            <!-- File Upload with auto compression -->
             <label class="h-10 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-white/10 flex items-center justify-center gap-2 cursor-pointer transition-colors">
               <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-              <span data-i18n="upload_files">رفع صور من الجهاز (متعدد)</span>
+              <span id="uploadBtnText" data-i18n="upload_files">رفع صور من الجهاز (ضغط فوري)</span>
               <input type="file" id="formFileInput" multiple accept="image/*" class="hidden" />
             </label>
+          </div>
+
+          <!-- Upload Status Indicator -->
+          <div id="uploadStatusProgress" class="hidden text-xs text-cyan-400 font-semibold flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span>جاري معالجة وحفظ الصور...</span>
           </div>
 
           <!-- Images Preview Grid -->
@@ -792,7 +794,7 @@
         <!-- Form Submit / Cancel -->
         <div class="flex gap-3">
           <button type="submit" class="flex-1 h-11 rounded-xl neon-btn text-white text-sm font-bold" data-i18n="save_prod">
-            حفظ الموديل
+            حفظ الموديل (سحابياً)
           </button>
           <button type="button" id="formCancelBtn" class="px-6 h-11 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-sm font-semibold border border-white/10 transition-colors" data-i18n="cancel">
             إلغاء
@@ -808,10 +810,10 @@
         <span id="tblCountText" class="text-xs text-slate-400 font-en">0 items</span>
       </div>
 
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
         <table class="w-full text-right text-xs">
-          <thead>
-            <tr class="bg-slate-900/90 text-slate-400 border-b border-white/10">
+          <thead class="sticky top-0 z-10 bg-slate-900">
+            <tr class="text-slate-400 border-b border-white/10">
               <th class="p-3">الموديل / الصور</th>
               <th class="p-3">الفئة</th>
               <th class="p-3">السعر</th>
@@ -834,136 +836,88 @@
   <footer class="mt-auto border-t border-white/10 bg-slate-950 py-10 px-4 text-center space-y-6">
     <!-- Centered Footer Code Logo -->
     <div class="flex flex-col items-center justify-center gap-1">
-      <span class="brand-title-gradient text-3xl font-serif font-black">BRAND</span>
-      <span class="text-[9px] font-bold text-cyan-400 tracking-[0.25em] font-en uppercase">MEN'S COLLECTION 2026</span>
+      <span class="brand-title-gradient font-serif font-black text-3xl tracking-[0.2em] pl-1">BRAND</span>
+      <span class="text-[10px] text-cyan-400 font-bold font-en tracking-[0.3em]">MEN'S STORE • EST 2026</span>
     </div>
 
-    <!-- Social Media Links in Footer -->
-    <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
-      <!-- TikTok -->
-      <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-black border border-white/15 text-white flex items-center justify-center transition-all hover:scale-110 hover:border-[#00f2ea] shadow-lg" title="TikTok">
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+    <!-- Social Links in Footer -->
+    <div class="flex items-center justify-center gap-4 text-xs font-bold">
+      <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+        <span>TikTok: @brand.store22</span>
       </a>
-
-      <!-- Facebook -->
-      <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-[#1877f2] border border-white/15 text-white flex items-center justify-center transition-all hover:scale-110 shadow-lg" title="Facebook Group">
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      <span class="text-slate-700">•</span>
+      <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-1.5">
+        <span>Facebook Group</span>
       </a>
-
-      <!-- WhatsApp -->
-      <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-emerald-500 border border-emerald-500/30 text-emerald-400 hover:text-slate-950 flex items-center justify-center transition-all hover:scale-110 shadow-lg" title="WhatsApp">
-        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+      <span class="text-slate-700">•</span>
+      <a href="https://wa.me/201029478377" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+        <span>WhatsApp: 01029478377</span>
       </a>
     </div>
 
-    <p class="max-w-md mx-auto text-xs text-slate-400" data-i18n="footer_text">
-      متجر أزياء رجالية عصري - تجربة تسوق سهلة وسريعة مع طلب مباشر عبر الواتساب.
-    </p>
-    <p class="text-[11px] text-slate-600 font-en">
-      BRAND STORE &copy; 2026. All rights reserved.
+    <p class="text-xs text-slate-500 max-w-md mx-auto">
+      جميع الحقوق محفوظة © 2026 لمتجر BRAND. أفضل الخامات القطنية والتصميمات العالمية للرجل العصري.
     </p>
   </footer>
 
   <!-- ========================================================================= -->
-  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <!-- JAVASCRIPT ENGINE WITH FIREBASE FIRESTORE & INDEXEDDB -->
   <!-- ========================================================================= -->
   <script>
-    'use strict';
-
     /* ---------------------------------------------------------
-       CONFIG & CONSTANTS
+       CONSTANTS & MULTI-LANGUAGE
        --------------------------------------------------------- */
-    const WA_NUMBER = '201029478377';
     const ADMIN_PASSWORD = 'admin123';
     const CURRENCY_AR = 'ج.م';
     const CURRENCY_EN = 'EGP';
-    const STORAGE_KEY_PRODS = 'brand_products_v8';
-    const STORAGE_KEY_CART = 'brand_cart_v8';
-    const STORAGE_KEY_THEME = 'brand_theme_v8';
-    const STORAGE_KEY_LANG = 'brand_lang_v8';
+    const WA_NUMBER = '201029478377';
+    const STORAGE_KEY_PRODS = 'brand_store_products_v3';
+    const STORAGE_KEY_CART = 'brand_store_cart_v3';
+    const STORAGE_KEY_THEME = 'brand_store_theme';
+    const STORAGE_KEY_LANG = 'brand_store_lang';
 
-    /* Category Standard Sizes */
-    const PRESET_SIZES = {
-      'T-Shirts': ['M', 'L', 'XL', '2XL', '3XL'],
-      'Pants': ['30', '32', '34', '36', '38', '40'],
-      'Shoes': ['40', '41', '42', '43', '44', '45'],
-      'Other': ['Free Size', 'S', 'M', 'L', 'XL']
-    };
-
-    /* Initial Default Products */
-    const INITIAL_PRODUCTS = [
-      {
-        id: 'p1',
-        title: "تيشرت اوفر سايز UP'TO (أسود / أبيض)",
-        category: 'T-Shirts',
-        price: 450,
-        discount: 10,
-        stock: 20,
-        sizes: ['M', 'L', 'XL', '2XL'],
-        images: [
-          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85',
-          'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1100&q=85'
-        ]
-      },
-      {
-        id: 'p2',
-        title: 'تيشرت اوفر سايز CHAOS Cchange (Front & Back)',
-        category: 'T-Shirts',
-        price: 490,
-        discount: 0,
-        stock: 12,
-        sizes: ['L', 'XL', '2XL'],
-        images: [
-          'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=1100&q=85',
-          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1100&q=85'
-        ]
-      },
-      {
-        id: 'p3',
-        title: 'تيشرت اوفر سايز ITALY Premium Edition',
-        category: 'T-Shirts',
-        price: 520,
-        discount: 15,
-        stock: 10,
-        sizes: ['M', 'L', 'XL', '2XL'],
-        images: [
-          'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=1100&q=85',
-          'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1100&q=85'
-        ]
-      }
-    ];
-
-    /* Translations */
     const I18N = {
       ar: {
         top_bar_msg: 'شحن وتوصيل لجميع أنحاء الجمهورية | اطلب الآن عبر واتساب',
-        hero_badge: 'كولكشن صيف وخريف 2026 الفاخر',
-        hero_desc: 'أحدث صيحات الملابس الرجالية بأعلى خامات وأفضل أسعار. اضغط على أي موديل لتصفح جميع ألوانه بالكامل!',
-        section_title: 'أحدث الموديلات المتوفرة',
-        section_subtitle: 'اختر الفئة وشاهد تبادل الألوان والصور تلقائياً في كل كارت',
-        no_products: 'لا توجد موديلات مطابقة',
-        no_products_desc: 'جرّب تغيير خيارات البحث أو الفئة المحددة',
-        nav_home: 'الرئيسية',
-        social_links_title: 'حسابات متجر BRAND',
+        cart_btn: 'السلة',
+        hero_badge: 'ORIGINAL OVERSIZED & SUMMER COLLECTION',
+        hero_desc: 'اكتشف أفخم تشكيلة تيشرتات اوفر سايز وبناطيل مصممة بأعلى جودة قطن معالجة وأفضل قصات تريندي. جميع الموديلات مدعومة بصور متعددة لكل زاوية ولون.',
+        badge_models: 'موديل متاح فوراً',
+        badge_clients: 'عميل يتسوقون الآن',
+        badge_cotton: 'قطن ميلتون أصلي',
+        badge_delivery: 'شحن فوري لباب البيت',
+        cat_all: '🔥 جميع الموديلات',
+        cat_tshirts: '👕 تيشيرتات أوفر سايز (T-Shirts)',
+        cat_pants: '👖 بناطيل (Pants)',
+        cat_shoes: '👟 أحذية وسنيكرز (Shoes)',
+        cat_sale: '🏷️ عروض وخصومات خاصة',
+        no_prods: 'لا توجد موديلات مطابقة للبحث حالياً',
+        no_prods_desc: 'جرب اختيار فئة أخرى أو تغيير كلمات البحث',
+        load_more: 'عرض المزيد من الموديلات (+16)',
         cart_title: 'سلة المشتريات',
-        cart_savings: 'إجمالي التوفير:',
-        cart_total: 'المجموع الكلي:',
-        order_whatsapp: 'إتمام الطلب عبر واتساب',
-        clear_cart: 'إفراغ السلة',
-        empty_cart_msg: 'سلة المشتريات فارغة حالياً.',
+        total_price: 'المجموع الكلي:',
+        total_savings: 'وفرت معنا:',
+        order_whatsapp: 'إرسال الطلب عبر واتساب',
+        clear_cart: 'تفريغ السلة',
+        empty_cart_msg: 'سلة المشتريات فارغة حالياً',
+        size_label: 'المقاس:',
+        colors_count: 'صور / ألوان',
+        out_of_stock: 'نفدت الكمية',
+        add_to_cart: 'أضف للسلة',
+        added_to_cart: 'في السلة',
         admin_login_title: 'تسجيل دخول إدارة المتجر',
-        admin_login_desc: 'أدخل كلمة المرور لإدارة الموديلات والصور',
+        admin_login_desc: 'أدخل كلمة المرور لإدارة الموديلات والمزامنة السحابية',
         pw_label: 'كلمة المرور:',
         wrong_pw: 'كلمة المرور غير صحيحة!',
         login_btn: 'دخول',
         back_to_store: 'العودة للمتجر',
-        admin_dash_title: 'لوحة تحكم الموديلات',
-        admin_dash_sub: 'إضافة وتعديل المنتجات والصور المتعددة وتحديد الأسعار',
+        admin_dash_title: 'لوحة تحكم الموديلات (+1000 موديل)',
+        admin_dash_sub: 'متصلة سحابياً بقاعدة بيانات Firebase Firestore مع ضغط ذكي فوري للصور',
         logout: 'تسجيل خروج',
         stat_total: 'إجمالي المنتجات',
         stat_sale: 'موديلات الخصم',
         stat_out: 'نفدت الكمية',
-        stat_images: 'إجمالي الصور المرفوعة',
+        stat_images: 'إجمالي الصور',
         form_add_title: 'إضافة موديل جديد',
         form_edit_title: 'تعديل بيانات الموديل',
         f_title: 'اسم الموديل / المنتج:',
@@ -971,75 +925,300 @@
         f_price: 'السعر (ج.م):',
         f_disc: 'نسبة الخصم % (اختياري):',
         f_stock: 'الكمية بالمخزن:',
-        f_images_title: 'صور وألوان الموديل (تتبادل تلقائياً وبحجم كبير):',
-        f_images_desc: 'أضف روابط الصور أو ارفع من جهازك مباشرة. الصور ستظهر في كارت الموديل مع تبادل تلقائي ومعرض كامل عند الضغط.',
-        upload_files: 'رفع صور من الجهاز (متعدد)',
+        f_images_title: 'صور وألوان الموديل (ضغط فوري ذكي):',
+        f_images_desc: 'ارفع أي عدد من الصور للموديل (الوجه، الظهر، الألوان). يتم ضغط الصور تلقائياً وحفظها سحابياً لتعمل بسرعة فائقة وتظهر لجميع الزوار فوراً!',
+        upload_files: 'رفع صور من الجهاز (ضغط فوري)',
         f_sizes_title: 'المقاسات المتاحة للموديل:',
-        save_prod: 'حفظ الموديل',
+        save_prod: 'حفظ الموديل (سحابياً)',
         cancel: 'إلغاء',
-        all_prods_tbl: 'قائمة جميع الموديلات',
-        out_of_stock: 'نفدت الكمية',
-        in_stock: 'متوفر',
-        add_to_cart: 'أضف للسلة',
-        added_to_cart: 'تمت الإضافة!',
-        size_label: 'المقاس:',
-        colors_count: 'ألوان',
-        photos_count: 'صور',
-        footer_text: 'متجر أزياء رجالية عصري - تجربة تسوق سهلة وسريعة مع طلب مباشر عبر الواتساب.'
+        all_prods_tbl: 'قائمة جميع الموديلات'
       },
       en: {
-        top_bar_msg: 'Fast shipping all across Egypt | Order directly via WhatsApp',
-        hero_badge: 'Exclusive 2026 Collection',
-        hero_desc: 'Premium modern men\'s fashion. Click any product to explore all color angles in full detail!',
-        section_title: 'Featured Models',
-        section_subtitle: 'Select a category to view models with auto color cycling in each card',
-        no_products: 'No matching products found',
-        no_products_desc: 'Try changing your search query or selected category',
-        nav_home: 'Home',
-        social_links_title: 'BRAND Official Accounts',
-        cart_title: 'Shopping Bag',
-        cart_savings: 'Total Savings:',
-        cart_total: 'Grand Total:',
-        order_whatsapp: 'Order via WhatsApp',
-        clear_cart: 'Clear Bag',
-        empty_cart_msg: 'Your shopping bag is currently empty.',
-        admin_login_title: 'Admin Sign In',
-        admin_login_desc: 'Enter password to manage products and gallery images',
+        top_bar_msg: 'Fast Shipping Nationwide | Order Directly on WhatsApp',
+        cart_btn: 'Cart',
+        hero_badge: 'ORIGINAL OVERSIZED & SUMMER COLLECTION',
+        hero_desc: 'Discover luxury oversized t-shirts, premium pants, and top trendy menswear. Multi-angle dual view mockups with instant responsive navigation.',
+        badge_models: 'Models Available',
+        badge_clients: 'Shopping Now',
+        badge_cotton: '100% Pure Cotton',
+        badge_delivery: 'Fast Home Delivery',
+        cat_all: '🔥 All Models',
+        cat_tshirts: '👕 Oversized T-Shirts',
+        cat_pants: '👖 Pants',
+        cat_shoes: '👟 Shoes & Sneakers',
+        cat_sale: '🏷️ Deals & Offers',
+        no_prods: 'No models found matching your search',
+        no_prods_desc: 'Try selecting a different category or search term',
+        load_more: 'Load More Models (+16)',
+        cart_title: 'Shopping Cart',
+        total_price: 'Total Price:',
+        total_savings: 'You Saved:',
+        order_whatsapp: 'Checkout on WhatsApp',
+        clear_cart: 'Clear Cart',
+        empty_cart_msg: 'Your shopping cart is currently empty',
+        size_label: 'Size:',
+        colors_count: 'Colors / Angles',
+        out_of_stock: 'Out of Stock',
+        add_to_cart: 'Add to Cart',
+        added_to_cart: 'In Cart',
+        admin_login_title: 'Store Admin Login',
+        admin_login_desc: 'Enter password to manage products and cloud sync',
         pw_label: 'Password:',
         wrong_pw: 'Incorrect password!',
         login_btn: 'Login',
         back_to_store: 'Back to Store',
-        admin_dash_title: 'Products Manager',
-        admin_dash_sub: 'Add, update multi-images, colors and warehouse stock',
+        admin_dash_title: 'Product Management (+1000 Models)',
+        admin_dash_sub: 'Connected to Firebase Firestore Cloud DB with auto image compression',
         logout: 'Logout',
         stat_total: 'Total Products',
         stat_sale: 'On Sale',
         stat_out: 'Out of Stock',
-        stat_images: 'Total Gallery Photos',
+        stat_images: 'Total Images',
         form_add_title: 'Add New Model',
         form_edit_title: 'Edit Model Details',
         f_title: 'Model / Product Title:',
         f_category: 'Category:',
         f_price: 'Price (EGP):',
-        f_disc: 'Discount % (optional):',
-        f_stock: 'Warehouse Stock:',
-        f_images_title: 'Model Images & Colors (Auto Carousel):',
-        f_images_desc: 'Add image URLs or upload multiple pictures. Images will cycle in product card and expand into full gallery.',
-        upload_files: 'Upload Multiple Photos',
-        f_sizes_title: 'Available Sizes:',
-        save_prod: 'Save Product',
+        f_disc: 'Discount % (Optional):',
+        f_stock: 'Stock Quantity:',
+        f_images_title: 'Model Images & Colors (Auto-Compress):',
+        f_images_desc: 'Upload multi-angle views (Front, Back, Colors). Images are auto-compressed and synced to Firebase seamlessly!',
+        upload_files: 'Upload Photos (Instant Compress)',
+        f_sizes_title: 'Available Sizes for Model:',
+        save_prod: 'Save Model (Cloud Sync)',
         cancel: 'Cancel',
-        all_prods_tbl: 'All Products List',
-        out_of_stock: 'Out of Stock',
-        in_stock: 'In Stock',
-        add_to_cart: 'Add to Cart',
-        added_to_cart: 'Added!',
-        size_label: 'Size:',
-        colors_count: 'Colors',
-        photos_count: 'photos',
-        footer_text: 'Modern men\'s fashion store with direct seamless WhatsApp ordering.'
+        all_prods_tbl: 'All Models Catalog'
       }
     };
+
+    const PRESET_SIZES = {
+      'T-Shirts': ['M', 'L', 'XL', '2XL', '3XL', 'Oversized'],
+      'Pants': ['30', '32', '34', '36', '38', '40'],
+      'Shoes': ['41', '42', '43', '44', '45'],
+      'Other': ['Free Size', 'S', 'M', 'L', 'XL']
+    };
+
+    /* INITIAL DEFAULT PRODUCTS */
+    const INITIAL_PRODUCTS = [
+      {
+        id: 'p_1',
+        title: "تيشرت أوفر سايز UP'TO براند كولكشن 2026 قطن 100% أسود",
+        category: 'T-Shirts',
+        price: 490,
+        discount: 15,
+        stock: 25,
+        sizes: ['M', 'L', 'XL', '2XL', 'Oversized'],
+        images: [
+          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85',
+          'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1100&q=85',
+          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1100&q=85'
+        ]
+      },
+      {
+        id: 'p_2',
+        title: 'تيشرت BRAND بيسك أوفر سايز أبيض قطن معالج عالي الجودة',
+        category: 'T-Shirts',
+        price: 450,
+        discount: 0,
+        stock: 18,
+        sizes: ['M', 'L', 'XL', '2XL'],
+        images: [
+          'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=1100&q=85',
+          'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=1100&q=85'
+        ]
+      },
+      {
+        id: 'p_3',
+        title: 'بنطلون كارجو براند تريندي قطن ووتر بروف 6 جيوب كحلي',
+        category: 'Pants',
+        price: 650,
+        discount: 10,
+        stock: 12,
+        sizes: ['30', '32', '34', '36', '38'],
+        images: [
+          'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=1100&q=85',
+          'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=1100&q=85'
+        ]
+      },
+      {
+        id: 'p_4',
+        title: 'سنيكرز BRAND سبورت فاشون أبيض في أسود خفيف ومريح',
+        category: 'Shoes',
+        price: 890,
+        discount: 20,
+        stock: 9,
+        sizes: ['41', '42', '43', '44', '45'],
+        images: [
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1100&q=85',
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=1100&q=85'
+        ]
+      }
+    ];
+
+    /* ---------------------------------------------------------
+       FIREBASE CONFIGURATION & FIRESTORE REALTIME SYNC
+       --------------------------------------------------------- */
+    const firebaseConfig = {
+      apiKey: "AIzaSyDldHkvkpTiOwCvSbLL9t82sxWqyxSs4OQ",
+      authDomain: "brand-a1061.firebaseapp.com",
+      projectId: "brand-a1061",
+      storageBucket: "brand-a1061.firebasestorage.app",
+      messagingSenderId: "296543434918",
+      appId: "1:296543434918:web:74bda8b59abcb638a21c67",
+      measurementId: "G-60G1D5PZX7"
+    };
+
+    let firestoreDb = null;
+    try {
+      if (window.firebase) {
+        firebase.initializeApp(firebaseConfig);
+        firestoreDb = firebase.firestore();
+        console.log("Firebase initialized successfully!");
+      }
+    } catch (err) {
+      console.warn("Firebase Init Notice:", err);
+    }
+
+    function listenToFirebaseProducts() {
+      if (!firestoreDb) return;
+      try {
+        firestoreDb.collection('products').onSnapshot((snapshot) => {
+          const cloudProds = [];
+          snapshot.forEach((doc) => {
+            cloudProds.push(doc.data());
+          });
+          if (cloudProds.length > 0) {
+            products = cloudProds;
+            dbSaveAllProducts(products);
+            renderStore();
+            if (isAdminLoggedIn) renderAdminView();
+          }
+        }, (err) => {
+          console.warn('Firestore live sync listener:', err);
+        });
+      } catch(err) {
+        console.warn('Firestore listener setup error:', err);
+      }
+    }
+
+    async function saveProductToFirebase(prod) {
+      if (!firestoreDb) return;
+      try {
+        await firestoreDb.collection('products').doc(prod.id).set(prod);
+      } catch(e) {
+        console.error('Firebase save error:', e);
+      }
+    }
+
+    async function deleteProductFromFirebase(prodId) {
+      if (!firestoreDb) return;
+      try {
+        await firestoreDb.collection('products').doc(prodId).delete();
+      } catch(e) {
+        console.error('Firebase delete error:', e);
+      }
+    }
+
+    /* ---------------------------------------------------------
+       SMART CLIENT-SIDE IMAGE COMPRESSOR (Auto WebP/JPEG)
+       --------------------------------------------------------- */
+    function compressImageFile(file, maxWidth = 1200, quality = 0.82) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            if (width > maxWidth) {
+              height = Math.round((height * maxWidth) / width);
+              width = maxWidth;
+            }
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            let compressed = canvas.toDataURL('image/webp', quality);
+            if (!compressed.startsWith('data:image/webp')) {
+              compressed = canvas.toDataURL('image/jpeg', quality);
+            }
+            resolve(compressed);
+          };
+          img.onerror = () => resolve(e.target.result);
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    /* ---------------------------------------------------------
+       HIGH-CAPACITY LOCAL ENGINE (IndexedDB + localStorage)
+       --------------------------------------------------------- */
+    const DB_NAME = 'BrandStore_DB';
+    const DB_STORE = 'products_store';
+    let dbInstance = null;
+
+    function initIndexedDB() {
+      return new Promise((resolve) => {
+        if (!window.indexedDB) { resolve(null); return; }
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(DB_STORE)) {
+            db.createObjectStore(DB_STORE, { keyPath: 'id' });
+          }
+        };
+        req.onsuccess = (e) => {
+          dbInstance = e.target.result;
+          resolve(dbInstance);
+        };
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    function dbSaveAllProducts(prodsList) {
+      return new Promise((resolve) => {
+        try { localStorage.setItem(STORAGE_KEY_PRODS, JSON.stringify(prodsList)); } catch(e){}
+        if (!dbInstance) { resolve(); return; }
+        try {
+          const tx = dbInstance.transaction(DB_STORE, 'readwrite');
+          const store = tx.objectStore(DB_STORE);
+          store.clear();
+          prodsList.forEach(p => store.put(p));
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => resolve();
+        } catch(e) { resolve(); }
+      });
+    }
+
+    function dbGetAllProducts() {
+      return new Promise((resolve) => {
+        if (!dbInstance) {
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY_PRODS);
+            resolve(raw ? JSON.parse(raw) : null);
+          } catch(e) { resolve(null); }
+          return;
+        }
+        try {
+          const tx = dbInstance.transaction(DB_STORE, 'readonly');
+          const store = tx.objectStore(DB_STORE);
+          const req = store.getAll();
+          req.onsuccess = () => {
+            if (req.result && req.result.length > 0) {
+              resolve(req.result);
+            } else {
+              try {
+                const raw = localStorage.getItem(STORAGE_KEY_PRODS);
+                resolve(raw ? JSON.parse(raw) : null);
+              } catch(e) { resolve(null); }
+            }
+          };
+          req.onerror = () => resolve(null);
+        } catch(e) { resolve(null); }
+      });
+    }
 
     /* ---------------------------------------------------------
        GLOBAL STATE
@@ -1052,6 +1231,10 @@
     let searchQuery = '';
     let isAdminLoggedIn = false;
     
+    // Pagination (Instant rendering for 1000+ items)
+    let visibleProductCount = 16;
+    const PAGE_SIZE = 16;
+
     // Lightbox State
     let activeLightboxProd = null;
     let activeLightboxIdx = 0;
@@ -1067,20 +1250,50 @@
     let formImages = [];
     let formSelectedSizes = [];
 
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85';
+
     /* ---------------------------------------------------------
-       INITIALIZATION & STORAGE
+       STATE STORAGE LOAD & SAVE
        --------------------------------------------------------- */
-    function loadState() {
+    async function loadState() {
+      await initIndexedDB();
+
+      // 1. Instant local render
       try {
-        const p = localStorage.getItem(STORAGE_KEY_PRODS);
-        products = p ? JSON.parse(p) : INITIAL_PRODUCTS;
-      } catch (e) {
+        const p = await dbGetAllProducts();
+        if (p && Array.isArray(p) && p.length > 0) {
+          products = p;
+        } else {
+          products = INITIAL_PRODUCTS;
+        }
+      } catch(e) {
         products = INITIAL_PRODUCTS;
+      }
+
+      // 2. Fetch live data from Firebase Firestore
+      if (firestoreDb) {
+        try {
+          const snapshot = await firestoreDb.collection('products').get();
+          if (!snapshot.empty) {
+            const cloudProds = [];
+            snapshot.forEach(doc => cloudProds.push(doc.data()));
+            products = cloudProds;
+            await dbSaveAllProducts(products);
+          } else {
+            // First time setup: seed Firebase with default products
+            for (const prod of INITIAL_PRODUCTS) {
+              await firestoreDb.collection('products').doc(prod.id).set(prod);
+            }
+          }
+          listenToFirebaseProducts();
+        } catch(err) {
+          console.warn('Firestore load warning:', err);
+        }
       }
 
       try {
         const c = localStorage.getItem(STORAGE_KEY_CART);
-        cart = c ? JSON.parse(c) : [];
+        if (c) cart = JSON.parse(c);
       } catch (e) {
         cart = [];
       }
@@ -1090,12 +1303,16 @@
       isAdminLoggedIn = sessionStorage.getItem('brand_admin_auth') === 'true';
     }
 
-    function saveProducts() {
-      localStorage.setItem(STORAGE_KEY_PRODS, JSON.stringify(products));
+    async function saveProducts() {
+      await dbSaveAllProducts(products);
     }
 
     function saveCart() {
-      localStorage.setItem(STORAGE_KEY_CART, JSON.stringify(cart));
+      try {
+        localStorage.setItem(STORAGE_KEY_CART, JSON.stringify(cart));
+      } catch (e) {
+        console.error('Failed to save cart', e);
+      }
     }
 
     function formatMoney(amount) {
@@ -1119,16 +1336,18 @@
       return Math.round(product.price * (1 - product.discount / 100));
     }
 
-    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85';
-
     /* ---------------------------------------------------------
        THEME & LANGUAGE CONTROLLERS
        --------------------------------------------------------- */
     function applyTheme() {
       const isDark = theme === 'dark';
       document.documentElement.classList.toggle('dark', isDark);
-      document.getElementById('themeIconSun').classList.toggle('hidden', isDark);
-      document.getElementById('themeIconMoon').classList.toggle('hidden', !isDark);
+      const sun = document.getElementById('themeIconSun');
+      const moon = document.getElementById('themeIconMoon');
+      if (sun && moon) {
+        sun.classList.toggle('hidden', isDark);
+        moon.classList.toggle('hidden', !isDark);
+      }
       localStorage.setItem(STORAGE_KEY_THEME, theme);
     }
 
@@ -1141,7 +1360,8 @@
       const isAr = lang === 'ar';
       document.documentElement.setAttribute('lang', lang);
       document.documentElement.setAttribute('dir', isAr ? 'rtl' : 'ltr');
-      document.getElementById('langLabel').textContent = isAr ? 'EN' : 'عربي';
+      const langLabel = document.getElementById('langLabel');
+      if (langLabel) langLabel.textContent = isAr ? 'EN' : 'عربي';
 
       const t = I18N[lang];
       document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -1149,9 +1369,11 @@
         if (t[key]) el.textContent = t[key];
       });
 
-      const searchPlaceholder = isAr ? 'ابحث عن موديل، لون، فئة...' : 'Search models, colors, categories...';
-      document.getElementById('desktopSearchInput').placeholder = searchPlaceholder;
-      document.getElementById('mobileSearchInput').placeholder = searchPlaceholder;
+      const searchPlaceholder = isAr ? 'بحث في الموديلات، الألوان، الأكواد...' : 'Search models, colors, categories...';
+      const dSearch = document.getElementById('desktopSearchInput');
+      const mSearch = document.getElementById('mobileSearchInput');
+      if (dSearch) dSearch.placeholder = searchPlaceholder;
+      if (mSearch) mSearch.placeholder = searchPlaceholder;
 
       localStorage.setItem(STORAGE_KEY_LANG, lang);
       renderStore();
@@ -1171,24 +1393,26 @@
       const storeView = document.getElementById('storeView');
       const loginView = document.getElementById('loginView');
       const adminView = document.getElementById('adminDashboardView');
-      const mainHeader = document.getElementById('mainHeader');
+      const mainNav = document.getElementById('mainNav');
 
-      storeView.classList.add('hidden');
-      loginView.classList.add('hidden');
-      adminView.classList.add('hidden');
+      if (storeView) storeView.classList.add('hidden');
+      if (loginView) loginView.classList.add('hidden');
+      if (adminView) adminView.classList.add('hidden');
 
       if (viewName === 'store') {
-        storeView.classList.remove('hidden');
-        mainHeader.classList.remove('hidden');
+        if (storeView) storeView.classList.remove('hidden');
+        if (mainNav) mainNav.classList.remove('hidden');
         renderStore();
       } else if (viewName === 'login') {
-        loginView.classList.remove('hidden');
-        mainHeader.classList.remove('hidden');
-        document.getElementById('adminPasswordInput').value = '';
-        document.getElementById('loginErrorMsg').classList.add('hidden');
+        if (loginView) loginView.classList.remove('hidden');
+        if (mainNav) mainNav.classList.remove('hidden');
+        const pwInput = document.getElementById('adminPasswordInput');
+        const err = document.getElementById('loginErrorMsg');
+        if (pwInput) pwInput.value = '';
+        if (err) err.classList.add('hidden');
       } else if (viewName === 'admin') {
-        adminView.classList.remove('hidden');
-        mainHeader.classList.remove('hidden');
+        if (adminView) adminView.classList.remove('hidden');
+        if (mainNav) mainNav.classList.remove('hidden');
         renderAdminView();
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1200,27 +1424,27 @@
     const cartDrawer = document.getElementById('cartDrawer');
 
     function openSideMenu() {
-      sideDrawer.style.transform = 'translateX(0)';
-      overlay.classList.remove('hidden');
+      if (sideDrawer) sideDrawer.style.transform = 'translateX(0)';
+      if (overlay) overlay.classList.remove('hidden');
       document.body.classList.add('no-scroll');
     }
 
     function closeSideMenu() {
-      sideDrawer.style.transform = '';
-      overlay.classList.add('hidden');
+      if (sideDrawer) sideDrawer.style.transform = '';
+      if (overlay) overlay.classList.add('hidden');
       document.body.classList.remove('no-scroll');
     }
 
     function openCartDrawer() {
-      cartDrawer.style.transform = 'translateX(0)';
-      overlay.classList.remove('hidden');
+      if (cartDrawer) cartDrawer.style.transform = 'translateX(0)';
+      if (overlay) overlay.classList.remove('hidden');
       document.body.classList.add('no-scroll');
       renderCart();
     }
 
     function closeCartDrawer() {
-      cartDrawer.style.transform = '';
-      overlay.classList.add('hidden');
+      if (cartDrawer) cartDrawer.style.transform = '';
+      if (overlay) overlay.classList.add('hidden');
       document.body.classList.remove('no-scroll');
     }
 
@@ -1231,7 +1455,7 @@
     }
 
     /* ---------------------------------------------------------
-       SLIDESHOW & CAROUSEL ENGINE
+       SLIDESHOW & CAROUSEL ENGINE (Auto Loop)
        --------------------------------------------------------- */
     function stopAllCardIntervals() {
       Object.keys(cardIntervals).forEach(key => {
@@ -1284,13 +1508,16 @@
     }
 
     /* ---------------------------------------------------------
-       RENDER STORE PRODUCTS (LARGE WIDE ADAPTIVE IMAGES)
+       RENDER STORE PRODUCTS (WITH VIRTUAL PAGINATION FOR 1000+)
        --------------------------------------------------------- */
     function renderStore() {
       stopAllCardIntervals();
       const grid = document.getElementById('productsGrid');
       const emptyState = document.getElementById('emptyState');
+      const loadMoreContainer = document.getElementById('loadMoreContainer');
       const t = I18N[lang];
+
+      if (!grid) return;
 
       const q = searchQuery.toLowerCase().trim();
       const filtered = products.filter(p => {
@@ -1304,13 +1531,19 @@
 
       if (!filtered.length) {
         grid.innerHTML = '';
-        emptyState.classList.remove('hidden');
+        if (emptyState) emptyState.classList.remove('hidden');
+        if (loadMoreContainer) loadMoreContainer.classList.add('hidden');
         return;
       }
 
-      emptyState.classList.add('hidden');
+      if (emptyState) emptyState.classList.add('hidden');
 
-      grid.innerHTML = filtered.map(p => {
+      const displayBatch = filtered.slice(0, visibleProductCount);
+      if (loadMoreContainer) {
+        loadMoreContainer.classList.toggle('hidden', filtered.length <= visibleProductCount);
+      }
+
+      grid.innerHTML = displayBatch.map(p => {
         const imgs = (p.images && p.images.length) ? p.images : [FALLBACK_IMG];
         const totalImgs = imgs.length;
         const currentIdx = cardActiveIndices[p.id] || 0;
@@ -1434,7 +1667,7 @@
         `;
       }).join('');
 
-      filtered.forEach(p => {
+      displayBatch.forEach(p => {
         if (p.images && p.images.length > 1) {
           startCardSlideshow(p.id, p.images.length);
         }
@@ -1454,14 +1687,15 @@
       const imgs = (p.images && p.images.length) ? p.images : [FALLBACK_IMG];
       activeLightboxIdx = Math.max(0, Math.min(initialIdx, imgs.length - 1));
 
-      document.getElementById('lbTitle').textContent = p.title;
+      const titleEl = document.getElementById('lbTitle');
+      if (titleEl) titleEl.textContent = p.title;
       renderLightbox();
-      lightboxModal.classList.remove('hidden');
+      if (lightboxModal) lightboxModal.classList.remove('hidden');
       document.body.classList.add('no-scroll');
     }
 
     function closeLightbox() {
-      lightboxModal.classList.add('hidden');
+      if (lightboxModal) lightboxModal.classList.add('hidden');
       document.body.classList.remove('no-scroll');
       activeLightboxProd = null;
     }
@@ -1474,43 +1708,53 @@
       const total = imgs.length;
       activeLightboxIdx = ((activeLightboxIdx % total) + total) % total;
 
-      lbMainImg.src = imgs[activeLightboxIdx];
-      document.getElementById('lbCounter').textContent = `${activeLightboxIdx + 1} / ${total}`;
+      if (lbMainImg) lbMainImg.src = imgs[activeLightboxIdx];
+      const counterEl = document.getElementById('lbCounter');
+      if (counterEl) counterEl.textContent = `${activeLightboxIdx + 1} / ${total}`;
 
-      document.getElementById('lbPrevBtn').style.display = total > 1 ? 'flex' : 'none';
-      document.getElementById('lbNextBtn').style.display = total > 1 ? 'flex' : 'none';
+      const prevBtn = document.getElementById('lbPrevBtn');
+      const nextBtn = document.getElementById('lbNextBtn');
+      if (prevBtn) prevBtn.style.display = total > 1 ? 'flex' : 'none';
+      if (nextBtn) nextBtn.style.display = total > 1 ? 'flex' : 'none';
 
       const strip = document.getElementById('lbThumbStrip');
-      if (total > 1) {
-        strip.style.display = 'flex';
-        strip.innerHTML = imgs.map((imgUrl, i) => `
-          <img 
-            src="${escapeHTML(imgUrl)}" 
-            class="w-16 h-12 rounded-xl object-contain bg-slate-900 border-2 cursor-pointer transition-all ${i === activeLightboxIdx ? 'border-cyan-400 scale-105 shadow-lg shadow-cyan-500/50' : 'border-transparent opacity-50 hover:opacity-100'}"
-            data-idx="${i}"
-            onerror="this.src='${FALLBACK_IMG}'"
-          />
-        `).join('');
-      } else {
-        strip.style.display = 'none';
+      if (strip) {
+        if (total > 1) {
+          strip.style.display = 'flex';
+          strip.innerHTML = imgs.map((imgUrl, i) => `
+            <img 
+              src="${escapeHTML(imgUrl)}" 
+              class="w-16 h-12 rounded-xl object-contain bg-slate-900 border-2 cursor-pointer transition-all ${i === activeLightboxIdx ? 'border-cyan-400 scale-105 shadow-lg shadow-cyan-500/50' : 'border-transparent opacity-50 hover:opacity-100'}"
+              data-idx="${i}"
+              onerror="this.src='${FALLBACK_IMG}'"
+            />
+          `).join('');
+        } else {
+          strip.style.display = 'none';
+        }
       }
 
       const discountPrice = getDiscountPrice(p);
-      document.getElementById('lbPriceContainer').innerHTML = discountPrice ? `
-        <span class="text-xs line-through text-slate-500 font-en">${formatMoney(p.price)}</span>
-        <span class="text-lg font-black text-red-400 font-en mr-2">${formatMoney(discountPrice)}</span>
-      ` : `<span class="text-lg font-black text-cyan-400 font-en">${formatMoney(p.price)}</span>`;
+      const priceCont = document.getElementById('lbPriceContainer');
+      if (priceCont) {
+        priceCont.innerHTML = discountPrice ? `
+          <span class="text-xs line-through text-slate-500 font-en">${formatMoney(p.price)}</span>
+          <span class="text-lg font-black text-red-400 font-en mr-2">${formatMoney(discountPrice)}</span>
+        ` : `<span class="text-lg font-black text-cyan-400 font-en">${formatMoney(p.price)}</span>`;
+      }
 
       const sizesContainer = document.getElementById('lbSizesContainer');
       const selectedSize = cardSelectedSizes[p.id] || (p.sizes && p.sizes[0]) || '';
-      if (p.sizes && p.sizes.length) {
-        sizesContainer.innerHTML = p.sizes.map(sz => `
-          <button type="button" class="size-btn px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${sz === selectedSize ? 'active' : 'bg-slate-800 text-slate-300 border-white/10'}" data-pid="${escapeHTML(p.id)}" data-sz="${escapeHTML(sz)}">
-            ${escapeHTML(sz)}
-          </button>
-        `).join('');
-      } else {
-        sizesContainer.innerHTML = '';
+      if (sizesContainer) {
+        if (p.sizes && p.sizes.length) {
+          sizesContainer.innerHTML = p.sizes.map(sz => `
+            <button type="button" class="size-btn px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${sz === selectedSize ? 'active' : 'bg-slate-800 text-slate-300 border-white/10'}" data-pid="${escapeHTML(p.id)}" data-sz="${escapeHTML(sz)}">
+              ${escapeHTML(sz)}
+            </button>
+          `).join('');
+        } else {
+          sizesContainer.innerHTML = '';
+        }
       }
 
       const isOutOfStock = p.stock <= 0;
@@ -1519,25 +1763,27 @@
       const addBtn = document.getElementById('lbAddToCartBtn');
       const addText = document.getElementById('lbAddBtnText');
 
-      if (isOutOfStock) {
-        addBtn.disabled = true;
-        addBtn.className = 'px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-red-500/10 text-red-400 border border-red-500/20 cursor-not-allowed';
-        addText.textContent = t.out_of_stock;
-      } else if (inCart) {
-        addBtn.disabled = false;
-        addBtn.className = 'px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-pointer';
-        addText.textContent = '✓ ' + t.added_to_cart;
-      } else {
-        addBtn.disabled = false;
-        addBtn.className = 'neon-btn px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white cursor-pointer';
-        addText.textContent = '+ ' + t.add_to_cart;
+      if (addBtn && addText) {
+        if (isOutOfStock) {
+          addBtn.disabled = true;
+          addBtn.className = 'px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-red-500/10 text-red-400 border border-red-500/20 cursor-not-allowed';
+          addText.textContent = t.out_of_stock;
+        } else if (inCart) {
+          addBtn.disabled = false;
+          addBtn.className = 'px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 cursor-pointer';
+          addText.textContent = '✓ ' + t.added_to_cart;
+        } else {
+          addBtn.disabled = false;
+          addBtn.className = 'neon-btn px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white cursor-pointer';
+          addText.textContent = '+ ' + t.add_to_cart;
+        }
       }
     }
 
     /* ---------------------------------------------------------
        CART SYSTEM & WHATSAPP CHECKOUT
        --------------------------------------------------------- */
-    function addToCart(prodId, chosenSize) {
+    async function addToCart(prodId, chosenSize) {
       const p = products.find(x => x.id === prodId);
       if (!p || p.stock <= 0) return;
 
@@ -1597,10 +1843,14 @@
       const savingsAmt = document.getElementById('cartSavingsAmt');
       const t = I18N[lang];
 
+      if (!list) return;
+
       const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-      badge.textContent = totalCount;
-      badge.classList.toggle('scale-0', totalCount === 0);
-      badge.classList.toggle('scale-100', totalCount > 0);
+      if (badge) {
+        badge.textContent = totalCount;
+        badge.classList.toggle('scale-0', totalCount === 0);
+        badge.classList.toggle('scale-100', totalCount > 0);
+      }
 
       if (!cart.length) {
         list.innerHTML = `
@@ -1609,8 +1859,8 @@
             <p class="text-sm text-slate-400 font-medium">${t.empty_cart_msg}</p>
           </div>
         `;
-        totalAmt.textContent = formatMoney(0);
-        savingsRow.classList.add('hidden');
+        if (totalAmt) totalAmt.textContent = formatMoney(0);
+        if (savingsRow) savingsRow.classList.add('hidden');
         return;
       }
 
@@ -1647,14 +1897,16 @@
         `;
       }).join('');
 
-      totalAmt.textContent = formatMoney(grandTotal);
+      if (totalAmt) totalAmt.textContent = formatMoney(grandTotal);
       const totalSavings = totalOriginal - grandTotal;
-      if (totalSavings > 0) {
-        savingsRow.classList.remove('hidden');
-        savingsRow.classList.add('flex');
-        savingsAmt.textContent = formatMoney(totalSavings);
-      } else {
-        savingsRow.classList.add('hidden');
+      if (savingsRow && savingsAmt) {
+        if (totalSavings > 0) {
+          savingsRow.classList.remove('hidden');
+          savingsRow.classList.add('flex');
+          savingsAmt.textContent = formatMoney(totalSavings);
+        } else {
+          savingsRow.classList.add('hidden');
+        }
       }
     }
 
@@ -1687,7 +1939,7 @@
     }
 
     /* ---------------------------------------------------------
-       ADMIN PANEL LOGIC (PROTECTED & HIDDEN)
+       ADMIN PANEL LOGIC (PROTECTED & BULK 1000+ COMPRESSION)
        --------------------------------------------------------- */
     function renderAdminView() {
       const totalCount = document.getElementById('statTotalCount');
@@ -1697,13 +1949,15 @@
       const tbody = document.getElementById('adminTableBody');
       const tblCountText = document.getElementById('tblCountText');
 
-      totalCount.textContent = products.length;
-      saleCount.textContent = products.filter(p => p.discount && p.discount > 0).length;
-      outCount.textContent = products.filter(p => p.stock <= 0).length;
+      if (!tbody) return;
+
+      if (totalCount) totalCount.textContent = products.length;
+      if (saleCount) saleCount.textContent = products.filter(p => p.discount && p.discount > 0).length;
+      if (outCount) outCount.textContent = products.filter(p => p.stock <= 0).length;
       
       const totalImages = products.reduce((acc, p) => acc + (p.images ? p.images.length : 0), 0);
-      imagesCount.textContent = totalImages;
-      tblCountText.textContent = `${products.length} products`;
+      if (imagesCount) imagesCount.textContent = totalImages;
+      if (tblCountText) tblCountText.textContent = `${products.length} products in database`;
 
       tbody.innerHTML = products.map(p => {
         const discountPrice = getDiscountPrice(p);
@@ -1748,10 +2002,12 @@
     }
 
     function renderFormSizes() {
-      const cat = document.getElementById('formCategory').value || 'T-Shirts';
+      const catInput = document.getElementById('formCategory');
+      const cat = catInput ? catInput.value : 'T-Shirts';
       const available = PRESET_SIZES[cat] || PRESET_SIZES['T-Shirts'];
       const container = document.getElementById('formSizesContainer');
 
+      if (!container) return;
       container.innerHTML = available.map(sz => {
         const isSelected = formSelectedSizes.includes(sz);
         return `
@@ -1765,8 +2021,9 @@
     function renderFormImagesManager() {
       const list = document.getElementById('formImagesList');
       const count = document.getElementById('formImagesCount');
-      count.textContent = `${formImages.length} images`;
+      if (count) count.textContent = `${formImages.length} images`;
 
+      if (!list) return;
       if (!formImages.length) {
         list.innerHTML = `<div class="col-span-full py-4 text-center text-xs text-slate-500 border border-dashed border-white/10 rounded-xl">لم تتم إضافة أي صور بعد. أضف روابط أو ارفع صوراً أعلاه.</div>`;
         return;
@@ -1787,13 +2044,24 @@
     }
 
     function resetForm() {
-      document.getElementById('formProdId').value = '';
-      document.getElementById('formTitle').value = '';
-      document.getElementById('formPrice').value = '';
-      document.getElementById('formDiscount').value = '';
-      document.getElementById('formStock').value = '10';
-      document.getElementById('formCategory').value = 'T-Shirts';
-      document.getElementById('formModeTitle').querySelector('span').textContent = I18N[lang].form_add_title;
+      const formProdId = document.getElementById('formProdId');
+      const formTitle = document.getElementById('formTitle');
+      const formPrice = document.getElementById('formPrice');
+      const formDiscount = document.getElementById('formDiscount');
+      const formStock = document.getElementById('formStock');
+      const formCategory = document.getElementById('formCategory');
+      const formModeTitle = document.getElementById('formModeTitle');
+
+      if (formProdId) formProdId.value = '';
+      if (formTitle) formTitle.value = '';
+      if (formPrice) formPrice.value = '';
+      if (formDiscount) formDiscount.value = '';
+      if (formStock) formStock.value = '10';
+      if (formCategory) formCategory.value = 'T-Shirts';
+      if (formModeTitle) {
+        const span = formModeTitle.querySelector('span');
+        if (span) span.textContent = I18N[lang].form_add_title;
+      }
       formImages = [];
       formSelectedSizes = [...PRESET_SIZES['T-Shirts']];
       renderFormSizes();
@@ -1804,337 +2072,494 @@
       const p = products.find(x => x.id === id);
       if (!p) return;
 
-      document.getElementById('formProdId').value = p.id;
-      document.getElementById('formTitle').value = p.title;
-      document.getElementById('formCategory').value = p.category;
-      document.getElementById('formPrice').value = p.price;
-      document.getElementById('formDiscount').value = p.discount || 0;
-      document.getElementById('formStock').value = p.stock !== undefined ? p.stock : 10;
-      document.getElementById('formModeTitle').querySelector('span').textContent = I18N[lang].form_edit_title;
+      const formProdId = document.getElementById('formProdId');
+      const formTitle = document.getElementById('formTitle');
+      const formCategory = document.getElementById('formCategory');
+      const formPrice = document.getElementById('formPrice');
+      const formDiscount = document.getElementById('formDiscount');
+      const formStock = document.getElementById('formStock');
+      const formModeTitle = document.getElementById('formModeTitle');
+
+      if (formProdId) formProdId.value = p.id;
+      if (formTitle) formTitle.value = p.title;
+      if (formCategory) formCategory.value = p.category;
+      if (formPrice) formPrice.value = p.price;
+      if (formDiscount) formDiscount.value = p.discount || 0;
+      if (formStock) formStock.value = p.stock !== undefined ? p.stock : 10;
+      if (formModeTitle) {
+        const span = formModeTitle.querySelector('span');
+        if (span) span.textContent = I18N[lang].form_edit_title;
+      }
 
       formImages = p.images ? [...p.images] : [];
       formSelectedSizes = p.sizes ? [...p.sizes] : [...(PRESET_SIZES[p.category] || [])];
 
       renderFormSizes();
       renderFormImagesManager();
-      window.scrollTo({ top: document.getElementById('productForm').offsetTop - 100, behavior: 'smooth' });
+      const formEl = document.getElementById('productForm');
+      if (formEl) window.scrollTo({ top: formEl.offsetTop - 100, behavior: 'smooth' });
     }
 
-    function deleteProduct(id) {
-      if (!confirm('هل أنت متأكد من رغبتك في حذف هذا الموديل؟')) return;
+    async function deleteProduct(id) {
+      if (!confirm('هل أنت متأكد من حذف هذا الموديل؟')) return;
       products = products.filter(p => p.id !== id);
-      saveProducts();
+      await saveProducts();
+      await deleteProductFromFirebase(id);
       renderAdminView();
       renderStore();
+    }
+
+    /* ---------------------------------------------------------
+       BACKUP EXPORT & IMPORT FUNCTIONS
+       --------------------------------------------------------- */
+    function exportProductsBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(products, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `BRAND_Products_Backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importProductsBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (Array.isArray(imported)) {
+            products = imported;
+            await saveProducts();
+            if (firestoreDb) {
+              for (const p of products) {
+                await firestoreDb.collection('products').doc(p.id).set(p);
+              }
+            }
+            renderAdminView();
+            renderStore();
+            alert(`تم استيراد ومزامنة ${imported.length} موديل بنجاح!`);
+          } else {
+            alert('ملف النسخة الاحتياطية غير صالح.');
+          }
+        } catch(err) {
+          alert('حدث خطأ أثناء قراءة الملف.');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
     }
 
     /* ---------------------------------------------------------
        EVENT LISTENERS ATTACHMENT
        --------------------------------------------------------- */
     function attachEventListeners() {
-      document.getElementById('themeToggleBtn').addEventListener('click', toggleTheme);
-      document.getElementById('langToggleBtn').addEventListener('click', toggleLanguage);
+      const themeToggle = document.getElementById('themeToggleBtn');
+      const langToggle = document.getElementById('langToggleBtn');
+      if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+      if (langToggle) langToggle.addEventListener('click', toggleLanguage);
 
-      document.getElementById('menuToggleBtn').addEventListener('click', openSideMenu);
-      document.getElementById('closeSideMenuBtn').addEventListener('click', closeSideMenu);
-      document.getElementById('cartToggleBtn').addEventListener('click', openCartDrawer);
-      document.getElementById('closeCartBtn').addEventListener('click', closeCartDrawer);
-      overlay.addEventListener('click', closeAllDrawers);
+      const menuToggle = document.getElementById('menuToggleBtn');
+      const closeSideMenu = document.getElementById('closeSideMenuBtn');
+      const cartToggle = document.getElementById('cartToggleBtn');
+      const closeCart = document.getElementById('closeCartBtn');
 
+      if (menuToggle) menuToggle.addEventListener('click', openSideMenu);
+      if (closeSideMenu) closeSideMenu.addEventListener('click', closeSideMenu);
+      if (cartToggle) cartToggle.addEventListener('click', openCartDrawer);
+      if (closeCart) closeCart.addEventListener('click', closeCartDrawer);
+      if (overlay) overlay.addEventListener('click', closeAllDrawers);
+
+      // Search Handlers
       const handleSearch = (e) => {
         searchQuery = e.target.value;
+        visibleProductCount = PAGE_SIZE;
         renderStore();
       };
-      document.getElementById('desktopSearchInput').addEventListener('input', handleSearch);
-      document.getElementById('mobileSearchInput').addEventListener('input', handleSearch);
+      const dSearch = document.getElementById('desktopSearchInput');
+      const mSearch = document.getElementById('mobileSearchInput');
+      if (dSearch) dSearch.addEventListener('input', handleSearch);
+      if (mSearch) mSearch.addEventListener('input', handleSearch);
 
-      document.getElementById('categoryPills').addEventListener('click', (e) => {
-        const btn = e.target.closest('.cat-btn');
-        if (!btn) return;
-        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeCategory = btn.dataset.cat;
-        renderStore();
-      });
+      // Category Pills
+      const categoryPills = document.getElementById('categoryPills');
+      if (categoryPills) {
+        categoryPills.addEventListener('click', (e) => {
+          const btn = e.target.closest('.cat-btn');
+          if (!btn) return;
+          document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeCategory = btn.dataset.cat;
+          visibleProductCount = PAGE_SIZE;
+          renderStore();
+        });
+      }
+
+      // Load More Button
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+          visibleProductCount += PAGE_SIZE;
+          renderStore();
+        });
+      }
 
       // SECRET 3-CLICK GESTURE ON STORE LOGO TO OPEN ADMIN LOGIN
       let logoClickCount = 0;
       let logoClickTimer = null;
-      document.getElementById('brandLogoBtn').addEventListener('click', () => {
-        logoClickCount++;
-        clearTimeout(logoClickTimer);
-        logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 600);
-        if (logoClickCount >= 3) {
-          logoClickCount = 0;
-          if (isAdminLoggedIn) {
-            showView('admin');
-          } else {
-            showView('login');
+      const logoBtn = document.getElementById('brandLogoBtn');
+      if (logoBtn) {
+        logoBtn.addEventListener('click', () => {
+          logoClickCount++;
+          clearTimeout(logoClickTimer);
+          logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 600);
+          if (logoClickCount >= 3) {
+            logoClickCount = 0;
+            if (isAdminLoggedIn) {
+              showView('admin');
+            } else {
+              showView('login');
+            }
           }
-        }
-      });
+        });
+      }
 
-      document.getElementById('sideHomeBtn').addEventListener('click', () => {
-        closeSideMenu();
-        showView('store');
-      });
+      const sideHomeBtn = document.getElementById('sideHomeBtn');
+      if (sideHomeBtn) {
+        sideHomeBtn.addEventListener('click', () => {
+          closeSideMenu();
+          showView('store');
+        });
+      }
 
       // Login Handlers
-      document.getElementById('submitLoginBtn').addEventListener('click', () => {
-        const pw = document.getElementById('adminPasswordInput').value;
-        if (pw === ADMIN_PASSWORD) {
-          isAdminLoggedIn = true;
-          sessionStorage.setItem('brand_admin_auth', 'true');
-          showView('admin');
-        } else {
-          document.getElementById('loginErrorMsg').classList.remove('hidden');
-        }
-      });
-      document.getElementById('adminPasswordInput').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') document.getElementById('submitLoginBtn').click();
-      });
-      document.getElementById('backToStoreFromLogin').addEventListener('click', () => showView('store'));
+      const submitLogin = document.getElementById('submitLoginBtn');
+      const adminPw = document.getElementById('adminPasswordInput');
+      const backFromLogin = document.getElementById('backToStoreFromLogin');
+
+      if (submitLogin && adminPw) {
+        submitLogin.addEventListener('click', () => {
+          const pw = adminPw.value;
+          if (pw === ADMIN_PASSWORD) {
+            isAdminLoggedIn = true;
+            sessionStorage.setItem('brand_admin_auth', 'true');
+            showView('admin');
+          } else {
+            const err = document.getElementById('loginErrorMsg');
+            if (err) err.classList.remove('hidden');
+          }
+        });
+        adminPw.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') submitLogin.click();
+        });
+      }
+      if (backFromLogin) backFromLogin.addEventListener('click', () => showView('store'));
 
       // Admin Dashboard Handlers
-      document.getElementById('adminBackToStoreBtn').addEventListener('click', () => showView('store'));
-      document.getElementById('adminLogoutBtn').addEventListener('click', () => {
-        isAdminLoggedIn = false;
-        sessionStorage.removeItem('brand_admin_auth');
-        showView('store');
-      });
+      const adminBack = document.getElementById('adminBackToStoreBtn');
+      const adminLogout = document.getElementById('adminLogoutBtn');
+      const adminExport = document.getElementById('adminExportBtn');
+      const adminImport = document.getElementById('adminImportFile');
 
-      document.getElementById('formCategory').addEventListener('change', () => {
-        const cat = document.getElementById('formCategory').value;
-        formSelectedSizes = [...(PRESET_SIZES[cat] || [])];
-        renderFormSizes();
-      });
+      if (adminBack) adminBack.addEventListener('click', () => showView('store'));
+      if (adminLogout) {
+        adminLogout.addEventListener('click', () => {
+          isAdminLoggedIn = false;
+          sessionStorage.removeItem('brand_admin_auth');
+          showView('store');
+        });
+      }
+      if (adminExport) adminExport.addEventListener('click', exportProductsBackup);
+      if (adminImport) adminImport.addEventListener('change', importProductsBackup);
 
-      document.getElementById('formSizesContainer').addEventListener('click', (e) => {
-        const btn = e.target.closest('.form-size-toggle');
-        if (!btn) return;
-        const sz = btn.dataset.sz;
-        if (formSelectedSizes.includes(sz)) {
-          formSelectedSizes = formSelectedSizes.filter(s => s !== sz);
-        } else {
-          formSelectedSizes.push(sz);
-        }
-        renderFormSizes();
-      });
+      // Form Category Change
+      const formCat = document.getElementById('formCategory');
+      if (formCat) {
+        formCat.addEventListener('change', () => {
+          formSelectedSizes = [...(PRESET_SIZES[formCat.value] || [])];
+          renderFormSizes();
+        });
+      }
+
+      // Form Sizes Select
+      const sizesCont = document.getElementById('formSizesContainer');
+      if (sizesCont) {
+        sizesCont.addEventListener('click', (e) => {
+          const btn = e.target.closest('.form-size-toggle');
+          if (!btn) return;
+          const sz = btn.dataset.sz;
+          if (formSelectedSizes.includes(sz)) {
+            formSelectedSizes = formSelectedSizes.filter(s => s !== sz);
+          } else {
+            formSelectedSizes.push(sz);
+          }
+          renderFormSizes();
+        });
+      }
 
       // Form Add Image URL
-      document.getElementById('formAddUrlBtn').addEventListener('click', () => {
-        const input = document.getElementById('formImgUrlInput');
-        const url = input.value.trim();
-        if (url) {
-          const urls = url.split(/[\r\n,]+/).map(u => u.trim()).filter(Boolean);
-          formImages.push(...urls);
-          input.value = '';
-          renderFormImagesManager();
-        }
-      });
-      document.getElementById('formImgUrlInput').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          document.getElementById('formAddUrlBtn').click();
-        }
-      });
-
-      // Form Upload Files
-      document.getElementById('formFileInput').addEventListener('change', (e) => {
-        const files = Array.from(e.target.files);
-        if (!files.length) return;
-        files.forEach(file => {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            formImages.push(event.target.result);
-            renderFormImagesManager();
-          };
-          reader.readAsDataURL(file);
-        });
-        e.target.value = '';
-      });
-
-      // Form Images Manager
-      document.getElementById('formImagesList').addEventListener('click', (e) => {
-        const coverBtn = e.target.closest('.set-cover-btn');
-        if (coverBtn) {
-          const idx = parseInt(coverBtn.dataset.idx);
-          if (idx > 0 && idx < formImages.length) {
-            const item = formImages.splice(idx, 1)[0];
-            formImages.unshift(item);
+      const addUrlBtn = document.getElementById('formAddUrlBtn');
+      const imgUrlInput = document.getElementById('formImgUrlInput');
+      if (addUrlBtn && imgUrlInput) {
+        addUrlBtn.addEventListener('click', () => {
+          const url = imgUrlInput.value.trim();
+          if (url) {
+            const urls = url.split(/[\r\n,]+/).map(u => u.trim()).filter(Boolean);
+            formImages.push(...urls);
+            imgUrlInput.value = '';
             renderFormImagesManager();
           }
-          return;
-        }
-        const delBtn = e.target.closest('.del-form-img-btn');
-        if (delBtn) {
-          const idx = parseInt(delBtn.dataset.idx);
-          formImages.splice(idx, 1);
-          renderFormImagesManager();
-        }
-      });
+        });
+        imgUrlInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            addUrlBtn.click();
+          }
+        });
+      }
+
+      // Form File Upload (With Smart Auto-Compression for 1000+ Models)
+      const fileInput = document.getElementById('formFileInput');
+      const uploadStatus = document.getElementById('uploadStatusProgress');
+      if (fileInput) {
+        fileInput.addEventListener('change', async (e) => {
+          const files = Array.from(e.target.files);
+          if (!files.length) return;
+
+          if (uploadStatus) uploadStatus.classList.remove('hidden');
+
+          for (const file of files) {
+            try {
+              const compressed = await compressImageFile(file, 1200, 0.82);
+              formImages.push(compressed);
+              renderFormImagesManager();
+            } catch(err) {
+              console.error('Compression error:', err);
+            }
+          }
+
+          if (uploadStatus) uploadStatus.classList.add('hidden');
+          e.target.value = '';
+        });
+      }
+
+      // Form Images Manager
+      const formImagesList = document.getElementById('formImagesList');
+      if (formImagesList) {
+        formImagesList.addEventListener('click', (e) => {
+          const coverBtn = e.target.closest('.set-cover-btn');
+          if (coverBtn) {
+            const idx = parseInt(coverBtn.dataset.idx);
+            if (idx > 0 && idx < formImages.length) {
+              const item = formImages.splice(idx, 1)[0];
+              formImages.unshift(item);
+              renderFormImagesManager();
+            }
+            return;
+          }
+          const delBtn = e.target.closest('.del-form-img-btn');
+          if (delBtn) {
+            const idx = parseInt(delBtn.dataset.idx);
+            formImages.splice(idx, 1);
+            renderFormImagesManager();
+          }
+        });
+      }
 
       // Product Form Submit
-      document.getElementById('productForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const pid = document.getElementById('formProdId').value || 'p_' + Date.now();
-        const title = document.getElementById('formTitle').value.trim();
-        const category = document.getElementById('formCategory').value;
-        const price = parseFloat(document.getElementById('formPrice').value);
-        const discount = parseFloat(document.getElementById('formDiscount').value) || 0;
-        const stock = parseInt(document.getElementById('formStock').value) || 0;
+      const productForm = document.getElementById('productForm');
+      if (productForm) {
+        productForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const pid = document.getElementById('formProdId').value || 'p_' + Date.now();
+          const title = document.getElementById('formTitle').value.trim();
+          const category = document.getElementById('formCategory').value;
+          const price = parseFloat(document.getElementById('formPrice').value);
+          const discount = parseFloat(document.getElementById('formDiscount').value) || 0;
+          const stock = parseInt(document.getElementById('formStock').value) || 0;
 
-        const updatedProd = {
-          id: pid,
-          title: title,
-          category: category,
-          price: price,
-          discount: discount,
-          stock: stock,
-          sizes: formSelectedSizes.length ? formSelectedSizes : ['Free Size'],
-          images: formImages.length ? formImages : [FALLBACK_IMG]
-        };
+          const updatedProd = {
+            id: pid,
+            title: title,
+            category: category,
+            price: price,
+            discount: discount,
+            stock: stock,
+            sizes: formSelectedSizes.length ? formSelectedSizes : ['Free Size'],
+            images: formImages.length ? formImages : [FALLBACK_IMG]
+          };
 
-        const existingIdx = products.findIndex(p => p.id === pid);
-        if (existingIdx >= 0) {
-          products[existingIdx] = updatedProd;
-        } else {
-          products.unshift(updatedProd);
-        }
+          const existingIdx = products.findIndex(p => p.id === pid);
+          if (existingIdx >= 0) {
+            products[existingIdx] = updatedProd;
+          } else {
+            products.unshift(updatedProd);
+          }
 
-        await saveProducts();
-        await saveProductToFirebase(updatedProd);
-        resetForm();
-        renderAdminView();
-        renderStore();
-        alert('تم حفظ الموديل ومزامنته سحابياً لجميع العملاء فوراً!');
-      });
+          await saveProducts();
+          await saveProductToFirebase(updatedProd);
+          resetForm();
+          renderAdminView();
+          renderStore();
+          alert('تم حفظ الموديل ومزامنته سحابياً لجميع العملاء فوراً!');
+        });
+      }
 
-      document.getElementById('formCancelBtn').addEventListener('click', resetForm);
+      const formCancel = document.getElementById('formCancelBtn');
+      if (formCancel) formCancel.addEventListener('click', resetForm);
 
       // Admin Table Actions
-      document.getElementById('adminTableBody').addEventListener('click', (e) => {
-        const editBtn = e.target.closest('.admin-edit-btn');
-        if (editBtn) {
-          editProduct(editBtn.dataset.id);
-          return;
-        }
-        const delBtn = e.target.closest('.admin-del-btn');
-        if (delBtn) {
-          deleteProduct(delBtn.dataset.id);
-        }
-      });
+      const adminTableBody = document.getElementById('adminTableBody');
+      if (adminTableBody) {
+        adminTableBody.addEventListener('click', (e) => {
+          const editBtn = e.target.closest('.admin-edit-btn');
+          if (editBtn) {
+            editProduct(editBtn.dataset.id);
+            return;
+          }
+          const delBtn = e.target.closest('.admin-del-btn');
+          if (delBtn) {
+            deleteProduct(delBtn.dataset.id);
+          }
+        });
+      }
 
       // Cart Actions
-      document.getElementById('cartItemsList').addEventListener('click', (e) => {
-        const qtyBtn = e.target.closest('.cart-qty-btn');
-        if (qtyBtn) {
-          const key = qtyBtn.dataset.key;
-          const delta = parseInt(qtyBtn.dataset.delta);
-          updateCartQty(key, delta);
-        }
-      });
+      const cartList = document.getElementById('cartItemsList');
+      if (cartList) {
+        cartList.addEventListener('click', (e) => {
+          const qtyBtn = e.target.closest('.cart-qty-btn');
+          if (qtyBtn) {
+            const key = qtyBtn.dataset.key;
+            const delta = parseInt(qtyBtn.dataset.delta);
+            updateCartQty(key, delta);
+          }
+        });
+      }
 
-      document.getElementById('clearCartBtn').addEventListener('click', clearCart);
-      document.getElementById('whatsappCheckoutBtn').addEventListener('click', checkoutWhatsApp);
+      const clearCartBtn = document.getElementById('clearCartBtn');
+      const whatsappBtn = document.getElementById('whatsappCheckoutBtn');
+      if (clearCartBtn) clearCartBtn.addEventListener('click', clearCart);
+      if (whatsappBtn) whatsappBtn.addEventListener('click', checkoutWhatsApp);
 
-      // Lightbox Navigation
-      document.getElementById('closeLightboxBtn').addEventListener('click', closeLightbox);
-      document.getElementById('lbPrevBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        activeLightboxIdx--;
-        renderLightbox();
-      });
-      document.getElementById('lbNextBtn').addEventListener('click', (e) => {
-        e.stopPropagation();
-        activeLightboxIdx++;
-        renderLightbox();
-      });
-      document.getElementById('lbThumbStrip').addEventListener('click', (e) => {
-        const img = e.target.closest('img');
-        if (img) {
-          activeLightboxIdx = parseInt(img.dataset.idx);
+      // Lightbox Actions
+      const closeLb = document.getElementById('closeLightboxBtn');
+      const prevLb = document.getElementById('lbPrevBtn');
+      const nextLb = document.getElementById('lbNextBtn');
+      const thumbStrip = document.getElementById('lbThumbStrip');
+      const lbSizes = document.getElementById('lbSizesContainer');
+      const lbAddBtn = document.getElementById('lbAddToCartBtn');
+
+      if (closeLb) closeLb.addEventListener('click', closeLightbox);
+      if (prevLb) {
+        prevLb.addEventListener('click', (e) => {
+          e.stopPropagation();
+          activeLightboxIdx--;
           renderLightbox();
-        }
-      });
-      document.getElementById('lbSizesContainer').addEventListener('click', (e) => {
-        const btn = e.target.closest('.size-btn');
-        if (btn && activeLightboxProd) {
-          cardSelectedSizes[activeLightboxProd.id] = btn.dataset.sz;
+        });
+      }
+      if (nextLb) {
+        nextLb.addEventListener('click', (e) => {
+          e.stopPropagation();
+          activeLightboxIdx++;
           renderLightbox();
-          renderStore();
-        }
-      });
-      document.getElementById('lbAddToCartBtn').addEventListener('click', () => {
-        if (!activeLightboxProd) return;
-        const selSize = cardSelectedSizes[activeLightboxProd.id] || (activeLightboxProd.sizes && activeLightboxProd.sizes[0]);
-        addToCart(activeLightboxProd.id, selSize);
-        renderLightbox();
-      });
+        });
+      }
+      if (thumbStrip) {
+        thumbStrip.addEventListener('click', (e) => {
+          const img = e.target.closest('img');
+          if (img) {
+            activeLightboxIdx = parseInt(img.dataset.idx);
+            renderLightbox();
+          }
+        });
+      }
+      if (lbSizes) {
+        lbSizes.addEventListener('click', (e) => {
+          const btn = e.target.closest('.size-btn');
+          if (btn && activeLightboxProd) {
+            cardSelectedSizes[activeLightboxProd.id] = btn.dataset.sz;
+            renderLightbox();
+            renderStore();
+          }
+        });
+      }
+      if (lbAddBtn) {
+        lbAddBtn.addEventListener('click', () => {
+          if (!activeLightboxProd) return;
+          const selSize = cardSelectedSizes[activeLightboxProd.id] || (activeLightboxProd.sizes && activeLightboxProd.sizes[0]);
+          addToCart(activeLightboxProd.id, selSize);
+          renderLightbox();
+        });
+      }
 
       window.addEventListener('keydown', (e) => {
-        if (!lightboxModal.classList.contains('hidden')) {
+        if (lightboxModal && !lightboxModal.classList.contains('hidden')) {
           if (e.key === 'Escape') closeLightbox();
           if (e.key === 'ArrowLeft') { activeLightboxIdx++; renderLightbox(); }
           if (e.key === 'ArrowRight') { activeLightboxIdx--; renderLightbox(); }
         }
       });
 
-      // Grid Delegations
-      document.getElementById('productsGrid').addEventListener('click', (e) => {
-        const trigger = e.target.closest('.card-image-trigger');
-        if (trigger) {
-          const pid = trigger.dataset.pid;
-          const curIdx = cardActiveIndices[pid] || 0;
-          openLightbox(pid, curIdx);
-          return;
-        }
+      // Products Grid Actions
+      const grid = document.getElementById('productsGrid');
+      if (grid) {
+        grid.addEventListener('click', (e) => {
+          const trigger = e.target.closest('.card-image-trigger');
+          if (trigger) {
+            const pid = trigger.dataset.pid;
+            const curIdx = cardActiveIndices[pid] || 0;
+            openLightbox(pid, curIdx);
+            return;
+          }
 
-        const prevBtn = e.target.closest('.card-prev-arrow');
-        if (prevBtn) {
-          e.stopPropagation();
-          const pid = prevBtn.dataset.pid;
-          const cur = cardActiveIndices[pid] || 0;
-          setCardImage(pid, cur - 1);
-          return;
-        }
+          const prevBtn = e.target.closest('.card-prev-arrow');
+          if (prevBtn) {
+            e.stopPropagation();
+            const pid = prevBtn.dataset.pid;
+            const cur = cardActiveIndices[pid] || 0;
+            setCardImage(pid, cur - 1);
+            return;
+          }
 
-        const nextBtn = e.target.closest('.card-next-arrow');
-        if (nextBtn) {
-          e.stopPropagation();
-          const pid = nextBtn.dataset.pid;
-          const cur = cardActiveIndices[pid] || 0;
-          setCardImage(pid, cur + 1);
-          return;
-        }
+          const nextBtn = e.target.closest('.card-next-arrow');
+          if (nextBtn) {
+            e.stopPropagation();
+            const pid = nextBtn.dataset.pid;
+            const cur = cardActiveIndices[pid] || 0;
+            setCardImage(pid, cur + 1);
+            return;
+          }
 
-        const dot = e.target.closest('.card-dot');
-        if (dot) {
-          e.stopPropagation();
-          const pid = dot.dataset.pid;
-          const idx = parseInt(dot.dataset.idx);
-          setCardImage(pid, idx);
-          return;
-        }
+          const dot = e.target.closest('.card-dot');
+          if (dot) {
+            e.stopPropagation();
+            const pid = dot.dataset.pid;
+            const idx = parseInt(dot.dataset.idx);
+            setCardImage(pid, idx);
+            return;
+          }
 
-        const sizeBtn = e.target.closest('.size-btn');
-        if (sizeBtn) {
-          e.stopPropagation();
-          const pid = sizeBtn.dataset.pid;
-          const sz = sizeBtn.dataset.sz;
-          cardSelectedSizes[pid] = sz;
-          renderStore();
-          return;
-        }
+          const sizeBtn = e.target.closest('.size-btn');
+          if (sizeBtn) {
+            e.stopPropagation();
+            const pid = sizeBtn.dataset.pid;
+            const sz = sizeBtn.dataset.sz;
+            cardSelectedSizes[pid] = sz;
+            renderStore();
+            return;
+          }
 
-        const addBtn = e.target.closest('.add-to-cart-btn');
-        if (addBtn) {
-          e.stopPropagation();
-          const pid = addBtn.dataset.pid;
-          addToCart(pid);
-          return;
-        }
-      });
+          const addBtn = e.target.closest('.add-to-cart-btn');
+          if (addBtn) {
+            e.stopPropagation();
+            const pid = addBtn.dataset.pid;
+            addToCart(pid);
+            return;
+          }
+        });
+      }
     }
 
     /* ---------------------------------------------------------
