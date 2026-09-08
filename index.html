@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark scroll-smooth">
+<html lang="ar" dir="rtl" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BRAND | Luxury Menswear Collection 2026</title>
-  <meta name="description" content="BRAND - براند ملابس رجالي عصرية وفاخرة. تيشيرتات، بناطيل، وأحذية بأعلى خامات وأحدث صيحات الموضة." />
-
-  <!-- Google Fonts: Inter & Outfit -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>BRAND | براند - أزياء رجالية فاخرة 2026</title>
+  <meta name="description" content="BRAND - متجر أزياء رجالية فاخرة بأحدث الموديلات والألوان. شحن وتوصيل لجميع المحافظات وطلب مباشر عبر واتساب." />
+  
+  <!-- Google Fonts: Cairo + Outfit + Playfair Display + Cinzel -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Cinzel:wght@700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
+  
+    <!-- Firebase App & Firestore Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -18,561 +22,596 @@
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['Cairo', 'Outfit', 'sans-serif'],
+            en: ['Outfit', 'Cairo', 'sans-serif'],
+            serif: ['Playfair Display', 'Cinzel', 'serif']
+          },
           colors: {
             brand: {
-              gold: '#D4AF37',
-              cyan: '#06b6d4',
-              neon: '#22d3ee',
-              dark: '#07090e',
-              card: '#0f1420',
-              accent: '#3b82f6'
+              50: '#ecfeff',
+              100: '#cffafe',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+              neon: '#00d4ff',
+              accent: '#7b2fff'
             }
-          },
-          fontFamily: {
-            ar: ['Cairo', 'sans-serif'],
-            en: ['Outfit', 'Inter', 'sans-serif']
           }
         }
       }
     }
   </script>
 
-  <!-- Supabase Cloud DB Client (Realtime Sync & Global Products) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
-    :root {
-      --bg-main: #06080d;
-      --card-bg: rgba(15, 20, 32, 0.75);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
-    .light {
-      --bg-main: #f1f5f9;
-      --card-bg: rgba(255, 255, 255, 0.92);
-      --card-border: rgba(0, 0, 0, 0.08);
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-    }
-
-    body {
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      font-family: 'Cairo', sans-serif;
-      overflow-x: hidden;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .font-en {
-      font-family: 'Outfit', sans-serif;
-    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.35); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0, 212, 255, 0.7); }
 
     /* Glassmorphism */
-    .glass-nav {
-      background: rgba(6, 8, 13, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--card-border);
-    }
-    .light .glass-nav {
-      background: rgba(255, 255, 255, 0.88);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
     .glass-card {
-      background: var(--card-bg);
+      background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--card-border);
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .glass-card:hover {
-      border-color: rgba(6, 182, 212, 0.45);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 36px -12px rgba(6, 182, 212, 0.18);
+    .dark .glass-nav {
+      background: rgba(8, 12, 24, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+    html:not(.dark) .glass-nav {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
-    ::-webkit-scrollbar-track {
-      background: #06080d;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1e293b;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #06b6d4;
+    html:not(.dark) .glass-card {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     }
 
-    /* Neon Gradients */
+    /* Gradients & Glow */
     .neon-gradient-text {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+      background: linear-gradient(135deg, #00d4ff 0%, #0080ff 50%, #7b2fff 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-
-    .brand-title-gradient {
-      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 45%, #64748b 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 0.18em;
-    }
-
-    .gold-gradient-text {
-      background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #ca8a04 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
     .neon-btn {
-      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-      box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
-      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #00d4ff, #0080ff 60%, #7b2fff);
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.35);
+      transition: all 0.25s ease;
     }
     .neon-btn:hover {
-      box-shadow: 0 0 30px rgba(6, 182, 212, 0.65);
-      transform: scale(1.02);
+      box-shadow: 0 6px 28px rgba(0, 212, 255, 0.55);
+      transform: translateY(-2px);
+    }
+    .neon-btn:active {
+      transform: translateY(0);
     }
 
-    /* BRAND Luxury Circular Code Badge */
-    .brand-logo-badge {
+    /* PURE CSS/SVG LOGO STYLING */
+    .brand-logo-container {
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       user-select: none;
-      cursor: pointer;
-    }
-    .brand-logo-ring {
-      position: absolute;
-      inset: -4px;
-      border-radius: 9999px;
-      padding: 2px;
-      background: linear-gradient(135deg, #06b6d4, #8b5cf6, #3b82f6, #06b6d4);
-      background-size: 300% 300%;
-      animation: rotateGradient 6s linear infinite;
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
     }
 
-    @keyframes rotateGradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .brand-title-gradient {
+      background: linear-gradient(135deg, #00d4ff 0%, #0099ff 45%, #7b2fff 85%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: 'Playfair Display', 'Cinzel', Georgia, serif;
+      letter-spacing: 0.05em;
+      filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.6));
+    }
+    .brand-subtitle-text {
+      font-family: 'Outfit', 'Cairo', sans-serif;
+      letter-spacing: 0.32em;
+      color: #f1f5f9;
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.7);
     }
 
-    /* 16:11 Big Image Showcase Box */
+    /* Social Icons Glow */
+    .social-btn {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .social-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+    }
+    .social-tiktok:hover {
+      background: #000000;
+      box-shadow: 0 0 20px rgba(255, 0, 79, 0.5), 0 0 20px rgba(0, 242, 234, 0.5);
+      border-color: #00f2ea;
+    }
+    .social-fb:hover {
+      background: #1877f2;
+      box-shadow: 0 0 20px rgba(24, 119, 242, 0.6);
+      border-color: #1877f2;
+    }
+    .social-wa:hover {
+      background: #25d366;
+      box-shadow: 0 0 20px rgba(37, 211, 102, 0.6);
+      border-color: #25d366;
+    }
+
+    /* Product Card */
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 45px rgba(0, 212, 255, 0.18);
+    }
+
+    /* =========================================================
+       PERFECT WIDE & LARGE ADAPTIVE IMAGE SHOWCASE
+       (Optimized for FRONT & BACK T-Shirt Mockups)
+       ========================================================= */
     .card-img-wrapper {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 11;
+      aspect-ratio: 16 / 11; /* Wide ratio matching Front & Back mockups */
+      min-height: 280px;
       overflow: hidden;
-      background: #020408;
-      border-bottom: 1px solid var(--card-border);
+      background: radial-gradient(circle at center, #111827 0%, #030712 100%);
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .light .card-img-wrapper {
-      background: #f8fafc;
+    @media (min-width: 640px) {
+      .card-img-wrapper {
+        min-height: 340px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .card-img-wrapper {
+        min-height: 360px;
+      }
     }
 
     .card-img-slide {
+      transition: opacity 0.45s ease-in-out, transform 0.45s ease-in-out;
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: contain; /* Shows 100% of the image without any cutoffs */
+      object-position: center center;
       padding: 6px;
-      transition: opacity 0.5s ease-in-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-card:hover .card-img-slide {
+      transform: scale(1.03);
     }
 
-    /* Size Buttons */
+    /* Active Size Pills */
     .size-btn.active {
-      background: #06b6d4 !important;
-      color: #030712 !important;
-      border-color: #06b6d4 !important;
-      font-weight: 800 !important;
-      box-shadow: 0 0 14px rgba(6, 182, 212, 0.5);
+      background: #00d4ff;
+      color: #0f172a;
+      border-color: #00d4ff;
+      font-weight: 800;
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
     }
 
-    /* Category Filter Pills */
+    /* Active Category Pills */
     .cat-btn.active {
-      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      background: linear-gradient(135deg, #00d4ff, #0080ff);
       color: #ffffff;
-      font-weight: 700;
       border-color: transparent;
-      box-shadow: 0 0 16px rgba(6, 182, 212, 0.4);
+      box-shadow: 0 4px 14px rgba(0, 212, 255, 0.35);
     }
 
-    /* Drawers */
-    .drawer {
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
+    /* Prevent body scroll when modal/drawer open */
     .no-scroll {
-      overflow: hidden;
+      overflow: hidden !important;
+      touch-action: none;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300 antialiased selection:bg-cyan-500 selection:text-black">
+
+  <!-- OVERLAY -->
+  <div id="mainOverlay" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-40 hidden transition-opacity duration-300"></div>
 
   <!-- ========================================================================= -->
-  <!-- TOP NOTIFICATION BANNER (400+ Users & Worldwide Delivery) -->
+  <!-- TOP SOCIALS BAR -->
   <!-- ========================================================================= -->
-  <header class="bg-gradient-to-r from-cyan-950 via-slate-900 to-blue-950 text-cyan-200 text-xs py-2 px-4 border-b border-cyan-500/20 text-center font-medium">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-      <div class="hidden sm:flex items-center gap-2 text-slate-300">
+  <div class="bg-slate-900/90 border-b border-white/5 py-1.5 px-4 text-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <!-- Welcome / Delivery badge -->
+      <div class="flex items-center gap-2 text-slate-400 font-medium">
         <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span data-i18n="top_online">متصل سحابياً 24/7 لخدمة جميع العملاء</span>
+        <span data-i18n="top_bar_msg">شحن وتوصيل لجميع أنحاء الجمهورية | اطلب الآن عبر واتساب</span>
       </div>
-      <div class="flex-1 text-center font-bold tracking-wide">
-        <span class="gold-gradient-text" data-i18n="top_offer">✨ تشكيلة الموسم الجديد 2026 - شحن سريع لجميع المحافظات والدفع عند الاستلام ✨</span>
-      </div>
+
+      <!-- Quick Social Icons in Topbar -->
       <div class="flex items-center gap-3">
-        <!-- Lang Toggle -->
-        <button id="langToggleBtn" type="button" class="hover:text-white transition-colors flex items-center gap-1 font-en font-bold">
+        <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="text-slate-400 hover:text-white transition-colors flex items-center gap-1 font-en" title="TikTok">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+          <span class="hidden sm:inline">TikTok</span>
+        </a>
+        <span class="text-white/10">|</span>
+        <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="text-slate-400 hover:text-[#1877f2] transition-colors flex items-center gap-1 font-en" title="Facebook Group">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span class="hidden sm:inline">Facebook</span>
+        </a>
+        <span class="text-white/10">|</span>
+        <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1 font-en" title="WhatsApp">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+          <span class="hidden sm:inline">WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- NAVIGATION BAR (WITH PURE CSS/SVG LOGO CENTERED) -->
+  <!-- ========================================================================= -->
+  <header id="mainHeader" class="sticky top-0 z-30 glass-nav transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4">
+      
+      <!-- Right / Start: Menu Toggle & Desktop Search -->
+      <div class="flex items-center gap-3 flex-1">
+        <button id="menuToggleBtn" type="button" aria-label="Toggle Menu" class="p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+
+        <div class="hidden lg:flex w-64">
+          <div class="relative w-full">
+            <input type="text" id="desktopSearchInput" placeholder="بحث عن موديل..." class="w-full h-10 pr-9 pl-3 rounded-xl bg-slate-900/80 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all" />
+            <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: PURE CODE LOGO (EXACT REPLICA WITH NEON RINGS) -->
+      <div class="flex items-center justify-center">
+        <!-- Secret 3-click on Logo for owner login without any public button -->
+        <button id="brandLogoBtn" type="button" class="brand-logo-container group focus:outline-none py-1 cursor-pointer" title="BRAND 2026 (اضغط 3 مرات للإدارة)">
+          <div class="relative w-44 sm:w-56 h-16 sm:h-20 flex items-center justify-center overflow-hidden">
+            <!-- Neon Concentric Rings SVG in Background -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-90" viewBox="0 0 220 100" fill="none">
+              <defs>
+                <filter id="navGlow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              <ellipse cx="110" cy="50" rx="35" ry="32" stroke="#00d4ff" stroke-width="1.8" filter="url(#navGlow)" opacity="0.8" />
+              <ellipse cx="110" cy="50" rx="55" ry="40" stroke="#0099ff" stroke-width="1.6" filter="url(#navGlow)" opacity="0.9" />
+              <ellipse cx="110" cy="50" rx="78" ry="46" stroke="#0066ff" stroke-width="1.5" filter="url(#navGlow)" opacity="0.75" />
+              <ellipse cx="110" cy="50" rx="98" ry="49" stroke="#7b2fff" stroke-width="1.2" opacity="0.6" />
+            </svg>
+
+            <!-- Text Foreground -->
+            <div class="relative z-10 flex flex-col items-center justify-center -space-y-1">
+              <span class="brand-title-gradient text-3xl sm:text-4xl font-serif font-black tracking-wider group-hover:scale-105 transition-transform duration-300">
+                BRAND
+              </span>
+              <span class="brand-subtitle-text text-[7.5px] sm:text-[9px] font-bold uppercase tracking-[0.28em] text-slate-200">
+                MEN'S COLLECTION 2026
+              </span>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Left / End: Lang, Theme & Cart -->
+      <div class="flex items-center justify-end gap-2 flex-1">
+        <!-- Language -->
+        <button id="langToggleBtn" type="button" class="px-2.5 py-1.5 rounded-lg border border-white/10 text-xs font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
           <span id="langLabel">EN</span>
         </button>
-        <!-- Theme Toggle -->
-        <button id="themeToggleBtn" type="button" class="hover:text-white transition-colors p-1" title="تبديل المظهر">
-          <svg id="themeIconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-          <svg id="themeIconMoon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+
+        <!-- Theme Switch -->
+        <button id="themeToggleBtn" type="button" aria-label="Toggle Theme" class="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
+          <svg id="themeIconSun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          <svg id="themeIconMoon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
         </button>
+
+        <!-- Cart Button -->
+        <button id="cartToggleBtn" type="button" class="relative p-2.5 rounded-xl bg-cyan-500/15 border border-cyan-400/40 text-cyan-400 hover:bg-cyan-500/25 transition-all flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+          </svg>
+          <span id="cartCountBadge" class="absolute -top-1.5 -left-1.5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-950 shadow-lg scale-0 transition-transform duration-200">0</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Search Bar (Below Header) -->
+    <div class="lg:hidden px-4 pb-2.5">
+      <div class="relative w-full">
+        <input type="text" id="mobileSearchInput" placeholder="بحث عن موديل، لون، فئة..." class="w-full h-10 pr-9 pl-4 rounded-xl bg-slate-900/90 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400" />
+        <svg class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
       </div>
     </div>
   </header>
 
   <!-- ========================================================================= -->
-  <!-- MAIN NAVIGATION HEADER -->
-  <!-- ========================================================================= -->
-  <nav id="mainHeader" class="sticky top-0 z-40 glass-nav transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-24 sm:h-28 gap-4">
-        
-        <!-- Left: Side Menu & Social Icons -->
-        <div class="flex items-center gap-2 sm:gap-3">
-          <button id="menuToggleBtn" type="button" class="p-2.5 rounded-xl border border-white/10 hover:border-cyan-400/50 hover:bg-cyan-500/10 transition-all text-slate-300 hover:text-cyan-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-          </button>
-
-          <!-- Social Quick Links (TikTok, Facebook, WhatsApp) -->
-          <div class="hidden md:flex items-center gap-1.5">
-            <!-- TikTok -->
-            <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener noreferrer" class="p-2 rounded-xl bg-white/5 hover:bg-black border border-white/10 hover:border-cyan-400 text-slate-300 hover:text-cyan-400 transition-all" title="TikTok">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.27 1.76-.23 1.01.07 2.12.78 2.87.67.72 1.71 1.05 2.68.87.97-.15 1.83-.84 2.16-1.76.17-.49.25-1.02.24-1.54.02-4.94.01-9.88.01-14.82z"/></svg>
-            </a>
-            <!-- Facebook Group -->
-            <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener noreferrer" class="p-2 rounded-xl bg-white/5 hover:bg-blue-600 border border-white/10 hover:border-blue-400 text-slate-300 hover:text-white transition-all" title="Facebook Group">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
-            <!-- WhatsApp -->
-            <a href="https://wa.me/201029478377" target="_blank" rel="noopener noreferrer" class="p-2 rounded-xl bg-white/5 hover:bg-emerald-600 border border-white/10 hover:border-emerald-400 text-slate-300 hover:text-white transition-all" title="WhatsApp Direct">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- CENTER: PURE CSS/SVG LUXURY "BRAND" LOGO (Matches Provided Image) -->
-        <div id="brandLogoBtn" class="brand-logo-badge group px-6 py-2" title="BRAND MEN'S STORE (Triple-click for Secret Admin)">
-          <div class="brand-logo-ring"></div>
-          
-          <div class="relative z-10 flex flex-col items-center justify-center px-4 py-1.5 bg-slate-950/90 rounded-full border border-white/10 shadow-2xl">
-            <!-- Glowing luxury gradient typography -->
-            <div class="flex items-center gap-1">
-              <span class="brand-title-gradient font-serif font-black text-2xl sm:text-3xl tracking-[0.25em] pl-1.5 transition-transform duration-300 group-hover:scale-105">
-                BRAND
-              </span>
-            </div>
-            <!-- Subtitle -->
-            <div class="flex items-center gap-1.5 text-[8px] sm:text-[9px] font-en tracking-[0.3em] text-cyan-400 font-bold uppercase">
-              <span class="w-1.5 h-[1px] bg-cyan-400"></span>
-              <span>MEN'S COLLECTION 2026</span>
-              <span class="w-1.5 h-[1px] bg-cyan-400"></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Search Bar & Cart Drawer Button -->
-        <div class="flex items-center gap-2 sm:gap-3">
-          <!-- Desktop Search Input -->
-          <div class="relative hidden lg:block w-64">
-            <input 
-              type="text" 
-              id="desktopSearchInput" 
-              placeholder="ابحث عن موديل، لون، فئة..." 
-              class="w-full h-11 pl-10 pr-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
-            />
-            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </div>
-
-          <!-- Cart Drawer Button -->
-          <button id="cartToggleBtn" type="button" class="relative p-2.5 sm:px-4 sm:py-2.5 rounded-xl neon-btn text-white font-bold text-xs flex items-center gap-2 shadow-lg">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-            <span class="hidden sm:inline" data-i18n="cart_btn">السلة</span>
-            <!-- Cart Count Badge -->
-            <span id="cartCountBadge" class="w-5 h-5 rounded-full bg-red-500 text-white font-en font-black text-[11px] flex items-center justify-center scale-0 transition-transform shadow-md">
-              0
-            </span>
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Mobile Search Bar -->
-      <div class="pb-3 lg:hidden">
-        <div class="relative w-full">
-          <input 
-            type="text" 
-            id="mobileSearchInput" 
-            placeholder="ابحث عن موديل، فئة، كود..." 
-            class="w-full h-10 pl-9 pr-4 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 transition-all"
-          />
-          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <!-- ========================================================================= -->
-  <!-- MAIN CONTENT CONTAINER (STORE VIEW) -->
+  <!-- MAIN STORE VIEW -->
   <!-- ========================================================================= -->
   <main id="storeView" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
     
-    <!-- Hero Banner (Luxury Men's Wear) -->
-    <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-10 border border-white/10 bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-950/40 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="space-y-4 max-w-xl text-center md:text-right">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold">
-          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-          <span data-i18n="hero_badge">ORIGINAL OVERSIZED & SUMMER COLLECTION</span>
+    <!-- Hero Showcase -->
+    <section class="relative rounded-3xl overflow-hidden glass-card p-6 sm:p-12 border border-white/10 text-center space-y-6">
+      <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-32 right-1/4 w-80 h-80 bg-purple-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <!-- Big Centered Logo Badge in Hero -->
+      <div class="relative z-10 flex flex-col items-center justify-center space-y-4 max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span data-i18n="hero_badge">كولكشن صيف وخريف 2026 الفاخر</span>
         </div>
-        
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
-          أحدث استايلات <span class="neon-gradient-text">BRAND 2026</span>
-        </h1>
-        
-        <p class="text-slate-300 text-xs sm:text-sm leading-relaxed" data-i18n="hero_desc">
-          اكتشف أفخم تشكيلة تيشرتات اوفر سايز وبناطيل مصممة بأعلى جودة قطن معالجة وأفضل قصات تريندي. جميع الموديلات مدعومة بصور متعددة لكل زاوية ولون.
+
+        <!-- Big Hero Logo (Pure Code with Multi-Ring Neon Glow) -->
+        <div class="relative w-72 sm:w-96 h-36 sm:h-44 flex items-center justify-center my-2">
+          <!-- Concentric Neon Rings -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 360 180" fill="none">
+            <defs>
+              <filter id="heroGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur2" />
+                <feMerge>
+                  <feMergeNode in="blur1" />
+                  <feMergeNode in="blur2" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <ellipse cx="180" cy="90" rx="55" ry="48" stroke="#00d4ff" stroke-width="2.2" filter="url(#heroGlow)" opacity="0.85" />
+            <ellipse cx="180" cy="90" rx="85" ry="62" stroke="#0099ff" stroke-width="2.5" filter="url(#heroGlow)" opacity="0.95" />
+            <ellipse cx="180" cy="90" rx="120" ry="74" stroke="#0066ff" stroke-width="2" filter="url(#heroGlow)" opacity="0.8" />
+            <ellipse cx="180" cy="90" rx="155" ry="84" stroke="#7b2fff" stroke-width="1.8" filter="url(#heroGlow)" opacity="0.7" />
+          </svg>
+
+          <!-- Text -->
+          <div class="relative z-10 flex flex-col items-center justify-center -space-y-1 sm:-space-y-2">
+            <span class="brand-title-gradient text-5xl sm:text-6xl font-serif font-black tracking-wider">
+              BRAND
+            </span>
+            <span class="brand-subtitle-text text-[9px] sm:text-xs font-bold uppercase tracking-[0.35em] text-slate-100">
+              MEN'S COLLECTION 2026
+            </span>
+          </div>
+        </div>
+
+        <p class="text-sm sm:text-base text-slate-300 font-medium leading-relaxed max-w-xl mx-auto" data-i18n="hero_desc">
+          أحدث صيحات الملابس الرجالية بأعلى خامات وأفضل أسعار. اضغط على أي موديل لتصفح جميع ألوانه بالكامل!
         </p>
 
-        <div class="flex items-center justify-center md:justify-start gap-4 pt-2">
-          <a href="https://wa.me/201029478377" target="_blank" rel="noopener noreferrer" class="neon-btn px-6 py-3 rounded-2xl text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg">
-            <span>تواصل واتساب مباشر</span>
-            <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        <!-- Social Media Buttons Row -->
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <!-- TikTok Button -->
+          <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="social-btn social-tiktok px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-white/15 text-xs font-bold flex items-center gap-2 shadow-lg">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+            <span>تابعنا على تيك توك</span>
           </a>
-          <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-2xl glass-card text-slate-200 hover:text-white font-bold text-xs sm:text-sm flex items-center gap-2 border border-white/10">
-            <span>فيديوهات التيك توك</span>
-          </a>
-        </div>
-      </div>
 
-      <!-- Quick Trust Badges -->
-      <div class="grid grid-cols-2 gap-3 w-full md:w-auto">
-        <div class="glass-card p-4 rounded-2xl border border-white/10 text-center space-y-1">
-          <div class="text-cyan-400 font-en font-black text-xl sm:text-2xl">+1000</div>
-          <div class="text-[11px] text-slate-400" data-i18n="badge_models">موديل متاح فوراً</div>
-        </div>
-        <div class="glass-card p-4 rounded-2xl border border-white/10 text-center space-y-1">
-          <div class="text-cyan-400 font-en font-black text-xl sm:text-2xl">400+</div>
-          <div class="text-[11px] text-slate-400" data-i18n="badge_clients">عميل يتسوقون الآن</div>
-        </div>
-        <div class="glass-card p-4 rounded-2xl border border-white/10 text-center space-y-1">
-          <div class="text-emerald-400 font-en font-black text-xl sm:text-2xl">100%</div>
-          <div class="text-[11px] text-slate-400" data-i18n="badge_cotton">قطن ميلتون أصلي</div>
-        </div>
-        <div class="glass-card p-4 rounded-2xl border border-white/10 text-center space-y-1">
-          <div class="text-amber-400 font-en font-black text-xl sm:text-2xl">24/48h</div>
-          <div class="text-[11px] text-slate-400" data-i18n="badge_delivery">شحن فوري لباب البيت</div>
+          <!-- Facebook Button -->
+          <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="social-btn social-fb px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-white/15 text-xs font-bold flex items-center gap-2 shadow-lg">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <span>جروب فيسبوك</span>
+          </a>
+
+          <!-- WhatsApp Button -->
+          <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="social-btn social-wa px-4 py-2.5 rounded-xl bg-slate-900 text-emerald-400 border border-emerald-500/30 text-xs font-bold flex items-center gap-2 shadow-lg">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+            <span>واتساب: 01029478377</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- Category Filter Bar -->
-    <div class="flex items-center justify-between gap-4 overflow-x-auto pb-2 scrollbar-none">
-      <div id="categoryPills" class="flex items-center gap-2 flex-nowrap sm:flex-wrap">
-        <button type="button" class="cat-btn active px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="All" data-i18n="cat_all">
-          🔥 جميع الموديلات
-        </button>
-        <button type="button" class="cat-btn px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="T-Shirts" data-i18n="cat_tshirts">
-          👕 تيشيرتات أوفر سايز (T-Shirts)
-        </button>
-        <button type="button" class="cat-btn px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="Pants" data-i18n="cat_pants">
-          👖 بناطيل (Pants)
-        </button>
-        <button type="button" class="cat-btn px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="Shoes" data-i18n="cat_shoes">
-          👟 أحذية وسنيكرز (Shoes)
-        </button>
-        <button type="button" class="cat-btn px-5 py-2.5 rounded-2xl text-xs font-bold border border-white/10 glass-card text-slate-300 transition-all whitespace-nowrap" data-cat="Sale" data-i18n="cat_sale">
-          🏷️ عروض وخصومات خاصة
-        </button>
+    <!-- Categories Filter & Section Title -->
+    <section id="productsSection" class="space-y-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-black tracking-wide flex items-center gap-2">
+            <span class="w-2.5 h-6 rounded-full bg-cyan-400 inline-block"></span>
+            <span data-i18n="section_title">أحدث الموديلات المتوفرة</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-1" data-i18n="section_subtitle">اختر الفئة وشاهد تبادل الألوان والصور تلقائياً في كل كارت</p>
+        </div>
+
+        <!-- Category Pills -->
+        <div id="categoryPills" class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-0 scrollbar-none">
+          <button type="button" data-cat="All" class="cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold border border-white/10 transition-all whitespace-nowrap">الكل</button>
+          <button type="button" data-cat="T-Shirts" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">تيشيرتات</button>
+          <button type="button" data-cat="Pants" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">بناطيل</button>
+          <button type="button" data-cat="Shoes" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-slate-300 border border-white/10 hover:bg-white/5 transition-all whitespace-nowrap">أحذية</button>
+          <button type="button" data-cat="Sale" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900/60 text-red-400 border border-red-500/20 hover:bg-red-500/10 transition-all whitespace-nowrap">🔥 عروض وتخفيضات</button>
+        </div>
       </div>
 
-      <!-- Cloud Sync Realtime Status Indicator -->
-      <div id="cloudLiveBadge" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-400/30 text-[11px] text-cyan-300 font-bold whitespace-nowrap">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span id="cloudStatusText">مزامنة سحابية مباشرة</span>
+      <!-- Products Grid (2 columns on tablet/desktop to give mockups massive space) -->
+      <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <!-- Injected by JS -->
       </div>
-    </div>
 
-    <!-- Products Grid (Adaptive Large 16:11 Showcase) -->
-    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <!-- Injected by JavaScript -->
-    </div>
-
-    <!-- Empty State -->
-    <div id="emptyState" class="hidden py-20 text-center space-y-4 glass-card rounded-3xl border border-white/10">
-      <svg class="w-16 h-16 mx-auto text-slate-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4M12 4v16"></path></svg>
-      <h3 class="text-lg font-bold text-slate-300" data-i18n="no_prods">لا توجد موديلات مطابقة للبحث حالياً</h3>
-      <p class="text-xs text-slate-400" data-i18n="no_prods_desc">جرب اختيار فئة أخرى أو تغيير كلمات البحث</p>
-    </div>
-
-    <!-- Load More Button (Virtual pagination for 1000+ items) -->
-    <div id="loadMoreContainer" class="hidden text-center pt-4">
-      <button id="loadMoreBtn" type="button" class="px-8 py-3.5 rounded-2xl glass-card hover:border-cyan-400 text-white font-bold text-xs sm:text-sm transition-all border border-white/10">
-        <span data-i18n="load_more">عرض المزيد من الموديلات (+16)</span>
-      </button>
-    </div>
+      <!-- Empty State -->
+      <div id="emptyState" class="hidden text-center py-16 px-4 glass-card rounded-2xl border border-white/10">
+        <svg class="w-16 h-16 mx-auto text-slate-500 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+        <h3 class="text-base font-bold text-slate-200" data-i18n="no_products">لا توجد موديلات مطابقة</h3>
+        <p class="text-xs text-slate-400 mt-1" data-i18n="no_products_desc">جرّب تغيير خيارات البحث أو الفئة المحددة</p>
+      </div>
+    </section>
 
   </main>
 
   <!-- ========================================================================= -->
-  <!-- SIDE MENU DRAWER (Socials & Secret Info) -->
+  <!-- SIDE MENU DRAWER -->
   <!-- ========================================================================= -->
-  <div id="sideMenuDrawer" class="drawer fixed top-0 right-0 z-50 h-full w-80 max-w-[85vw] bg-slate-950/95 backdrop-blur-2xl border-l border-white/10 p-6 flex flex-col justify-between translate-x-full">
-    <div class="space-y-6">
-      <div class="flex items-center justify-between pb-4 border-b border-white/10">
-        <div class="flex items-center gap-2">
-          <span class="brand-title-gradient font-serif font-black text-xl">BRAND</span>
-          <span class="text-[10px] text-cyan-400 font-bold font-en">STORE 2026</span>
-        </div>
-        <button id="closeSideMenuBtn" type="button" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white">✕</button>
+  <aside id="sideMenuDrawer" class="fixed top-0 right-0 z-50 w-80 max-w-[85vw] h-full bg-slate-900 text-white shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col border-l border-white/10 rtl:right-0 rtl:left-auto ltr:left-0 ltr:right-auto ltr:-translate-x-full">
+    <div class="p-5 border-b border-white/10 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="brand-title-gradient font-serif font-black text-xl">BRAND</span>
+        <span class="text-[9px] text-cyan-400 font-bold uppercase tracking-widest font-en">2026</span>
       </div>
+      <button id="closeSideMenuBtn" type="button" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
 
-      <!-- Navigation Links -->
-      <div class="space-y-2 text-sm font-semibold">
-        <button type="button" id="sideHomeBtn" class="w-full text-right px-4 py-3 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold">
-          🏠 الرئيسية
+    <div class="p-5 flex-1 overflow-y-auto space-y-6">
+      <div class="space-y-1">
+        <button type="button" id="sideHomeBtn" class="w-full text-right px-4 py-3 rounded-xl bg-cyan-500/10 text-cyan-300 font-bold flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+          <span data-i18n="nav_home">الرئيسية</span>
         </button>
       </div>
 
-      <!-- Social Media Section -->
-      <div class="space-y-3 pt-4 border-t border-white/10">
-        <h4 class="text-xs font-bold text-slate-400">حسابات السوشيال ميديا:</h4>
+      <!-- Social Media Accounts in Side Drawer -->
+      <div class="space-y-3">
+        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="social_links_title">حسابات متجر BRAND</h4>
         
-        <!-- TikTok Link -->
-        <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-black border border-white/10 hover:border-cyan-400 text-slate-200 transition-all text-xs font-bold">
-          <span class="text-cyan-400 font-en font-black">TikTok</span>
-          <span class="text-slate-400 text-[11px]">@brand.store22</span>
-        </a>
+        <div class="space-y-2">
+          <!-- TikTok -->
+          <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-slate-950 hover:bg-black text-white font-bold border border-white/10 flex items-center gap-3 transition-colors">
+            <svg class="w-5 h-5 fill-current text-[#00f2ea]" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+            <div class="text-right">
+              <div class="text-xs">تيك توك (TikTok)</div>
+              <div class="text-[10px] text-slate-400 font-en">@brand.store22</div>
+            </div>
+          </a>
 
-        <!-- Facebook Group Link -->
-        <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-blue-600/30 border border-white/10 hover:border-blue-400 text-slate-200 transition-all text-xs font-bold">
-          <span class="text-blue-400 font-en font-black">Facebook</span>
-          <span class="text-slate-400 text-[11px]">جروب محبي BRAND الرسمي</span>
-        </a>
+          <!-- Facebook -->
+          <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-slate-950 hover:bg-[#1877f2]/20 text-white font-bold border border-white/10 flex items-center gap-3 transition-colors">
+            <svg class="w-5 h-5 fill-current text-[#1877f2]" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            <div class="text-right">
+              <div class="text-xs">جروب فيسبوك</div>
+              <div class="text-[10px] text-slate-400 font-en">Facebook Group</div>
+            </div>
+          </a>
 
-        <!-- WhatsApp Link -->
-        <a href="https://wa.me/201029478377" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-emerald-600/30 border border-white/10 hover:border-emerald-400 text-slate-200 transition-all text-xs font-bold">
-          <span class="text-emerald-400 font-en font-black">WhatsApp</span>
-          <span class="text-slate-400 text-[11px]">01029478377</span>
-        </a>
+          <!-- WhatsApp -->
+          <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="w-full px-4 py-3 rounded-xl bg-emerald-500/15 text-emerald-400 font-bold border border-emerald-500/30 flex items-center gap-3 hover:bg-emerald-500/25 transition-colors">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+            <div class="text-right">
+              <div class="text-xs">خدمة العملاء والطلب</div>
+              <div class="text-[10px] text-emerald-300 font-en">01029478377</div>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
 
-    <div class="text-[11px] text-slate-500 text-center">
-      BRAND Official Menswear 2026<br/>
-      Designed with Supreme Quality
+    <div class="p-4 border-t border-white/10 text-center text-xs text-slate-500 font-en">
+      BRAND STORE &copy; 2026. All rights reserved.
     </div>
-  </div>
+  </aside>
 
   <!-- ========================================================================= -->
   <!-- CART DRAWER -->
   <!-- ========================================================================= -->
-  <div id="cartDrawer" class="drawer fixed top-0 left-0 z-50 h-full w-96 max-w-[90vw] bg-slate-950/95 backdrop-blur-2xl border-r border-white/10 p-6 flex flex-col justify-between -translate-x-full">
-    <div class="flex items-center justify-between pb-4 border-b border-white/10">
+  <aside id="cartDrawer" class="fixed top-0 left-0 z-50 w-96 max-w-[90vw] h-full bg-slate-900 text-white shadow-2xl transform -translate-x-full transition-transform duration-300 flex flex-col border-r border-white/10 rtl:left-0 rtl:right-auto ltr:right-0 ltr:left-auto ltr:translate-x-full">
+    <!-- Header -->
+    <div class="p-5 border-b border-white/10 flex items-center justify-between">
       <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-        <h3 class="font-bold text-base text-white" data-i18n="cart_title">سلة المشتريات</h3>
+        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+        <h3 class="font-black text-lg" data-i18n="cart_title">سلة المشتريات</h3>
       </div>
-      <button id="closeCartBtn" type="button" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white">✕</button>
-    </div>
-
-    <!-- Cart Items List -->
-    <div id="cartItemsList" class="flex-1 overflow-y-auto divide-y divide-white/5 py-4 space-y-4">
-      <!-- Injected by JavaScript -->
-    </div>
-
-    <!-- Cart Summary & WhatsApp Checkout -->
-    <div class="space-y-4 pt-4 border-t border-white/10">
-      <div class="space-y-1.5 text-xs">
-        <div class="flex items-center justify-between text-slate-400">
-          <span data-i18n="total_price">المجموع الكلي:</span>
-          <span id="cartTotalAmt" class="text-cyan-400 font-black text-base font-en">0 ج.م</span>
-        </div>
-        <div id="cartSavingsRow" class="hidden flex items-center justify-between text-emerald-400 text-[11px]">
-          <span data-i18n="total_savings">وفرت معنا:</span>
-          <span id="cartSavingsAmt" class="font-bold font-en">0 ج.م</span>
-        </div>
-      </div>
-
-      <button id="whatsappCheckoutBtn" type="button" class="w-full h-12 rounded-2xl neon-btn text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-        <span data-i18n="order_whatsapp">إرسال الطلب عبر واتساب</span>
-      </button>
-
-      <button id="clearCartBtn" type="button" class="w-full text-center text-xs text-red-400/80 hover:text-red-400 py-1" data-i18n="clear_cart">
-        تفريغ السلة
+      <button id="closeCartBtn" type="button" class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
     </div>
-  </div>
 
-  <!-- Main Overlay -->
-  <div id="mainOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 hidden"></div>
+    <!-- Items List -->
+    <div id="cartItemsList" class="flex-1 p-5 overflow-y-auto space-y-3 divide-y divide-white/5">
+      <!-- Injected by JS -->
+    </div>
+
+    <!-- Footer Summary & WhatsApp Order -->
+    <div class="p-5 bg-slate-950/90 border-t border-white/10 space-y-4">
+      <div class="space-y-1.5 text-sm">
+        <div id="cartSavingsRow" class="hidden justify-between text-emerald-400 font-semibold text-xs">
+          <span data-i18n="cart_savings">إجمالي التوفير:</span>
+          <span id="cartSavingsAmt">0 ج.م</span>
+        </div>
+        <div class="flex justify-between items-center text-base font-black">
+          <span data-i18n="cart_total">المجموع الكلي:</span>
+          <span id="cartTotalAmt" class="text-xl neon-gradient-text font-en">0 ج.م</span>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <button id="whatsappCheckoutBtn" type="button" class="w-full h-12 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.02] active:scale-95">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
+          <span data-i18n="order_whatsapp">إتمام الطلب عبر واتساب</span>
+        </button>
+        <button id="clearCartBtn" type="button" class="w-full py-2 text-xs font-semibold text-slate-400 hover:text-red-400 transition-colors" data-i18n="clear_cart">
+          إفراغ السلة
+        </button>
+      </div>
+    </div>
+  </aside>
 
   <!-- ========================================================================= -->
-  <!-- LIGHTBOX MODAL (Click image to view all photos, zoom & flip) -->
+  <!-- FULL SCREEN LIGHTBOX GALLERY (EXPANSIVE & ADAPTIVE) -->
   <!-- ========================================================================= -->
-  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex flex-col justify-between hidden">
-    <!-- Lightbox Top Bar -->
-    <div class="p-4 flex items-center justify-between border-b border-white/10">
+  <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col transition-all duration-300">
+    <!-- Lightbox Header -->
+    <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-slate-950/70">
       <div class="flex items-center gap-3">
-        <span class="brand-title-gradient font-serif font-black text-xl">BRAND</span>
-        <h3 id="lbTitle" class="text-sm font-bold text-slate-200 truncate max-w-xs"></h3>
+        <h3 id="lbTitle" class="text-base sm:text-lg font-bold text-white">عنوان الموديل</h3>
+        <span id="lbCounter" class="px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold font-en">1 / 1</span>
       </div>
-      <div class="flex items-center gap-4">
-        <span id="lbCounter" class="text-xs font-en font-bold text-cyan-400">1 / 1</span>
-        <button id="closeLightboxBtn" type="button" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold">✕</button>
-      </div>
-    </div>
-
-    <!-- Lightbox Main Stage -->
-    <div class="flex-1 relative flex items-center justify-center p-4 overflow-hidden">
-      <img id="lbMainImg" src="" alt="" class="max-h-[75vh] max-w-[95vw] object-contain rounded-2xl shadow-2xl transition-all duration-300" />
-
-      <!-- Arrows -->
-      <button id="lbPrevBtn" type="button" class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center transition-all shadow-xl">
-        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
-      </button>
-      <button id="lbNextBtn" type="button" class="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center transition-all shadow-xl">
-        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+      <button id="closeLightboxBtn" type="button" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
       </button>
     </div>
 
-    <!-- Lightbox Bottom Strip (Thumbnails & Add to Cart) -->
+    <!-- Lightbox Main Stage (Large, High Definition, Adaptive) -->
+    <div class="flex-1 relative flex items-center justify-center p-2 sm:p-6 overflow-hidden">
+      <!-- Previous Arrow -->
+      <button id="lbPrevBtn" type="button" aria-label="Previous" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center border border-white/20 transition-all shadow-2xl">
+        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+      </button>
+
+      <!-- Main Big Image (Fit fully without crop) -->
+      <div class="w-full h-full max-w-5xl flex items-center justify-center">
+        <img id="lbMainImg" src="" alt="" class="max-h-[75vh] w-auto max-w-full object-contain rounded-2xl shadow-2xl transition-all duration-300 select-none border border-white/10 bg-black/40" />
+      </div>
+
+      <!-- Next Arrow -->
+      <button id="lbNextBtn" type="button" aria-label="Next" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-slate-900/80 hover:bg-cyan-500 text-white hover:text-slate-950 flex items-center justify-center border border-white/20 transition-all shadow-2xl">
+        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+      </button>
+    </div>
+
+    <!-- Lightbox Bottom Panel (Thumbnails + Sizes + Add to Cart) -->
     <div class="p-4 bg-slate-950 border-t border-white/10 space-y-3">
+      <!-- Thumbnails Strip -->
       <div id="lbThumbStrip" class="flex items-center justify-center gap-2 overflow-x-auto py-1">
         <!-- Thumbnails -->
       </div>
 
+      <!-- Quick Action Controls -->
       <div class="max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+        <!-- Price in modal -->
         <div id="lbPriceContainer" class="text-right"></div>
+
+        <!-- Sizes in modal -->
         <div id="lbSizesContainer" class="flex items-center gap-1.5 flex-wrap justify-center"></div>
+
+        <!-- Add Button in modal -->
         <button id="lbAddToCartBtn" type="button" class="neon-btn px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
           <span id="lbAddBtnText">أضف للسلة</span>
@@ -582,7 +621,7 @@
   </div>
 
   <!-- ========================================================================= -->
-  <!-- ADMIN LOGIN VIEW -->
+  <!-- ADMIN LOGIN VIEW (ACCESSED ONLY BY SECRET 3-CLICKS ON LOGO) -->
   <!-- ========================================================================= -->
   <section id="loginView" class="hidden flex-1 max-w-md w-full mx-auto px-4 py-16 flex flex-col justify-center">
     <div class="glass-card rounded-3xl p-8 border border-white/10 text-center space-y-6">
@@ -592,7 +631,7 @@
 
       <div>
         <h2 class="text-2xl font-black neon-gradient-text" data-i18n="admin_login_title">تسجيل دخول إدارة المتجر</h2>
-        <p class="text-xs text-slate-400 mt-1" data-i18n="admin_login_desc">أدخل كلمة المرور لإدارة الموديلات والمزامنة السحابية</p>
+        <p class="text-xs text-slate-400 mt-1" data-i18n="admin_login_desc">أدخل كلمة المرور لإدارة الموديلات والصور</p>
       </div>
 
       <div class="space-y-4 text-right">
@@ -613,7 +652,7 @@
   </section>
 
   <!-- ========================================================================= -->
-  <!-- ADMIN DASHBOARD VIEW (WITH CLOUD DB SYNC & HIGH CAPACITY) -->
+  <!-- ADMIN DASHBOARD VIEW -->
   <!-- ========================================================================= -->
   <section id="adminDashboardView" class="hidden flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
     <!-- Admin Header -->
@@ -621,113 +660,17 @@
       <div class="flex items-center gap-3">
         <span class="brand-title-gradient font-serif font-black text-2xl">BRAND</span>
         <div>
-          <h2 class="text-xl font-black neon-gradient-text" data-i18n="admin_dash_title">لوحة تحكم الموديلات (+1000 موديل)</h2>
-          <p class="text-xs text-slate-400" data-i18n="admin_dash_sub">ربط سحابي مباشر يظهر الموديلات فوراً لجميع العملاء في العالم</p>
+          <h2 class="text-xl font-black neon-gradient-text" data-i18n="admin_dash_title">لوحة تحكم الموديلات</h2>
+          <p class="text-xs text-slate-400" data-i18n="admin_dash_sub">إضافة وتعديل المنتجات والصور المتعددة وتحديد الأسعار</p>
         </div>
       </div>
-      
-      <!-- Actions: Backup, Restore & Store -->
-      <div class="flex items-center gap-2 flex-wrap">
-        <!-- Export Backup -->
-        <button id="adminExportBtn" type="button" class="px-3.5 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-xs font-bold text-cyan-300 border border-cyan-400/40 transition-colors flex items-center gap-1.5" title="تنزيل نسخة احتياطية لجميع الموديلات">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-          <span>تصدير نسخة (Backup)</span>
-        </button>
-
-        <!-- Import Backup -->
-        <label class="px-3.5 py-2 rounded-xl bg-purple-500/20 hover:bg-purple-500/30 text-xs font-bold text-purple-300 border border-purple-400/40 transition-colors flex items-center gap-1.5 cursor-pointer" title="استرجاع المنتجات من ملف سابق">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
-          <span>استيراد ملف</span>
-          <input type="file" id="adminImportFile" accept=".json" class="hidden" />
-        </label>
-
+      <div class="flex items-center gap-2">
         <button id="adminBackToStoreBtn" type="button" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold text-slate-300 border border-white/10 transition-colors" data-i18n="back_to_store">
           عرض المتجر
         </button>
         <button id="adminLogoutBtn" type="button" class="px-4 py-2 rounded-xl bg-red-500/15 hover:bg-red-500/25 text-xs font-bold text-red-400 border border-red-500/30 transition-colors" data-i18n="logout">
           تسجيل خروج
         </button>
-      </div>
-    </div>
-
-    <!-- ========================================================================= -->
-    <!-- CLOUD DATABASE SYNC SETTINGS CARD (SUPABASE / CLOUD BACKEND) -->
-    <!-- ========================================================================= -->
-    <div class="glass-card p-5 sm:p-6 rounded-2xl border border-cyan-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-950/30 space-y-4">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
-          </div>
-          <div>
-            <h3 class="text-base font-black text-white flex items-center gap-2">
-              <span>الربط السحابي المباشر (Cloud Database Sync)</span>
-              <span id="sbStatusBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
-                ⚠️ وضع التخزين المحلي
-              </span>
-            </h3>
-            <p class="text-xs text-slate-400">عند تفعيل الربط السحابي، تظهر المنتجات والصور التي تضيفها فوراً لجميع الزوار على أي جهاز بالعالم!</p>
-          </div>
-        </div>
-
-        <button id="toggleCloudConfigBtn" type="button" class="px-4 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-400/40 text-xs font-bold transition-all">
-          ⚙️ إعدادات الربط السحابي
-        </button>
-      </div>
-
-      <!-- Collapsible Cloud Config Panel -->
-      <div id="cloudConfigPanel" class="space-y-4 pt-2">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 font-en">Supabase Project URL:</label>
-            <input type="url" id="sbUrlInput" placeholder="https://xyzcompany.supabase.co" class="w-full h-10 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white focus:outline-none focus:border-cyan-400 font-en" />
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-300 mb-1 font-en">Supabase Anon Public API Key:</label>
-            <input type="password" id="sbKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." class="w-full h-10 px-3 rounded-xl bg-slate-900 border border-white/10 text-xs text-white focus:outline-none focus:border-cyan-400 font-en" />
-          </div>
-        </div>
-
-        <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
-          <div class="flex items-center gap-2">
-            <button id="saveCloudConfigBtn" type="button" class="px-5 py-2 rounded-xl neon-btn text-white text-xs font-bold">
-              💾 حفظ واختبار الاتصال
-            </button>
-            <button id="pushAllToCloudBtn" type="button" class="px-4 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-400/40 text-xs font-bold transition-all flex items-center gap-1.5">
-              <span>🚀 رفع كل الموديلات الحالية للسحابة</span>
-            </button>
-          </div>
-
-          <button id="showSqlGuideBtn" type="button" class="text-xs text-cyan-400 hover:underline flex items-center gap-1 font-semibold">
-            📋 كود إنشاء جدول السحابة (SQL 1-Click)
-          </button>
-        </div>
-
-        <!-- SQL Box (Collapsible) -->
-        <div id="sqlGuideBox" class="hidden p-4 rounded-xl bg-slate-950 border border-white/10 text-left font-mono text-[11px] text-cyan-300 space-y-2">
-          <div class="flex items-center justify-between text-slate-400 text-xs font-sans font-bold">
-            <span>انسخ هذا الكود والصقه في نافذة SQL Editor داخل Supabase:</span>
-            <button id="copySqlBtn" type="button" class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/40 text-[10px] font-bold">نسخ الكود</button>
-          </div>
-          <pre class="overflow-x-auto p-2 bg-slate-900 rounded text-slate-200">
-CREATE TABLE IF NOT EXISTS products (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  category TEXT NOT NULL,
-  price NUMERIC NOT NULL,
-  discount NUMERIC DEFAULT 0,
-  stock INTEGER DEFAULT 10,
-  sizes JSONB DEFAULT '[]'::jsonb,
-  images JSONB DEFAULT '[]'::jsonb,
-  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
-);
-
-ALTER TABLE products ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public Read" ON products FOR SELECT USING (true);
-CREATE POLICY "Public Insert" ON products FOR INSERT WITH CHECK (true);
-CREATE POLICY "Public Update" ON products FOR UPDATE USING (true);
-CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
-        </div>
       </div>
     </div>
 
@@ -746,7 +689,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
         <h4 id="statOutCount" class="text-2xl font-black text-amber-400 mt-1 font-en">0</h4>
       </div>
       <div class="glass-card p-4 rounded-xl border border-white/10">
-        <span class="text-xs text-slate-400" data-i18n="stat_images">إجمالي الصور</span>
+        <span class="text-xs text-slate-400" data-i18n="stat_images">إجمالي الصور المرفوعة</span>
         <h4 id="statImagesCount" class="text-2xl font-black text-purple-400 mt-1 font-en">0</h4>
       </div>
     </div>
@@ -800,18 +743,18 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
           </div>
         </div>
 
-        <!-- Multi-Images Manager -->
+        <!-- Multi-Images & Colors Manager -->
         <div class="space-y-3 p-4 rounded-xl bg-slate-900/60 border border-white/10">
           <div class="flex items-center justify-between">
             <label class="text-xs font-bold text-cyan-300 flex items-center gap-2">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-              <span data-i18n="f_images_title">صور وألوان الموديل (ضغط ذكي وسريع):</span>
+              <span data-i18n="f_images_title">صور وألوان الموديل (تتبادل تلقائياً وبحجم كبير):</span>
             </label>
             <span id="formImagesCount" class="text-xs text-slate-400 font-en">0 images</span>
           </div>
 
           <p class="text-[11px] text-slate-400 leading-relaxed" data-i18n="f_images_desc">
-            ارفع أي عدد من الصور للموديل (الوجه، الظهر، الألوان). يتم ضغط الصور تلقائياً وحفظها سحابياً لتعمل بسرعة خارقة لآلاف الزوار!
+            أضف روابط الصور أو ارفع من جهازك مباشرة. الصور ستظهر في كارت الموديل مع تبادل تلقائي (Loop) ومعرض كامل عند الضغط.
           </p>
 
           <!-- Input Controls -->
@@ -824,18 +767,12 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
               </button>
             </div>
 
-            <!-- File Upload with auto compression -->
+            <!-- File Upload -->
             <label class="h-10 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-white/10 flex items-center justify-center gap-2 cursor-pointer transition-colors">
               <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-              <span id="uploadBtnText" data-i18n="upload_files">رفع صور من الجهاز (ضغط فوري)</span>
+              <span data-i18n="upload_files">رفع صور من الجهاز (متعدد)</span>
               <input type="file" id="formFileInput" multiple accept="image/*" class="hidden" />
             </label>
-          </div>
-
-          <!-- Upload Status Indicator -->
-          <div id="uploadStatusProgress" class="hidden text-xs text-cyan-400 font-semibold flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-            <span>جاري معالجة وحفظ الصور...</span>
           </div>
 
           <!-- Images Preview Grid -->
@@ -855,7 +792,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
         <!-- Form Submit / Cancel -->
         <div class="flex gap-3">
           <button type="submit" class="flex-1 h-11 rounded-xl neon-btn text-white text-sm font-bold" data-i18n="save_prod">
-            حفظ الموديل (سحابياً)
+            حفظ الموديل
           </button>
           <button type="button" id="formCancelBtn" class="px-6 h-11 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-sm font-semibold border border-white/10 transition-colors" data-i18n="cancel">
             إلغاء
@@ -871,10 +808,10 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
         <span id="tblCountText" class="text-xs text-slate-400 font-en">0 items</span>
       </div>
 
-      <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+      <div class="overflow-x-auto">
         <table class="w-full text-right text-xs">
-          <thead class="sticky top-0 z-10 bg-slate-900">
-            <tr class="text-slate-400 border-b border-white/10">
+          <thead>
+            <tr class="bg-slate-900/90 text-slate-400 border-b border-white/10">
               <th class="p-3">الموديل / الصور</th>
               <th class="p-3">الفئة</th>
               <th class="p-3">السعر</th>
@@ -897,85 +834,136 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
   <footer class="mt-auto border-t border-white/10 bg-slate-950 py-10 px-4 text-center space-y-6">
     <!-- Centered Footer Code Logo -->
     <div class="flex flex-col items-center justify-center gap-1">
-      <span class="brand-title-gradient font-serif font-black text-3xl tracking-[0.2em] pl-1">BRAND</span>
-      <span class="text-[10px] text-cyan-400 font-bold font-en tracking-[0.3em]">MEN'S STORE • EST 2026</span>
+      <span class="brand-title-gradient text-3xl font-serif font-black">BRAND</span>
+      <span class="text-[9px] font-bold text-cyan-400 tracking-[0.25em] font-en uppercase">MEN'S COLLECTION 2026</span>
     </div>
 
-    <!-- Social Links in Footer -->
-    <div class="flex items-center justify-center gap-4 text-xs font-bold">
-      <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-        <span>TikTok: @brand.store22</span>
+    <!-- Social Media Links in Footer -->
+    <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@brand.store22?_r=1&_t=ZS-99XvmPqCOtM" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-black border border-white/15 text-white flex items-center justify-center transition-all hover:scale-110 hover:border-[#00f2ea] shadow-lg" title="TikTok">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
       </a>
-      <span class="text-slate-700">•</span>
-      <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-1.5">
-        <span>Facebook Group</span>
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/share/g/1Pq6fLJdcp/" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-[#1877f2] border border-white/15 text-white flex items-center justify-center transition-all hover:scale-110 shadow-lg" title="Facebook Group">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
       </a>
-      <span class="text-slate-700">•</span>
-      <a href="https://wa.me/201029478377" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-        <span>WhatsApp: 01029478377</span>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/201029478377" target="_blank" rel="noopener" class="w-10 h-10 rounded-full bg-slate-900 hover:bg-emerald-500 border border-emerald-500/30 text-emerald-400 hover:text-slate-950 flex items-center justify-center transition-all hover:scale-110 shadow-lg" title="WhatsApp">
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/></svg>
       </a>
     </div>
 
-    <p class="text-xs text-slate-500 max-w-md mx-auto">
-      جميع الحقوق محفوظة © 2026 لمتجر BRAND. أفضل الخامات القطنية والتصميمات العالمية للرجل العصري.
+    <p class="max-w-md mx-auto text-xs text-slate-400" data-i18n="footer_text">
+      متجر أزياء رجالية عصري - تجربة تسوق سهلة وسريعة مع طلب مباشر عبر الواتساب.
+    </p>
+    <p class="text-[11px] text-slate-600 font-en">
+      BRAND STORE &copy; 2026. All rights reserved.
     </p>
   </footer>
 
   <!-- ========================================================================= -->
-  <!-- JAVASCRIPT ENGINE & SUPABASE CLOUD DATABASE -->
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
   <!-- ========================================================================= -->
   <script>
+    'use strict';
+
     /* ---------------------------------------------------------
-       CONSTANTS & MULTI-LANGUAGE
+       CONFIG & CONSTANTS
        --------------------------------------------------------- */
+    const WA_NUMBER = '201029478377';
     const ADMIN_PASSWORD = 'admin123';
     const CURRENCY_AR = 'ج.م';
     const CURRENCY_EN = 'EGP';
-    const WA_NUMBER = '201029478377';
+    const STORAGE_KEY_PRODS = 'brand_products_v8';
+    const STORAGE_KEY_CART = 'brand_cart_v8';
+    const STORAGE_KEY_THEME = 'brand_theme_v8';
+    const STORAGE_KEY_LANG = 'brand_lang_v8';
 
+    /* Category Standard Sizes */
+    const PRESET_SIZES = {
+      'T-Shirts': ['M', 'L', 'XL', '2XL', '3XL'],
+      'Pants': ['30', '32', '34', '36', '38', '40'],
+      'Shoes': ['40', '41', '42', '43', '44', '45'],
+      'Other': ['Free Size', 'S', 'M', 'L', 'XL']
+    };
+
+    /* Initial Default Products */
+    const INITIAL_PRODUCTS = [
+      {
+        id: 'p1',
+        title: "تيشرت اوفر سايز UP'TO (أسود / أبيض)",
+        category: 'T-Shirts',
+        price: 450,
+        discount: 10,
+        stock: 20,
+        sizes: ['M', 'L', 'XL', '2XL'],
+        images: [
+          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85',
+          'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1100&q=85'
+        ]
+      },
+      {
+        id: 'p2',
+        title: 'تيشرت اوفر سايز CHAOS Cchange (Front & Back)',
+        category: 'T-Shirts',
+        price: 490,
+        discount: 0,
+        stock: 12,
+        sizes: ['L', 'XL', '2XL'],
+        images: [
+          'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=1100&q=85',
+          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1100&q=85'
+        ]
+      },
+      {
+        id: 'p3',
+        title: 'تيشرت اوفر سايز ITALY Premium Edition',
+        category: 'T-Shirts',
+        price: 520,
+        discount: 15,
+        stock: 10,
+        sizes: ['M', 'L', 'XL', '2XL'],
+        images: [
+          'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=1100&q=85',
+          'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1100&q=85'
+        ]
+      }
+    ];
+
+    /* Translations */
     const I18N = {
       ar: {
-        top_online: 'متصل سحابياً 24/7 لخدمة جميع العملاء',
-        top_offer: '✨ تشكيلة الموسم الجديد 2026 - شحن سريع لجميع المحافظات والدفع عند الاستلام ✨',
-        cart_btn: 'السلة',
-        hero_badge: 'ORIGINAL OVERSIZED & SUMMER COLLECTION',
-        hero_desc: 'اكتشف أفخم تشكيلة تيشرتات اوفر سايز وبناطيل مصممة بأعلى جودة قطن معالجة وأفضل قصات تريندي. جميع الموديلات مدعومة بصور متعددة لكل زاوية ولون.',
-        badge_models: 'موديل متاح فوراً',
-        badge_clients: 'عميل يتسوقون الآن',
-        badge_cotton: 'قطن ميلتون أصلي',
-        badge_delivery: 'شحن فوري لباب البيت',
-        cat_all: '🔥 جميع الموديلات',
-        cat_tshirts: '👕 تيشيرتات أوفر سايز (T-Shirts)',
-        cat_pants: '👖 بناطيل (Pants)',
-        cat_shoes: '👟 أحذية وسنيكرز (Shoes)',
-        cat_sale: '🏷️ عروض وخصومات خاصة',
-        no_prods: 'لا توجد موديلات مطابقة للبحث حالياً',
-        no_prods_desc: 'جرب اختيار فئة أخرى أو تغيير كلمات البحث',
-        load_more: 'عرض المزيد من الموديلات (+16)',
+        top_bar_msg: 'شحن وتوصيل لجميع أنحاء الجمهورية | اطلب الآن عبر واتساب',
+        hero_badge: 'كولكشن صيف وخريف 2026 الفاخر',
+        hero_desc: 'أحدث صيحات الملابس الرجالية بأعلى خامات وأفضل أسعار. اضغط على أي موديل لتصفح جميع ألوانه بالكامل!',
+        section_title: 'أحدث الموديلات المتوفرة',
+        section_subtitle: 'اختر الفئة وشاهد تبادل الألوان والصور تلقائياً في كل كارت',
+        no_products: 'لا توجد موديلات مطابقة',
+        no_products_desc: 'جرّب تغيير خيارات البحث أو الفئة المحددة',
+        nav_home: 'الرئيسية',
+        social_links_title: 'حسابات متجر BRAND',
         cart_title: 'سلة المشتريات',
-        total_price: 'المجموع الكلي:',
-        total_savings: 'وفرت معنا:',
-        order_whatsapp: 'إرسال الطلب عبر واتساب',
-        clear_cart: 'تفريغ السلة',
-        empty_cart_msg: 'سلة المشتريات فارغة حالياً',
-        size_label: 'المقاس:',
-        colors_count: 'صور / ألوان',
-        out_of_stock: 'نفدت الكمية',
-        add_to_cart: 'أضف للسلة',
-        added_to_cart: 'في السلة',
+        cart_savings: 'إجمالي التوفير:',
+        cart_total: 'المجموع الكلي:',
+        order_whatsapp: 'إتمام الطلب عبر واتساب',
+        clear_cart: 'إفراغ السلة',
+        empty_cart_msg: 'سلة المشتريات فارغة حالياً.',
         admin_login_title: 'تسجيل دخول إدارة المتجر',
-        admin_login_desc: 'أدخل كلمة المرور لإدارة الموديلات والمزامنة السحابية',
+        admin_login_desc: 'أدخل كلمة المرور لإدارة الموديلات والصور',
         pw_label: 'كلمة المرور:',
         wrong_pw: 'كلمة المرور غير صحيحة!',
         login_btn: 'دخول',
         back_to_store: 'العودة للمتجر',
-        admin_dash_title: 'لوحة تحكم الموديلات (+1000 موديل)',
-        admin_dash_sub: 'ربط سحابي مباشر يظهر الموديلات فوراً لجميع العملاء في العالم',
+        admin_dash_title: 'لوحة تحكم الموديلات',
+        admin_dash_sub: 'إضافة وتعديل المنتجات والصور المتعددة وتحديد الأسعار',
         logout: 'تسجيل خروج',
         stat_total: 'إجمالي المنتجات',
         stat_sale: 'موديلات الخصم',
         stat_out: 'نفدت الكمية',
-        stat_images: 'إجمالي الصور',
+        stat_images: 'إجمالي الصور المرفوعة',
         form_add_title: 'إضافة موديل جديد',
         form_edit_title: 'تعديل بيانات الموديل',
         f_title: 'اسم الموديل / المنتج:',
@@ -983,395 +971,75 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
         f_price: 'السعر (ج.م):',
         f_disc: 'نسبة الخصم % (اختياري):',
         f_stock: 'الكمية بالمخزن:',
-        f_images_title: 'صور وألوان الموديل (ضغط ذكي وسريع):',
-        f_images_desc: 'ارفع أي عدد من الصور للموديل (الوجه، الظهر، الألوان). يتم ضغط الصور تلقائياً وحفظها سحابياً لتعمل بسرعة خارقة لآلاف الزوار!',
-        upload_files: 'رفع صور من الجهاز (ضغط فوري)',
+        f_images_title: 'صور وألوان الموديل (تتبادل تلقائياً وبحجم كبير):',
+        f_images_desc: 'أضف روابط الصور أو ارفع من جهازك مباشرة. الصور ستظهر في كارت الموديل مع تبادل تلقائي ومعرض كامل عند الضغط.',
+        upload_files: 'رفع صور من الجهاز (متعدد)',
         f_sizes_title: 'المقاسات المتاحة للموديل:',
-        save_prod: 'حفظ الموديل (سحابياً)',
+        save_prod: 'حفظ الموديل',
         cancel: 'إلغاء',
-        all_prods_tbl: 'قائمة جميع الموديلات'
+        all_prods_tbl: 'قائمة جميع الموديلات',
+        out_of_stock: 'نفدت الكمية',
+        in_stock: 'متوفر',
+        add_to_cart: 'أضف للسلة',
+        added_to_cart: 'تمت الإضافة!',
+        size_label: 'المقاس:',
+        colors_count: 'ألوان',
+        photos_count: 'صور',
+        footer_text: 'متجر أزياء رجالية عصري - تجربة تسوق سهلة وسريعة مع طلب مباشر عبر الواتساب.'
       },
       en: {
-        top_online: 'Live Cloud Sync 24/7 for Worldwide Clients',
-        top_offer: '✨ Brand New 2026 Collection - Fast Shipping & Cash On Delivery ✨',
-        cart_btn: 'Cart',
-        hero_badge: 'ORIGINAL OVERSIZED & SUMMER COLLECTION',
-        hero_desc: 'Discover luxury oversized t-shirts, premium pants, and top trendy menswear. Multi-angle dual view mockups with instant responsive navigation.',
-        badge_models: 'Models Available',
-        badge_clients: 'Shopping Now',
-        badge_cotton: '100% Pure Cotton',
-        badge_delivery: 'Fast Home Delivery',
-        cat_all: '🔥 All Models',
-        cat_tshirts: '👕 Oversized T-Shirts',
-        cat_pants: '👖 Pants',
-        cat_shoes: '👟 Shoes & Sneakers',
-        cat_sale: '🏷️ Deals & Offers',
-        no_prods: 'No models found matching your search',
-        no_prods_desc: 'Try selecting a different category or search term',
-        load_more: 'Load More Models (+16)',
-        cart_title: 'Shopping Cart',
-        total_price: 'Total Price:',
-        total_savings: 'You Saved:',
-        order_whatsapp: 'Checkout on WhatsApp',
-        clear_cart: 'Clear Cart',
-        empty_cart_msg: 'Your shopping cart is currently empty',
-        size_label: 'Size:',
-        colors_count: 'Colors / Angles',
-        out_of_stock: 'Out of Stock',
-        add_to_cart: 'Add to Cart',
-        added_to_cart: 'In Cart',
-        admin_login_title: 'Store Admin Login',
-        admin_login_desc: 'Enter password to manage products and cloud sync',
+        top_bar_msg: 'Fast shipping all across Egypt | Order directly via WhatsApp',
+        hero_badge: 'Exclusive 2026 Collection',
+        hero_desc: 'Premium modern men\'s fashion. Click any product to explore all color angles in full detail!',
+        section_title: 'Featured Models',
+        section_subtitle: 'Select a category to view models with auto color cycling in each card',
+        no_products: 'No matching products found',
+        no_products_desc: 'Try changing your search query or selected category',
+        nav_home: 'Home',
+        social_links_title: 'BRAND Official Accounts',
+        cart_title: 'Shopping Bag',
+        cart_savings: 'Total Savings:',
+        cart_total: 'Grand Total:',
+        order_whatsapp: 'Order via WhatsApp',
+        clear_cart: 'Clear Bag',
+        empty_cart_msg: 'Your shopping bag is currently empty.',
+        admin_login_title: 'Admin Sign In',
+        admin_login_desc: 'Enter password to manage products and gallery images',
         pw_label: 'Password:',
         wrong_pw: 'Incorrect password!',
         login_btn: 'Login',
         back_to_store: 'Back to Store',
-        admin_dash_title: 'Product Management (+1000 Models)',
-        admin_dash_sub: 'Live Cloud sync makes all added products visible to all clients worldwide',
+        admin_dash_title: 'Products Manager',
+        admin_dash_sub: 'Add, update multi-images, colors and warehouse stock',
         logout: 'Logout',
         stat_total: 'Total Products',
         stat_sale: 'On Sale',
         stat_out: 'Out of Stock',
-        stat_images: 'Total Images',
+        stat_images: 'Total Gallery Photos',
         form_add_title: 'Add New Model',
         form_edit_title: 'Edit Model Details',
         f_title: 'Model / Product Title:',
         f_category: 'Category:',
         f_price: 'Price (EGP):',
-        f_disc: 'Discount % (Optional):',
-        f_stock: 'Stock Quantity:',
-        f_images_title: 'Model Images & Colors (Smart Auto-Compress):',
-        f_images_desc: 'Upload multi-angle views (Front, Back, Colors). Images are auto-compressed and synced to the cloud seamlessly!',
-        upload_files: 'Upload Photos (Instant Compress)',
-        f_sizes_title: 'Available Sizes for Model:',
-        save_prod: 'Save Model (Cloud Sync)',
+        f_disc: 'Discount % (optional):',
+        f_stock: 'Warehouse Stock:',
+        f_images_title: 'Model Images & Colors (Auto Carousel):',
+        f_images_desc: 'Add image URLs or upload multiple pictures. Images will cycle in product card and expand into full gallery.',
+        upload_files: 'Upload Multiple Photos',
+        f_sizes_title: 'Available Sizes:',
+        save_prod: 'Save Product',
         cancel: 'Cancel',
-        all_prods_tbl: 'All Models Catalog'
+        all_prods_tbl: 'All Products List',
+        out_of_stock: 'Out of Stock',
+        in_stock: 'In Stock',
+        add_to_cart: 'Add to Cart',
+        added_to_cart: 'Added!',
+        size_label: 'Size:',
+        colors_count: 'Colors',
+        photos_count: 'photos',
+        footer_text: 'Modern men\'s fashion store with direct seamless WhatsApp ordering.'
       }
     };
-
-    const PRESET_SIZES = {
-      'T-Shirts': ['M', 'L', 'XL', '2XL', '3XL', 'Oversized'],
-      'Pants': ['30', '32', '34', '36', '38', '40'],
-      'Shoes': ['41', '42', '43', '44', '45'],
-      'Other': ['Free Size', 'S', 'M', 'L', 'XL']
-    };
-
-    /* INITIAL DEFAULT PRODUCTS (Matches User's Mockup Images) */
-    const INITIAL_PRODUCTS = [
-      {
-        id: 'p_1',
-        title: "تيشرت أوفر سايز UP'TO براند كولكشن 2026 قطن 100% أسود",
-        category: 'T-Shirts',
-        price: 490,
-        discount: 15,
-        stock: 25,
-        sizes: ['M', 'L', 'XL', '2XL', 'Oversized'],
-        images: [
-          'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85',
-          'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=1100&q=85',
-          'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=1100&q=85'
-        ]
-      },
-      {
-        id: 'p_2',
-        title: 'تيشرت BRAND بيسك أوفر سايز أبيض قطن معالج عالي الجودة',
-        category: 'T-Shirts',
-        price: 450,
-        discount: 0,
-        stock: 18,
-        sizes: ['M', 'L', 'XL', '2XL'],
-        images: [
-          'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=1100&q=85',
-          'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=1100&q=85'
-        ]
-      },
-      {
-        id: 'p_3',
-        title: 'بنطلون كارجو براند تريندي قطن ووتر بروف 6 جيوب كحلي',
-        category: 'Pants',
-        price: 650,
-        discount: 10,
-        stock: 12,
-        sizes: ['30', '32', '34', '36', '38'],
-        images: [
-          'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=1100&q=85',
-          'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?w=1100&q=85'
-        ]
-      },
-      {
-        id: 'p_4',
-        title: 'سنيكرز BRAND سبورت فاشون أبيض في أسود خفيف ومريح',
-        category: 'Shoes',
-        price: 890,
-        discount: 20,
-        stock: 9,
-        sizes: ['41', '42', '43', '44', '45'],
-        images: [
-          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1100&q=85',
-          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=1100&q=85'
-        ]
-      }
-    ];
-
-    /* ---------------------------------------------------------
-       INDEXEDDB LOCAL ENGINE (Fast local offline fallback & cache)
-       --------------------------------------------------------- */
-    const DB_NAME = 'BrandStore_IndexedDB_v1';
-    const DB_VERSION = 1;
-    const DB_STORE_NAME = 'store_data';
-    let dbInstance = null;
-
-    function openDatabase() {
-      return new Promise((resolve) => {
-        if (!window.indexedDB) {
-          console.warn('IndexedDB not supported, falling back to localStorage');
-          resolve(null);
-          return;
-        }
-        const request = indexedDB.open(DB_NAME, DB_VERSION);
-        request.onupgradeneeded = (e) => {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains(DB_STORE_NAME)) {
-            db.createObjectStore(DB_STORE_NAME, { keyPath: 'key' });
-          }
-        };
-        request.onsuccess = (e) => {
-          dbInstance = e.target.result;
-          resolve(dbInstance);
-        };
-        request.onerror = (e) => {
-          console.error('IndexedDB open error:', e);
-          resolve(null);
-        };
-      });
-    }
-
-    function dbGetItem(key) {
-      return new Promise((resolve) => {
-        if (!dbInstance) {
-          try {
-            const raw = localStorage.getItem(key);
-            resolve(raw ? JSON.parse(raw) : null);
-          } catch(e) { resolve(null); }
-          return;
-        }
-        try {
-          const tx = dbInstance.transaction(DB_STORE_NAME, 'readonly');
-          const store = tx.objectStore(DB_STORE_NAME);
-          const req = store.get(key);
-          req.onsuccess = () => resolve(req.result ? req.result.value : null);
-          req.onerror = () => resolve(null);
-        } catch(e) { resolve(null); }
-      });
-    }
-
-    function dbSetItem(key, value) {
-      return new Promise((resolve) => {
-        if (!dbInstance) {
-          try { localStorage.setItem(key, JSON.stringify(value)); } catch(e){}
-          resolve();
-          return;
-        }
-        try {
-          const tx = dbInstance.transaction(DB_STORE_NAME, 'readwrite');
-          const store = tx.objectStore(DB_STORE_NAME);
-          store.put({ key: key, value: value });
-          tx.oncomplete = () => resolve();
-          tx.onerror = () => resolve();
-        } catch(e) { resolve(); }
-      });
-    }
-
-    /* ---------------------------------------------------------
-       SUPABASE CLOUD DATABASE SYNC ENGINE (Worldwide Real-Time)
-       --------------------------------------------------------- */
-    let sbClient = null;
-    let sbUrl = localStorage.getItem('brand_sb_url') || '';
-    let sbKey = localStorage.getItem('brand_sb_key') || '';
-    let isCloudConnected = false;
-
-    function initSupabase() {
-      if (window.supabase && sbUrl && sbKey) {
-        try {
-          sbClient = window.supabase.createClient(sbUrl, sbKey);
-          isCloudConnected = true;
-          updateCloudUI(true);
-          setupRealtimeListener();
-          return true;
-        } catch(e) {
-          console.error('Supabase init error:', e);
-          isCloudConnected = false;
-          updateCloudUI(false);
-        }
-      } else {
-        isCloudConnected = false;
-        updateCloudUI(false);
-      }
-      return false;
-    }
-
-    function updateCloudUI(connected) {
-      const badge = document.getElementById('sbStatusBadge');
-      const liveBadge = document.getElementById('cloudLiveBadge');
-      const statusText = document.getElementById('cloudStatusText');
-      if (badge) {
-        if (connected) {
-          badge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold';
-          badge.textContent = '🟢 متصل بالسحابة (يظهر لجميع العملاء)';
-        } else {
-          badge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold';
-          badge.textContent = '⚠️ وضع التخزين المحلي (اضغط للربط)';
-        }
-      }
-      if (liveBadge) {
-        liveBadge.classList.toggle('hidden', !connected);
-      }
-      if (statusText) {
-        statusText.textContent = connected ? 'مزامنة سحابية مباشرة' : 'وضع محلي';
-      }
-    }
-
-    function setupRealtimeListener() {
-      if (!sbClient) return;
-      try {
-        sbClient
-          .channel('public:products')
-          .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, async () => {
-            console.log('Realtime DB change detected! Refreshing catalog...');
-            await fetchProductsFromCloud();
-          })
-          .subscribe();
-      } catch(err) {
-        console.warn('Realtime channel error:', err);
-      }
-    }
-
-    async function fetchProductsFromCloud() {
-      if (!sbClient) return false;
-      try {
-        const { data, error } = await sbClient
-          .from('products')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          console.error('Cloud fetch error:', error);
-          return false;
-        }
-
-        if (data && Array.isArray(data) && data.length > 0) {
-          products = data;
-          await dbSetItem('brand_prods_db', products);
-          renderStore();
-          if (isAdminLoggedIn) renderAdminView();
-          return true;
-        }
-      } catch(err) {
-        console.error('Cloud query error:', err);
-      }
-      return false;
-    }
-
-    async function saveProductToCloud(prod) {
-      if (!sbClient) return;
-      try {
-        const row = {
-          id: prod.id,
-          title: prod.title,
-          category: prod.category,
-          price: prod.price,
-          discount: prod.discount || 0,
-          stock: prod.stock !== undefined ? prod.stock : 10,
-          sizes: prod.sizes || [],
-          images: prod.images || []
-        };
-        const { error } = await sbClient.from('products').upsert([row]);
-        if (error) console.error('Cloud upsert error:', error);
-      } catch(err) {
-        console.error('Cloud save exception:', err);
-      }
-    }
-
-    async function deleteProductFromCloud(id) {
-      if (!sbClient) return;
-      try {
-        const { error } = await sbClient.from('products').delete().eq('id', id);
-        if (error) console.error('Cloud delete error:', error);
-      } catch(err) {
-        console.error('Cloud delete exception:', err);
-      }
-    }
-
-    async function syncAllLocalToCloud() {
-      if (!sbClient) {
-        alert('يرجى حفظ بيانات Supabase أولاً للاتصال بقاعدة البيانات!');
-        return;
-      }
-      if (!products.length) {
-        alert('لا توجد منتجات لرفعها!');
-        return;
-      }
-      try {
-        const rows = products.map(p => ({
-          id: p.id,
-          title: p.title,
-          category: p.category,
-          price: p.price,
-          discount: p.discount || 0,
-          stock: p.stock !== undefined ? p.stock : 10,
-          sizes: p.sizes || [],
-          images: p.images || []
-        }));
-
-        const { error } = await sbClient.from('products').upsert(rows);
-        if (error) {
-          alert('حدث خطأ أثناء الرفع: ' + error.message);
-        } else {
-          alert(`تم رفع وتحديث ${rows.length} موديل على السحابة بنجاح! الآن تظهر لجميع الزوار فوراً.`);
-          await fetchProductsFromCloud();
-        }
-      } catch(err) {
-        alert('حدث خطأ في الاتصال: ' + err.message);
-      }
-    }
-
-    /* ---------------------------------------------------------
-       SMART CLIENT-SIDE IMAGE COMPRESSOR (Auto WebP/JPEG)
-       Compresses 10MB Camera photos down to ~80KB without quality loss!
-       --------------------------------------------------------- */
-    function compressImageFile(file, maxWidth = 1200, quality = 0.82) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
-
-            if (width > maxWidth) {
-              height = Math.round((height * maxWidth) / width);
-              width = maxWidth;
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            let compressedDataUrl = canvas.toDataURL('image/webp', quality);
-            if (!compressedDataUrl.startsWith('data:image/webp')) {
-              compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
-            }
-            resolve(compressedDataUrl);
-          };
-          img.onerror = () => resolve(e.target.result);
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
-    }
 
     /* ---------------------------------------------------------
        GLOBAL STATE
@@ -1384,10 +1052,6 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
     let searchQuery = '';
     let isAdminLoggedIn = false;
     
-    // Pagination & Infinite Scroll (Fast rendering for 1000+ items)
-    let visibleProductCount = 16;
-    const PAGE_SIZE = 16;
-
     // Lightbox State
     let activeLightboxProd = null;
     let activeLightboxIdx = 0;
@@ -1403,48 +1067,35 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
     let formImages = [];
     let formSelectedSizes = [];
 
-    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85';
-
     /* ---------------------------------------------------------
-       STATE STORAGE LOAD & SAVE
+       INITIALIZATION & STORAGE
        --------------------------------------------------------- */
-    async function loadState() {
-      await openDatabase();
-
-      // 1. First check IndexedDB cache for instant display
-      const savedProducts = await dbGetItem('brand_prods_db');
-      if (savedProducts && Array.isArray(savedProducts) && savedProducts.length > 0) {
-        products = savedProducts;
-      } else {
+    function loadState() {
+      try {
+        const p = localStorage.getItem(STORAGE_KEY_PRODS);
+        products = p ? JSON.parse(p) : INITIAL_PRODUCTS;
+      } catch (e) {
         products = INITIAL_PRODUCTS;
       }
 
-      // 2. Initialize Supabase and pull live products from Cloud
-      initSupabase();
-      if (isCloudConnected) {
-        await fetchProductsFromCloud();
+      try {
+        const c = localStorage.getItem(STORAGE_KEY_CART);
+        cart = c ? JSON.parse(c) : [];
+      } catch (e) {
+        cart = [];
       }
 
-      const savedCart = await dbGetItem('brand_cart_db');
-      cart = (savedCart && Array.isArray(savedCart)) ? savedCart : [];
-
-      theme = localStorage.getItem('brand_theme') || 'dark';
-      lang = localStorage.getItem('brand_lang') || 'ar';
+      theme = localStorage.getItem(STORAGE_KEY_THEME) || 'dark';
+      lang = localStorage.getItem(STORAGE_KEY_LANG) || 'ar';
       isAdminLoggedIn = sessionStorage.getItem('brand_admin_auth') === 'true';
-
-      // Set input values for cloud settings
-      const urlInput = document.getElementById('sbUrlInput');
-      const keyInput = document.getElementById('sbKeyInput');
-      if (urlInput) urlInput.value = sbUrl;
-      if (keyInput) keyInput.value = sbKey;
     }
 
-    async function saveProducts() {
-      await dbSetItem('brand_prods_db', products);
+    function saveProducts() {
+      localStorage.setItem(STORAGE_KEY_PRODS, JSON.stringify(products));
     }
 
-    async function saveCart() {
-      await dbSetItem('brand_cart_db', cart);
+    function saveCart() {
+      localStorage.setItem(STORAGE_KEY_CART, JSON.stringify(cart));
     }
 
     function formatMoney(amount) {
@@ -1468,6 +1119,8 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
       return Math.round(product.price * (1 - product.discount / 100));
     }
 
+    const FALLBACK_IMG = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1100&q=85';
+
     /* ---------------------------------------------------------
        THEME & LANGUAGE CONTROLLERS
        --------------------------------------------------------- */
@@ -1476,7 +1129,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
       document.documentElement.classList.toggle('dark', isDark);
       document.getElementById('themeIconSun').classList.toggle('hidden', isDark);
       document.getElementById('themeIconMoon').classList.toggle('hidden', !isDark);
-      localStorage.setItem('brand_theme', theme);
+      localStorage.setItem(STORAGE_KEY_THEME, theme);
     }
 
     function toggleTheme() {
@@ -1500,7 +1153,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
       document.getElementById('desktopSearchInput').placeholder = searchPlaceholder;
       document.getElementById('mobileSearchInput').placeholder = searchPlaceholder;
 
-      localStorage.setItem('brand_lang', lang);
+      localStorage.setItem(STORAGE_KEY_LANG, lang);
       renderStore();
       renderCart();
       if (isAdminLoggedIn) renderAdminView();
@@ -1631,13 +1284,12 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
     }
 
     /* ---------------------------------------------------------
-       RENDER STORE PRODUCTS (WITH VIRTUAL LOAD MORE FOR 1000+)
+       RENDER STORE PRODUCTS (LARGE WIDE ADAPTIVE IMAGES)
        --------------------------------------------------------- */
     function renderStore() {
       stopAllCardIntervals();
       const grid = document.getElementById('productsGrid');
       const emptyState = document.getElementById('emptyState');
-      const loadMoreContainer = document.getElementById('loadMoreContainer');
       const t = I18N[lang];
 
       const q = searchQuery.toLowerCase().trim();
@@ -1653,16 +1305,12 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
       if (!filtered.length) {
         grid.innerHTML = '';
         emptyState.classList.remove('hidden');
-        loadMoreContainer.classList.add('hidden');
         return;
       }
 
       emptyState.classList.add('hidden');
 
-      const displayBatch = filtered.slice(0, visibleProductCount);
-      loadMoreContainer.classList.toggle('hidden', filtered.length <= visibleProductCount);
-
-      grid.innerHTML = displayBatch.map(p => {
+      grid.innerHTML = filtered.map(p => {
         const imgs = (p.images && p.images.length) ? p.images : [FALLBACK_IMG];
         const totalImgs = imgs.length;
         const currentIdx = cardActiveIndices[p.id] || 0;
@@ -1786,7 +1434,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
         `;
       }).join('');
 
-      displayBatch.forEach(p => {
+      filtered.forEach(p => {
         if (p.images && p.images.length > 1) {
           startCardSlideshow(p.id, p.images.length);
         }
@@ -1889,7 +1537,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
     /* ---------------------------------------------------------
        CART SYSTEM & WHATSAPP CHECKOUT
        --------------------------------------------------------- */
-    async function addToCart(prodId, chosenSize) {
+    function addToCart(prodId, chosenSize) {
       const p = products.find(x => x.id === prodId);
       if (!p || p.stock <= 0) return;
 
@@ -1915,28 +1563,28 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
         });
       }
 
-      await saveCart();
+      saveCart();
       renderCart();
       renderStore();
       if (activeLightboxProd) renderLightbox();
       openCartDrawer();
     }
 
-    async function updateCartQty(cartKey, delta) {
+    function updateCartQty(cartKey, delta) {
       const idx = cart.findIndex(c => c.cartKey === cartKey);
       if (idx < 0) return;
       cart[idx].qty += delta;
       if (cart[idx].qty <= 0) {
         cart.splice(idx, 1);
       }
-      await saveCart();
+      saveCart();
       renderCart();
       renderStore();
     }
 
-    async function clearCart() {
+    function clearCart() {
       cart = [];
-      await saveCart();
+      saveCart();
       renderCart();
       renderStore();
     }
@@ -2039,7 +1687,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
     }
 
     /* ---------------------------------------------------------
-       ADMIN PANEL LOGIC (WITH CLOUD SYNC & BACKUP)
+       ADMIN PANEL LOGIC (PROTECTED & HIDDEN)
        --------------------------------------------------------- */
     function renderAdminView() {
       const totalCount = document.getElementById('statTotalCount');
@@ -2055,7 +1703,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
       
       const totalImages = products.reduce((acc, p) => acc + (p.images ? p.images.length : 0), 0);
       imagesCount.textContent = totalImages;
-      tblCountText.textContent = `${products.length} products in database`;
+      tblCountText.textContent = `${products.length} products`;
 
       tbody.innerHTML = products.map(p => {
         const discountPrice = getDiscountPrice(p);
@@ -2097,7 +1745,6 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
       }).join('');
 
       renderFormSizes();
-      updateCloudUI(isCloudConnected);
     }
 
     function renderFormSizes() {
@@ -2173,55 +1820,12 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
       window.scrollTo({ top: document.getElementById('productForm').offsetTop - 100, behavior: 'smooth' });
     }
 
-    async function deleteProduct(id) {
+    function deleteProduct(id) {
       if (!confirm('هل أنت متأكد من رغبتك في حذف هذا الموديل؟')) return;
       products = products.filter(p => p.id !== id);
-      await saveProducts();
-      if (isCloudConnected) {
-        await deleteProductFromCloud(id);
-      }
+      saveProducts();
       renderAdminView();
       renderStore();
-    }
-
-    /* ---------------------------------------------------------
-       BACKUP EXPORT & RESTORE FUNCTIONS
-       --------------------------------------------------------- */
-    function exportProductsBackup() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(products, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `BRAND_Products_Backup_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function importProductsBackup(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        try {
-          const imported = JSON.parse(event.target.result);
-          if (Array.isArray(imported)) {
-            products = imported;
-            await saveProducts();
-            if (isCloudConnected) {
-              await syncAllLocalToCloud();
-            }
-            renderAdminView();
-            renderStore();
-            alert(`تم استيراد ${imported.length} موديل بنجاح!`);
-          } else {
-            alert('ملف النسخة الاحتياطية غير صالح.');
-          }
-        } catch(err) {
-          alert('حدث خطأ أثناء قراءة الملف.');
-        }
-      };
-      reader.readAsText(file);
-      e.target.value = '';
     }
 
     /* ---------------------------------------------------------
@@ -2237,29 +1841,19 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
       document.getElementById('closeCartBtn').addEventListener('click', closeCartDrawer);
       overlay.addEventListener('click', closeAllDrawers);
 
-      // Search
       const handleSearch = (e) => {
         searchQuery = e.target.value;
-        visibleProductCount = PAGE_SIZE;
         renderStore();
       };
       document.getElementById('desktopSearchInput').addEventListener('input', handleSearch);
       document.getElementById('mobileSearchInput').addEventListener('input', handleSearch);
 
-      // Category filter
       document.getElementById('categoryPills').addEventListener('click', (e) => {
         const btn = e.target.closest('.cat-btn');
         if (!btn) return;
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         activeCategory = btn.dataset.cat;
-        visibleProductCount = PAGE_SIZE;
-        renderStore();
-      });
-
-      // Load More Button
-      document.getElementById('loadMoreBtn').addEventListener('click', () => {
-        visibleProductCount += PAGE_SIZE;
         renderStore();
       });
 
@@ -2308,65 +1902,7 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);</pre>
         sessionStorage.removeItem('brand_admin_auth');
         showView('store');
       });
-      document.getElementById('adminExportBtn').addEventListener('click', exportProductsBackup);
-      document.getElementById('adminImportFile').addEventListener('change', importProductsBackup);
 
-      // Cloud Sync Handlers
-      document.getElementById('toggleCloudConfigBtn').addEventListener('click', () => {
-        const panel = document.getElementById('cloudConfigPanel');
-        panel.classList.toggle('hidden');
-      });
-      document.getElementById('showSqlGuideBtn').addEventListener('click', () => {
-        const box = document.getElementById('sqlGuideBox');
-        box.classList.toggle('hidden');
-      });
-      document.getElementById('copySqlBtn').addEventListener('click', () => {
-        const sqlText = `CREATE TABLE IF NOT EXISTS products (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  category TEXT NOT NULL,
-  price NUMERIC NOT NULL,
-  discount NUMERIC DEFAULT 0,
-  stock INTEGER DEFAULT 10,
-  sizes JSONB DEFAULT '[]'::jsonb,
-  images JSONB DEFAULT '[]'::jsonb,
-  created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
-);
-
-ALTER TABLE products ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Public Read" ON products FOR SELECT USING (true);
-CREATE POLICY "Public Insert" ON products FOR INSERT WITH CHECK (true);
-CREATE POLICY "Public Update" ON products FOR UPDATE USING (true);
-CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);`;
-        navigator.clipboard.writeText(sqlText);
-        alert('تم نسخ كود SQL بنجاح!');
-      });
-
-      document.getElementById('saveCloudConfigBtn').addEventListener('click', async () => {
-        const url = document.getElementById('sbUrlInput').value.trim();
-        const key = document.getElementById('sbKeyInput').value.trim();
-        if (!url || !key) {
-          alert('يرجى إدخال كل من رابط Supabase ومفتاح Anon Key');
-          return;
-        }
-        localStorage.setItem('brand_sb_url', url);
-        localStorage.setItem('brand_sb_key', key);
-        sbUrl = url;
-        sbKey = key;
-        
-        const success = initSupabase();
-        if (success) {
-          alert('✅ تم الاتصال بقاعدة بيانات Supabase السحابية بنجاح!');
-          await fetchProductsFromCloud();
-          renderAdminView();
-        } else {
-          alert('⚠️ تعذر الاتصال بالسحابة. يرجى التحقق من الرابط والمفتاح.');
-        }
-      });
-
-      document.getElementById('pushAllToCloudBtn').addEventListener('click', syncAllLocalToCloud);
-
-      // Form category change
       document.getElementById('formCategory').addEventListener('change', () => {
         const cat = document.getElementById('formCategory').value;
         formSelectedSizes = [...(PRESET_SIZES[cat] || [])];
@@ -2403,25 +1939,18 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);`;
         }
       });
 
-      // Form Upload Files with SMART AUTO-COMPRESSION
-      document.getElementById('formFileInput').addEventListener('change', async (e) => {
+      // Form Upload Files
+      document.getElementById('formFileInput').addEventListener('change', (e) => {
         const files = Array.from(e.target.files);
         if (!files.length) return;
-        
-        const statusEl = document.getElementById('uploadStatusProgress');
-        statusEl.classList.remove('hidden');
-
-        for (const file of files) {
-          try {
-            const compressedUrl = await compressImageFile(file, 1200, 0.82);
-            formImages.push(compressedUrl);
+        files.forEach(file => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            formImages.push(event.target.result);
             renderFormImagesManager();
-          } catch(err) {
-            console.error('Compression error:', err);
-          }
-        }
-
-        statusEl.classList.add('hidden');
+          };
+          reader.readAsDataURL(file);
+        });
         e.target.value = '';
       });
 
@@ -2445,8 +1974,8 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);`;
         }
       });
 
-      // Product Form Submit (Saves to IndexedDB + Cloud Sync)
-      document.getElementById('productForm').addEventListener('submit', async (e) => {
+      // Product Form Submit
+      document.getElementById('productForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const pid = document.getElementById('formProdId').value || 'p_' + Date.now();
         const title = document.getElementById('formTitle').value.trim();
@@ -2474,14 +2003,11 @@ CREATE POLICY "Public Delete" ON products FOR DELETE USING (true);`;
         }
 
         await saveProducts();
-        if (isCloudConnected) {
-          await saveProductToCloud(updatedProd);
-        }
-
+        await saveProductToFirebase(updatedProd);
         resetForm();
         renderAdminView();
         renderStore();
-        alert('تم حفظ الموديل بنجاح' + (isCloudConnected ? ' ومزامنته سحابياً لجميع العملاء!' : '!'));
+        alert('تم حفظ الموديل ومزامنته سحابياً لجميع العملاء فوراً!');
       });
 
       document.getElementById('formCancelBtn').addEventListener('click', resetForm);
