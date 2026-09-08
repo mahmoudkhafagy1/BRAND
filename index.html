@@ -1975,7 +1975,7 @@
       });
 
       // Product Form Submit
-      document.getElementById('productForm').addEventListener('submit', (e) => {
+      document.getElementById('productForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const pid = document.getElementById('formProdId').value || 'p_' + Date.now();
         const title = document.getElementById('formTitle').value.trim();
@@ -2138,14 +2138,21 @@
     }
 
     /* ---------------------------------------------------------
-       APP START
+       APP START (Instant Button Response & Background Cloud Sync)
        --------------------------------------------------------- */
-    document.addEventListener('DOMContentLoaded', async () => {
-      await loadState();
+    document.addEventListener('DOMContentLoaded', () => {
       applyTheme();
       applyLanguage();
       attachEventListeners();
       showView('store');
+      
+      // Load local database & sync with Firebase in background
+      loadState().then(() => {
+        renderStore();
+        if (isAdminLoggedIn) renderAdminView();
+      }).catch(err => {
+        console.warn('Initial load error:', err);
+      });
     });
   </script>
 </body>
